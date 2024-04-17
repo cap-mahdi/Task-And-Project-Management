@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AuthLayout } from '../layout';
+import { AuthLayout, Layout } from '../layout';
 import { Login, Register } from './auth';
-import { Layout } from '../layout/layout';
+import SideBar from '../components/sideBar/SideBar';
 export const router = createBrowserRouter([
   {
     path: '/auth',
@@ -15,5 +15,10 @@ export const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [{ path: '', element: <div>Home page</div> }],
+  },
+  {
+    path: '/sideBarTest',
+    element: <Layout />,
+    children: [{ path: '', element: <SideBar /> }],
   },
 ]);
