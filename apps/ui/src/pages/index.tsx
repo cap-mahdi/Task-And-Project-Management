@@ -1,15 +1,22 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AuthLayout } from '../layout';
+
+import SideBar from '../components/sideBar/SideBar';
+
 import { Login, Register } from './auth';
 import { Layout } from '../layout/layout';
+
 import { Overview } from './overview';
+
+import { ResetPassword } from './auth/reset-password';
+
+
 export const router = createBrowserRouter([
   {
     path: '/auth',
-    element: <AuthLayout />,
     children: [
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
+      { path: 'reset-password', element: <ResetPassword /> },
     ],
   },
   {
@@ -20,5 +27,10 @@ export const router = createBrowserRouter([
   {
     path: '/overview',
     element: <Overview />,
+},{
+    path: '/sideBarTest',
+    element: <Layout />,
+    children: [{ path: '', element: <SideBar /> }],
+
   },
 ]);

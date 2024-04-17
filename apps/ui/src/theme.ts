@@ -8,6 +8,7 @@ declare module '@mui/material/styles' {
     bismark: Palette['primary'];
     shadowGreen: Palette['primary'];
     catskillWhite: Palette['primary'];
+    gray: Palette['primary'];
   }
   interface PaletteOptions {
     blackPearl?: PaletteColorOptions;
@@ -16,11 +17,15 @@ declare module '@mui/material/styles' {
     bismark?: PaletteColorOptions;
     shadowGreen?: PaletteColorOptions;
     catskillWhite?: PaletteColorOptions;
+    gray?: PaletteColorOptions;
   }
 }
 
 const theme = createTheme({
   palette: {
+    primary: {
+      main: '#468189',
+    },
     blackPearl: {
       main: '#031926',
     },
@@ -39,6 +44,12 @@ const theme = createTheme({
     catskillWhite: {
       main: '#ECF2F7',
     },
+    gray: {
+      main: '#F2F2F3',
+    },
+  },
+  typography: {
+    fontFamily: ['"Poppins"', '"Inter"'].join(','),
   },
 });
 
