@@ -21,6 +21,9 @@ declare module '@mui/material/styles' {
 
 const theme = createTheme({
   palette: {
+    primary: {
+      main: '#468189',
+    },
     blackPearl: {
       main: '#031926',
     },
