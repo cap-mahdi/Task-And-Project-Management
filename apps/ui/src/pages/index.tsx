@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { SideBar } from '../components';
 
 import { Login, Register } from './auth';
-import { Layout } from '../layout/Layout';
+import { Layout } from '../layout';
 
 import { Overview } from './overview';
 
