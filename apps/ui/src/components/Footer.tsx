@@ -1,11 +1,9 @@
 import {
   Box,
   Button,
-  Container,
   Divider,
   IconButton,
   Stack,
-  TextField,
   Typography,
 } from '@mui/material';
 import { FC } from 'react';
@@ -15,15 +13,128 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
+const titles = [
+  {
+    title: 'Company',
+    links: [
+      {
+        title: 'About us',
+        link: '#',
+      },
+      {
+        title: 'Careers',
+        link: '#',
+      },
+      {
+        title: 'Press',
+        link: '#',
+      },
+    ],
+  },
+  {
+    title: 'Product',
+    links: [
+      {
+        title: 'Features',
+        link: '#',
+      },
+      {
+        title: 'Testimonials',
+        link: '#',
+      },
+      {
+        title: 'Highlights',
+        link: '#',
+      },
+      {
+        title: 'Pricing',
+        link: '#',
+      },
+      {
+        title: 'FAQs',
+        link: '#',
+      },
+    ],
+  },
+  {
+    title: 'Services',
+    links: [
+      {
+        title: 'Digital Marketing',
+        link: '#',
+      },
+      {
+        title: 'Content Writing',
+        link: '#',
+      },
+      {
+        title: 'Seo for Business',
+        link: '#',
+      },
+      {
+        title: 'UI Design',
+        link: '#',
+      },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      {
+        title: 'Privacy Policy',
+        link: '#',
+      },
+      {
+        title: 'Terms & Conditions',
+        link: '#',
+      },
+      {
+        title: 'Return Policy',
+        link: '#',
+      },
+    ],
+  },
+  {
+    title: 'Contact Us',
+    links: [
+      {
+        title: 'Privacy Policy',
+        link: '#',
+      },
+      {
+        title: 'Terms & Conditions',
+        link: '#',
+      },
+      {
+        title: 'Return Policy',
+        link: '#',
+      },
+    ],
+  },
+  {
+    title: 'Contact Us',
+    links: [
+      {
+        title: 'support@braininwave.ip',
+        link: '#',
+      },
+      {
+        title: '+133-394-3439-1435',
+        link: '#',
+      },
+    ],
+  },
+];
+
 export const Footer: FC = () => {
   return (
-    <Container
+    <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        // gap: { xs: 4, sm: 8 },
         py: 8,
+        width: '100%',
         textAlign: { sm: 'center', md: 'left' },
         background: (theme) => theme.palette.blackPearl.main,
       }}
@@ -39,244 +150,40 @@ export const Footer: FC = () => {
           py: 10,
         }}
       >
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            fontWeight={600}
+        {titles.map((title) => (
+          <Box
+            key={title.title}
             sx={{
-              color: 'rgb(151, 151, 151)',
+              display: { xs: 'none', sm: 'flex' },
+              flexDirection: 'column',
+              gap: 1,
             }}
           >
-            Company
-          </Typography>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            About us
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Careers
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Press
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            fontWeight={600}
-            sx={{
-              color: 'rgb(151, 151, 151)',
-            }}
-          >
-            Product
-          </Typography>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Features
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Testimonials
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Highlights
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Pricing
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            FAQs
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            fontWeight={600}
-            sx={{
-              color: 'rgb(151, 151, 151)',
-            }}
-          >
-            Services
-          </Typography>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Digital Marketing
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Content Writing
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Seo for Business
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            UI Design
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            fontWeight={600}
-            sx={{
-              color: 'rgb(151, 151, 151)',
-            }}
-          >
-            Legal
-          </Typography>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Terms & Conditions
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            Return Policy
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: { xs: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            fontWeight={600}
-            sx={{
-              color: 'rgb(151, 151, 151)',
-            }}
-          >
-            Contact Us
-          </Typography>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            support@braininwave.io
-          </Link>
-          <Link
-            style={{
-              color: 'white',
-              textDecoration: 'none',
-            }}
-            to="#"
-          >
-            +133-394-3439-1435
-          </Link>
-        </Box>
+            <Typography
+              variant="body2"
+              fontWeight={600}
+              sx={{
+                color: 'rgb(151, 151, 151)',
+                textAlign: 'center',
+              }}
+            >
+              {title.title}
+            </Typography>
+            {title.links.map((link) => (
+              <Button
+                component={Link}
+                style={{
+                  color: 'white',
+                  textDecoration: 'none',
+                  padding: 0,
+                }}
+                to={link.link}
+              >
+                {link.title}
+              </Button>
+            ))}
+          </Box>
+        ))}
       </Box>
       <Divider sx={{ width: '75%', backgroundColor: 'rgb(151, 151, 151)' }} />
       <Box
@@ -338,6 +245,6 @@ export const Footer: FC = () => {
           </IconButton>
         </Stack>
       </Box>
-    </Container>
+    </Box>
   );
 };

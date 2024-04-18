@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
-
 import { TypographyProps } from '@mui/material/Typography';
+import { FC } from 'react';
 
 interface DescriptionProps {
   title: {
@@ -11,18 +11,16 @@ interface DescriptionProps {
     text: string;
     color: string;
   };
-
   titleVariant?: TypographyProps['variant'];
-
   descriptionVariant?: TypographyProps['variant'];
 }
 
-export function Description({
+export const Description: FC<DescriptionProps> = ({
   title,
   description,
   titleVariant,
   descriptionVariant,
-}: DescriptionProps) {
+}) => {
   return (
     <div>
       <Typography
@@ -43,6 +41,4 @@ export function Description({
       </Typography>
     </div>
   );
-}
-
-export default Description;
+};

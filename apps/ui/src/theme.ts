@@ -1,5 +1,4 @@
-import { createTheme, PaletteColorOptions } from '@mui/material';
-
+import { PaletteColorOptions, createTheme } from '@mui/material';
 declare module '@mui/material/styles' {
   interface Palette {
     blackPearl: Palette['primary'];
@@ -21,7 +20,7 @@ declare module '@mui/material/styles' {
   }
 }
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: '#468189',
@@ -52,5 +51,3 @@ const theme = createTheme({
     fontFamily: ['"Poppins"', '"Inter"'].join(','),
   },
 });
-
-export default theme;

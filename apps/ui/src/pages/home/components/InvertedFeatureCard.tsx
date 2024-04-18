@@ -1,8 +1,8 @@
 import { Card, CardContent, CardMedia } from '@mui/material';
-import Description from './description';
-import GetStartedButton from './getStartedButton';
+import { Description, GetStartedButton } from '.';
+import { FC } from 'react';
 
-interface FeatureCardProps {
+interface InvertedFeatureCardProps {
   imgUrl: string;
   buttonColor: string;
   title: {
@@ -15,12 +15,12 @@ interface FeatureCardProps {
   };
 }
 
-export function FeatureCard({
+export const InvertedFeatureCard: FC<InvertedFeatureCardProps> = ({
   imgUrl,
   buttonColor,
   title,
   description,
-}: FeatureCardProps) {
+}) => {
   return (
     <Card
       sx={{
@@ -30,18 +30,16 @@ export function FeatureCard({
         backgroundColor: 'transparent',
       }}
     >
+      <CardContent sx={{ width: '35vw' }}>
+        <Description title={title} description={description}></Description>
+        <GetStartedButton buttonColor={buttonColor}></GetStartedButton>
+      </CardContent>
       <CardMedia
         component="img"
         image={imgUrl}
         alt="image"
         sx={{ width: '25vw', objectFit: 'cover', marginRight: '50px' }}
       />
-      <CardContent sx={{ width: '35vw' }}>
-        <Description title={title} description={description}></Description>
-        <GetStartedButton buttonColor={buttonColor}></GetStartedButton>
-      </CardContent>
     </Card>
   );
-}
-
-export default FeatureCard;
+};
