@@ -1,13 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-
 import { SideBar } from '../components';
-
-import { Login, Register } from './auth';
+import { Login, Register, ResetPassword } from './auth';
 import { Layout } from '../layout';
-
 import { Overview } from './overview';
-
-import { ResetPassword } from './auth/ResetPassword';
 import { Home } from './home';
 
 export const router = createBrowserRouter([
