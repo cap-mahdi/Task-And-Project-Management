@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   main:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,4 +33,4 @@ jobs:
       - run: git branch --track development origin/development
         if: ${{ github.event_name == 'pull_request' }}
 
-      - run: npx nx affected -t lint test build
+      - run: npx nx affected -t lint test build --no-cloud

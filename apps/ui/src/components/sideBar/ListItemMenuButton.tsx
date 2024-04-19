@@ -1,7 +1,19 @@
 import { ListItemButton, useTheme } from '@mui/material';
-import React, { Children } from 'react';
+import { FC } from 'react';
 
-export function ListItemMenuButton({ children, selected, onClick, sx }) {
+interface ListItemMenuButtonProps {
+  children: React.ReactNode;
+  selected?: boolean;
+  onClick?: () => void;
+  sx?: object;
+}
+
+export const ListItemMenuButton: FC<ListItemMenuButtonProps> = ({
+  children,
+  selected,
+  onClick,
+  sx,
+}) => {
   const theme = useTheme();
   const { palette } = theme;
   return (
@@ -27,4 +39,4 @@ export function ListItemMenuButton({ children, selected, onClick, sx }) {
       {children}
     </ListItemButton>
   );
-}
+};

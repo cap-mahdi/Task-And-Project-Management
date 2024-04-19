@@ -1,5 +1,6 @@
 import { Card, CardContent, TypographyProps } from '@mui/material';
-import Description from './description';
+import { Description } from '.';
+import { FC } from 'react';
 
 interface MiniFeatureCardProps {
   title: {
@@ -18,13 +19,13 @@ interface MiniFeatureCardProps {
   icon: JSX.Element;
 }
 
-export function MiniFeatureCard({
+export const MiniFeatureCard: FC<MiniFeatureCardProps> = ({
   title,
   description,
   titleVariant,
   descriptionVariant,
   icon,
-}: MiniFeatureCardProps) {
+}) => {
   return (
     <Card
       sx={{
@@ -47,6 +48,4 @@ export function MiniFeatureCard({
       </CardContent>
     </Card>
   );
-}
-
-export default MiniFeatureCard;
+};

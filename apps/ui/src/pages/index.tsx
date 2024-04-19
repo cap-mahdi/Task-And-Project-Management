@@ -1,14 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
-
-import SideBar from '../components/sideBar/SideBar';
-
-import { Login, Register } from './auth';
-import { Layout } from '../layout/layout';
-
+import { SideBar } from '../components';
+import { Login, Register, ResetPassword } from './auth';
+import { Layout } from '../layout';
 import { Overview } from './overview';
-
-import { ResetPassword } from './auth/reset-password';
-
+import { Home } from './home';
 
 export const router = createBrowserRouter([
   {
@@ -21,16 +16,15 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Layout />,
-    children: [{ path: '', element: <div>Home page</div> }],
+    element: <Home />,
   },
   {
     path: '/overview',
     element: <Overview />,
-},{
-    path: '/sideBarTest',
+  },
+  {
+    path: '/side-bar-test',
     element: <Layout />,
     children: [{ path: '', element: <SideBar /> }],
-
   },
 ]);

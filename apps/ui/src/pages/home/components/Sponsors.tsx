@@ -30,5 +30,3 @@ export function Sponsors() {
     </Grid>
   );
 }
-
-export default Sponsors;

@@ -1,17 +1,14 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { FC } from 'react';
-import theme from '../theme';
 
 export const NavBar: FC = () => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        backgroundColor: (theme) => theme.palette.blackPearl.main,
+      }}
+    >
       <AppBar
         position="static"
         sx={{

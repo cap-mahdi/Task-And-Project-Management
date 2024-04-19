@@ -6,7 +6,7 @@ import {
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 
-const menuButtons = [
+export const menuButtons = [
   { text: 'Home', icon: HomeIcon },
   {
     text: 'Dashboard',
@@ -25,5 +25,3 @@ const menuButtons = [
     icon: ArrowRightStartOnRectangleIcon,
   },
 ];
-
-export default menuButtons;

@@ -1,29 +1,28 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-
-import ListItemText from '@mui/material/ListItemText';
+import {
+  Box,
+  Drawer,
+  List,
+  Typography,
+  Divider,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
 import { PlusIcon } from '@heroicons/react/24/outline';
-
 import { useTheme } from '@mui/material';
-
 import Search from './Search';
 import { ListItemMenuButton } from './ListItemMenuButton';
-import menuButtons from './menuButtonsData';
-import NestedList from './NestedList';
+import { menuButtons } from './menuButtonsData';
+import { NestedList } from './NestedList';
+import { MouseEvent, useState } from 'react';
 
 const drawerWidth = 270;
 
-export default function SideBar() {
+export function SideBar() {
   const theme = useTheme();
   const { palette, typography } = theme;
 
-  const [selectedMenu, setSelectedMenu] = React.useState('Home');
-  const handleMenuClick = (e, details) => {
+  const [selectedMenu, setSelectedMenu] = useState('Home');
+  const handleMenuClick = (e: MouseEvent, details: any) => {
     setSelectedMenu(details.text);
   };
 

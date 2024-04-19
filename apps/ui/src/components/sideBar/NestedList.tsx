@@ -1,18 +1,13 @@
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
+import { List, ListItemText, Box, useTheme } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
-
 import {
   ChevronRightIcon,
   ChevronDownIcon,
-  BriefcaseIcon,
   Bars3BottomLeftIcon,
   Bars2Icon,
 } from '@heroicons/react/24/outline';
-
 import { ListItemMenuButton } from './ListItemMenuButton';
-import { Box, useTheme } from '@mui/material';
+import { useState } from 'react';
 
 ////Exemple of data object to be passed in props after that when fetching data
 
@@ -33,10 +28,10 @@ const data = {
   ],
 };
 
-export default function NestedList() {
+export function NestedList() {
   const theme = useTheme();
   const { palette } = theme;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);

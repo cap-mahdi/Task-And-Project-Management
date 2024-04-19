@@ -1,1 +1,1 @@
-export * from './linkable-caption';
+export * from './LinkableCaption';

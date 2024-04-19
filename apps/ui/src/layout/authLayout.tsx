@@ -1,5 +1,6 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
+import { Footer } from '../components';
 
 interface AuthLayoutProps {
   title: string;
@@ -19,12 +20,19 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
       sx={{
         backgroundColor: '#F4E9CD',
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        flexDirection: 'column',
       }}
     >
-      <Stack spacing={2} alignItems="center">
+      <Stack
+        spacing={2}
+        alignItems="center"
+        sx={{
+          mt: 10,
+          p: 3,
+          backgroundColor: 'inherit',
+        }}
+      >
         <Typography
           variant="h3"
           sx={{
@@ -44,6 +52,7 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
         {children}
         {bottomCaption}
       </Stack>
+      <Footer />
     </Box>
   );
 };

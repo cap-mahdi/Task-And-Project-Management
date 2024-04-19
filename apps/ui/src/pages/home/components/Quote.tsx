@@ -1,5 +1,6 @@
-import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import { FormatQuote as FormatQuoteIcon } from '@mui/icons-material';
 import { Box, Grid, Typography } from '@mui/material';
+import { FC } from 'react';
 
 interface QuoteProps {
   text: string;
@@ -9,13 +10,13 @@ interface QuoteProps {
   backgroundColor: string;
 }
 
-export default function Quote({
+export const Quote: FC<QuoteProps> = ({
   text,
   personName,
   job,
   textColor,
   backgroundColor,
-}: QuoteProps) {
+}) => {
   return (
     <Grid
       container
@@ -56,4 +57,4 @@ export default function Quote({
       </Grid>
     </Grid>
   );
-}
+};

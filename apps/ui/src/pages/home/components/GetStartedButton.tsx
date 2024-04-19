@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
 import { Button } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
 
 interface GetStartedButtonProps {
   buttonColor: string;
@@ -19,5 +17,3 @@ export function GetStartedButton({ buttonColor }: GetStartedButtonProps) {
     </Button>
   );
 }
-
-export default GetStartedButton;
