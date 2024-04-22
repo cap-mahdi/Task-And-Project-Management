@@ -4,6 +4,7 @@ import { Login, Register, ResetPassword } from './auth';
 import { Layout } from '../layout';
 import { Overview } from './overview';
 import { Home } from './home';
+import { Tasks } from './tasks';
 
 export const router = createBrowserRouter([
   {
@@ -26,5 +27,14 @@ export const router = createBrowserRouter([
     path: '/side-bar-test',
     element: <Layout />,
     children: [{ path: '', element: <SideBar /> }],
+  },
+  {
+    path: '/tasks',
+    children: [
+      {
+        path: '',
+        element: <Tasks />,
+      },
+    ],
   },
 ]);
