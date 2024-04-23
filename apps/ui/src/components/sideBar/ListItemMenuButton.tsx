@@ -13,6 +13,7 @@ export const ListItemMenuButton: FC<ListItemMenuButtonProps> = ({
   selected,
   onClick,
   sx,
+  key,
 }) => {
   const theme = useTheme();
   const { palette } = theme;

@@ -67,7 +67,7 @@ export function NestedList() {
         <List component="div" disablePadding>
           {data.projects.map((el) => {
             return (
-              <ListItemMenuButton sx={{ pl: 4 }}>
+              <ListItemMenuButton key={el.name} sx={{ pl: 4 }}>
                 <Box
                   sx={{
                     pr: 1,
