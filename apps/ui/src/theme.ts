@@ -8,6 +8,8 @@ declare module '@mui/material/styles' {
     shadowGreen: Palette['primary'];
     catskillWhite: Palette['primary'];
     gray: Palette['primary'];
+    lightGray: Palette['primary'];
+    steelTeal: Palette['primary'];
   }
   interface PaletteOptions {
     blackPearl?: PaletteColorOptions;
@@ -17,6 +19,8 @@ declare module '@mui/material/styles' {
     shadowGreen?: PaletteColorOptions;
     catskillWhite?: PaletteColorOptions;
     gray?: PaletteColorOptions;
+    lightGray?: PaletteColorOptions;
+    steelTeal?: PaletteColorOptions;
   }
 }
 
@@ -46,8 +50,10 @@ export const theme = createTheme({
     gray: {
       main: '#F2F2F3',
     },
+    lightGray: { main: '#B6B6B6' },
+    steelTeal: { main: '#468189' },
   },
   typography: {
-    fontFamily: ['"Poppins"', '"Inter"'].join(','),
+    fontFamily: ['Poppins', 'Inter'].join(','),
   },
 });

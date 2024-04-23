@@ -6,6 +6,7 @@ import {
   Divider,
   ListItem,
   ListItemText,
+  Toolbar,
 } from '@mui/material';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '@mui/material';
@@ -17,7 +18,7 @@ import { MouseEvent, useState } from 'react';
 
 const drawerWidth = 270;
 
-export function SideBar() {
+export function SideBar({ toolbarSize }) {
   const theme = useTheme();
   const { palette, typography } = theme;
 
@@ -30,16 +31,19 @@ export function SideBar() {
     <Drawer
       variant="permanent"
       sx={{
+        position: 'relative',
         width: drawerWidth,
         flexShrink: 0,
+        // position: 'sticky',
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
           boxSizing: 'border-box',
+          // position: 'relative' ,
         },
       }}
     >
       {/* Main Menu */}
-
+      <Toolbar sx={{ height: toolbarSize }} />
       <Box sx={{ overflow: 'auto', p: 2 }}>
         <Search width={drawerWidth} />
         <List>
@@ -88,7 +92,6 @@ export function SideBar() {
         />
         <ListItemMenuButton sx={{}}>
           <Typography>Workspaces</Typography>
-
           <Box
             sx={{
               pr: 1,
@@ -103,7 +106,7 @@ export function SideBar() {
             {<PlusIcon color={palette.blackPearl.main} />}
           </Box>
         </ListItemMenuButton>
-        <NestedList />
+        <NestedList key={Math.random()} />
         <NestedList />
       </Box>
     </Drawer>
