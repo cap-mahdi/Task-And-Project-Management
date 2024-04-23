@@ -4,6 +4,7 @@ import { Login, Register, ResetPassword } from './auth';
 import { Layout } from '../layout';
 import { Overview } from './overview';
 import { Home } from './home';
+import { Tasks } from './tasks';
 
 import { GeneralSettings } from './account/generalSettings';
 import { NotificationSettings } from './account/notificationSettings';
@@ -38,6 +39,16 @@ export const router = createBrowserRouter([
   },
 
   {
+    path: '/tasks',
+    children: [
+      {
+        path: '',
+        element: <Tasks />,
+      },
+    ],},
+
+
+  {
     path: '/account/general',
     element: <GeneralSettings />,
   },
@@ -69,6 +80,7 @@ export const router = createBrowserRouter([
         }
       />
     ),
+
 
 
   },
