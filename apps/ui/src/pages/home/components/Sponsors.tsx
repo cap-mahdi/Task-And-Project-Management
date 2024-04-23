@@ -6,9 +6,11 @@ export function Sponsors() {
 
   useEffect(() => {
     const fetchSponsorImages = () => {
-      const files = import.meta.glob('../..//public/sponsors/*', {
+      const files = import.meta.glob('../../../../public/sponsors/*', {
         eager: true,
       });
+
+      console.log('files: ', Object.keys(files));
 
       setSponsorImages(Object.keys(files));
     };

@@ -33,6 +33,6 @@ export class EventsGateway implements OnModuleInit {
     //1
     console.log('Message is receieved from the client');
     console.log(data);
-    return of({ event: 'message', data: 'Returned from the server' });
+    return of({ event: 'message', data: 'Returned from the servery' });
   }
 }
