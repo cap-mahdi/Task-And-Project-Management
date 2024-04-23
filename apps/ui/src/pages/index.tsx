@@ -49,31 +49,24 @@ export const router = createBrowserRouter([
         path: '',
         element: <Tasks />,
       },
-    ],},
-
+    ],
+  },
 
   {
     path: '/account/general',
     element: <GeneralSettings />,
   },
   {
-
-
     path: '/chat',
     element: <Chat />,
-},
-    path: '/account/notifications',
-    element: <NotificationSettings />,
   },
+  { path: '/account/notifications', element: <NotificationSettings /> },
   {
     path: '/account/security',
     element: <SecuritySettings />,
-},
-  { path: '/sprints',
-    element: <Sprint />,},
+  },
+  { path: '/sprints', element: <Sprint /> },
   {
-
-
     path: '/test-layout',
     element: (
       <DashboardLayout
@@ -90,8 +83,5 @@ export const router = createBrowserRouter([
         }
       />
     ),
-
-
-
   },
 ]);
