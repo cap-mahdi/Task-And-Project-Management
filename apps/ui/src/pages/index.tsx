@@ -4,12 +4,15 @@ import { Login, Register, ResetPassword } from './auth';
 import { Layout } from '../layout';
 import { Overview } from './overview';
 import { Home } from './home';
+
+import { GeneralSettings } from './account/generalSettings';
+import { NotificationSettings } from './account/notificationSettings';
+import { SecuritySettings } from './account/securitySettings';
 import { Sprint } from './sprint';
 import { DashboardLayout } from '../components/DashboardLayout';
 import { SectionHeader } from '../components/SectionHeader';
 import BasicModal from '../components/BasicModal';
 import { TaskDetails } from '../components/taskDetails/TaskDetails';
-
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +36,19 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [{ path: '', element: <SideBar /> }],
   },
+
+  {
+    path: '/account/general',
+    element: <GeneralSettings />,
+  },
+  {
+    path: '/account/notifications',
+    element: <NotificationSettings />,
+  },
+  {
+    path: '/account/security',
+    element: <SecuritySettings />,
+},
   { path: '/sprints',
     element: <Sprint />,},
   {
@@ -53,6 +69,7 @@ export const router = createBrowserRouter([
         }
       />
     ),
+
 
   },
 ]);
