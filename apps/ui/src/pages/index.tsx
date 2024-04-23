@@ -1,10 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { SideBar } from '../components';
+import { NavBar, SideBar } from '../components';
 import { Login, Register, ResetPassword } from './auth';
 import { Layout } from '../layout';
 import { Overview } from './overview';
 import { Home } from './home';
 import { Sprint } from './sprint';
+import { DashboardLayout } from '../components/DashboardLayout';
+import { SectionHeader } from '../components/SectionHeader';
+import BasicModal from '../components/BasicModal';
+import { TaskDetails } from '../components/taskDetails/TaskDetails';
+
 
 export const router = createBrowserRouter([
   {
@@ -28,8 +33,26 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [{ path: '', element: <SideBar /> }],
   },
+  { path: '/sprints',
+    element: <Sprint />,},
   {
-    path: '/sprints',
-    element: <Sprint />,
+
+    path: '/test-layout',
+    element: (
+      <DashboardLayout
+        NavBar={<NavBar />}
+        SideBar={<SideBar />}
+        Main={
+          <>
+            <SectionHeader />
+            <Overview />
+            <BasicModal>
+              <TaskDetails />
+            </BasicModal>{' '}
+          </>
+        }
+      />
+    ),
+
   },
 ]);
