@@ -23,7 +23,13 @@ export default defineConfig({
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
-
+  optimizeDeps: {
+    include: [
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/material/Tooltip'
+    ],
+  },
   build: {
     outDir: '../../dist/apps/ui',
     reportCompressedSize: true,
