@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
 import { Summary, TrafficSource, VisitByCountry } from './components';
+import { Grid } from '@mui/material';
 
 const Overview = () => {
   return (

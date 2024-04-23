@@ -1,0 +1,19 @@
+import { Box } from '@mui/material';
+import { FC } from 'react';
+import { MenuBar } from './MenuBar';
+import { MessageList } from './MessageList';
+
+export const Conversation: FC = () => {
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <MenuBar />
+      <MessageList />
+    </Box>
+  );
+};
