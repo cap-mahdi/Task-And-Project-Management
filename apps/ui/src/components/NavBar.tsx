@@ -1,7 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
-import { FC } from 'react';
 
-export const NavBar: FC = () => {
+export function NavBar(props) {
   return (
     <Box
       sx={{
@@ -78,4 +77,4 @@ export const NavBar: FC = () => {
       </AppBar>
     </Box>
   );
-};
+}
