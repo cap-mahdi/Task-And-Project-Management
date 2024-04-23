@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "generate:typings": "ts-node generate-typings.mjs "
+  }
+}
