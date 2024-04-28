@@ -16,9 +16,6 @@ interface TaskProps {
   draggableSnapshot: DraggableStateSnapshot;
 }
 export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
-  if (task.id === 1) {
-    console.log(draggableSnapshot);
-  }
   return (
     <Card
       sx={{
@@ -33,16 +30,6 @@ export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
           ? '0 5px 10px rgba(0, 0, 0, 0.6)'
           : 'unset',
       }}
-      // outlineColor={
-      //   draggableSnapshot.isDragging
-      //     ? 'card-border'
-      //     : 'transparent'
-      // }
-      // boxShadow={
-      //   draggableSnapshot.isDragging
-      //     ? '0 5px 10px rgba(0, 0, 0, 0.6)'
-      //     : 'unset'
-      // }
     >
       {task.image && (
         <Box sx={{ width: '100%', height: '200px' }}>
@@ -54,6 +41,7 @@ export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
               objectFit: 'cover',
               borderRadius: '20px',
             }}
+            alt={task.title}
           />
         </Box>
       )}

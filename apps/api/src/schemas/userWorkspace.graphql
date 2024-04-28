@@ -1,0 +1,11 @@
+enum WorkspaceRole {
+    WORKSPACE_ADMIN,
+    WORKSPACE_EDITOR,
+    WORKSPACE_MEMBER
+}
+
+type UserWorkspace {
+  user: User!
+  workspace: Workspace!
+  role: WorkspaceRole!
+}

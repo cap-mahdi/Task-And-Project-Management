@@ -1,7 +1,0 @@
-type User {
-  id: ID!
-  title: String!
-}
-type Query {
-  users: [User!]!
-}

@@ -1,0 +1,7 @@
+type Room {
+    id: ID!
+    createdAt: Date!
+    project: Project!
+    users: [User!]!
+    messages: [Message!]!
+}

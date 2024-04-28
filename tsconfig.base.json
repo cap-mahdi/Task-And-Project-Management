@@ -11,12 +11,12 @@
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2020", "dom"],
-    "skipLibCheck": true,
+    "skipLibCheck": true, 
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@task-and-project-management/react": ["libs/react/src/index.ts"],
-      "@teamflow/domain": ["libs/domain/src/index.ts"]
+      "@teamflow/react": ["libs/react/src/index.ts"],
+      "@teamflow/domain": ["libs/domain/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]

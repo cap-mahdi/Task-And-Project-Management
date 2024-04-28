@@ -1,0 +1,11 @@
+type Project {
+    id: ID!
+    name: String!
+    description: String!
+    createdAt: Date!
+    workspace: Workspace!
+    rooms: [Room!]!
+    users: [UserProject!]!
+    milestones: [Milestone!]!
+
+}

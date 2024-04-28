@@ -1,0 +1,29 @@
+enum UserRole{
+  ADMIN,
+  USER
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  createdAt: Date!
+  role: UserRole!
+  workspaces: [UserWorkspace!]!
+  projects: [UserProject!]!
+}
+
+type Query {
+  users: [User!]
+}
+
+type Mutation {
+  createUser(createUserInput:CreateUserInput!): User!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}

@@ -1,0 +1,11 @@
+type Task {
+    id: ID!
+    name: String!
+    description: String!
+    status: Status!
+    tags: [String!]!
+    milestone: Milestone!
+    comments: [Comment!]!
+    assignees: [User!]!
+    
+}

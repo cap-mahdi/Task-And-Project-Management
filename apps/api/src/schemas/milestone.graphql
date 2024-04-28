@@ -1,0 +1,11 @@
+type Milestone {
+    id: ID!
+    name: String!
+    description: String!
+    startDate: Date!
+    endDate: Date!
+    status: Status!
+    project: Project!
+    tasks: [Task!]!
+
+}

@@ -1,0 +1,14 @@
+
+type Workspace {
+  id: ID!
+  name: String!
+  description: String!
+  createdAt: Date!
+  users: [UserWorkspace!]!
+  projects: [Project!]!
+}
+
+input CreateWorkspace {
+    name: String!
+}
+

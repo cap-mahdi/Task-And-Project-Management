@@ -18,8 +18,13 @@ import { DashboardLayout } from '../components/DashboardLayout';
 import { SectionHeader } from '../components/SectionHeader';
 import BasicModal from '../components/BasicModal';
 import { TaskDetails } from '../components/taskDetails/TaskDetails';
+import { Test } from './test';
 
 export const router = createBrowserRouter([
+  {
+    path: '/test',
+    element: <Test />,
+  },
   {
     path: '/auth',
     children: [

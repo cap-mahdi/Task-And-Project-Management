@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
-import { BasicDetails } from "./sections/basicDetails";
-import { DeleteAccount } from "./sections/deleteAccount";
-import { PublicProfileSettings } from "./sections/publicProfileSettings";
+import { Box } from '@mui/material';
+import { BasicDetails } from './sections/basicDetails';
+import { DeleteAccount } from './sections/deleteAccount';
+import { PublicProfileSettings } from './sections/publicProfileSettings';
+import { User } from '@teamflow/domain';
 
 export function GeneralSettings() {
   return (

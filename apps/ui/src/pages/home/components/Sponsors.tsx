@@ -10,8 +10,6 @@ export function Sponsors() {
         eager: true,
       });
 
-      console.log('files: ', Object.keys(files));
-
       setSponsorImages(Object.keys(files));
     };
 

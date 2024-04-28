@@ -1,0 +1,11 @@
+enum ProjectRole {
+    Project_ADMIN,
+    Project_EDITOR,
+    Project_MEMBER
+}
+
+type UserProject {
+  user: User!
+  project: Project!
+  role: ProjectRole!
+}
