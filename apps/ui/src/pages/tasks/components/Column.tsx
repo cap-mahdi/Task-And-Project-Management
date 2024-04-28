@@ -12,6 +12,9 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import AddIcon from '@mui/icons-material/Add';
 import { Task } from './Task';
 import { Task as TaskType, TaskColumn } from '../types';
+import { TaskDetails } from '../../../components/taskDetails/TaskDetails';
+import BasicModal from '../../../components/BasicModal';
+import { createPortal } from 'react-dom';
 
 interface ColumnProps {
   column: TaskColumn;
@@ -70,7 +73,7 @@ export const Column: FC<ColumnProps> = ({ column, tasks }) => {
         sx={{
           borderRadius: '20px',
           backgroundColor: '#f3f4f6',
-          width: '300px',
+          width: '23rem',
           //maxHeight: '1000px',
           padding: '1.2rem',
         }}
@@ -87,15 +90,20 @@ export const Column: FC<ColumnProps> = ({ column, tasks }) => {
                   draggableId={`${task.id}`}
                   index={index}
                 >
-                  {(draggableProvided, draggableSnapshot) => (
-                    <Box
-                      ref={draggableProvided.innerRef}
-                      {...draggableProvided.draggableProps}
-                      {...draggableProvided.dragHandleProps}
-                    >
-                      <Task task={task} draggableSnapshot={draggableSnapshot} />
-                    </Box>
-                  )}
+                  {(draggableProvided, draggableSnapshot) => {
+                    return (
+                      <Box
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.draggableProps}
+                        {...draggableProvided.dragHandleProps}
+                      >
+                        <Task
+                          task={task}
+                          draggableSnapshot={draggableSnapshot}
+                        />
+                      </Box>
+                    );
+                  }}
                 </Draggable>
               ))}
               <Draggable

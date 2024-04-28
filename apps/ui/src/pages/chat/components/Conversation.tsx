@@ -7,7 +7,7 @@ export const Conversation: FC = () => {
   return (
     <Box
       sx={{
-        width: '100%',
+        width: '70%',
         display: 'flex',
         flexDirection: 'column',
       }}

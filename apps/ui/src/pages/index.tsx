@@ -14,12 +14,19 @@ import { NotificationSettings } from './account/notificationSettings';
 import { SecuritySettings } from './account/securitySettings';
 import { Sprint } from './sprint';
 
-import { DashboardLayout } from '../components/DashboardLayout';
+import { DashboardLayout } from '../layout/DashboardLayout';
 import { SectionHeader } from '../components/SectionHeader';
 import BasicModal from '../components/BasicModal';
 import { TaskDetails } from '../components/taskDetails/TaskDetails';
+import { MainLayout } from '../layout/MainLayout';
+import { Task } from './tasks/components/Task';
+import { DashboardNavBar } from '../components/DashboardNavBar';
 
 export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+  },
   {
     path: '/auth',
     children: [
@@ -29,8 +36,35 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/',
-    element: <Home />,
+    path: '/app',
+    element: (
+      <DashboardLayout NavBar={<DashboardNavBar />} SideBar={<SideBar />} />
+    ),
+    children: [
+      {
+        path: '',
+        element: <MainLayout />,
+        children: [
+          {
+            path: 'task',
+            element: <Tasks />,
+          },
+          {
+            path: 'chat',
+            element: <Chat />,
+          },
+          {
+            path: 'account/general',
+            element: <GeneralSettings />,
+          },
+          { path: 'account/notifications', element: <NotificationSettings /> },
+          {
+            path: 'account/security',
+            element: <SecuritySettings />,
+          },
+        ],
+      },
+    ],
   },
   {
     path: '/overview',
@@ -53,35 +87,9 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: '/account/general',
-    element: <GeneralSettings />,
-  },
-  {
     path: '/chat',
     element: <Chat />,
   },
-  { path: '/account/notifications', element: <NotificationSettings /> },
-  {
-    path: '/account/security',
-    element: <SecuritySettings />,
-  },
+
   { path: '/sprints', element: <Sprint /> },
-  {
-    path: '/test-layout',
-    element: (
-      <DashboardLayout
-        NavBar={<NavBar />}
-        SideBar={<SideBar />}
-        Main={
-          <>
-            <SectionHeader />
-            <Overview />
-            <BasicModal>
-              <TaskDetails />
-            </BasicModal>{' '}
-          </>
-        }
-      />
-    ),
-  },
 ]);

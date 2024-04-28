@@ -9,12 +9,14 @@ export const ChatHeader: FC = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 1,
+        // paddingTop: 1,
+        px: 2,
       }}
     >
       <Typography
         sx={{
-          fontSize: 30,
+          fontSize: 20,
+          fontWeight: 'medium',
         }}
       >
         Chats

@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { Footer } from '../components';
+import { AuthNavBar } from '../pages/auth/common/AuthNavBar';
 
 interface AuthLayoutProps {
   title: string;
@@ -16,43 +17,46 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
   children,
 }) => {
   return (
-    <Box
-      sx={{
-        backgroundColor: '#F4E9CD',
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-      }}
-    >
-      <Stack
-        spacing={2}
-        alignItems="center"
+    <>
+      <AuthNavBar />
+      <Box
         sx={{
-          mt: 10,
-          p: 3,
-          backgroundColor: 'inherit',
+          backgroundColor: '#F4E9CD',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
         }}
       >
-        <Typography
-          variant="h3"
+        <Stack
+          spacing={2}
+          alignItems="center"
           sx={{
-            fontWeight: 'bold',
+            paddingTop: '5dvh',
+            minHeight: '87dvh',
+            width: '100%',
           }}
         >
-          {title}
-        </Typography>
-        <Typography
-          variant="caption"
-          sx={{
-            color: '#595a5d',
-          }}
-        >
-          {upperCaption}
-        </Typography>
-        {children}
-        {bottomCaption}
-      </Stack>
-      <Footer />
-    </Box>
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
+            {title}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: '#595a5d',
+            }}
+          >
+            {upperCaption}
+          </Typography>
+          {children}
+          {bottomCaption}
+        </Stack>
+        <Footer />
+      </Box>
+    </>
   );
 };

@@ -30,15 +30,28 @@ export const MiniFeatureCard: FC<MiniFeatureCardProps> = ({
     <Card
       sx={{
         display: 'flex',
-        justifyContent: 'center',
-        width: '20vw',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        pt: '1rem',
+        width: '17vw',
         boxShadow: 'none',
         backgroundColor: 'transparent',
       }}
     >
-      <CardContent>{icon}</CardContent>
+      <CardContent
+        sx={{
+          padding: 0,
+        }}
+      >
+        {icon}
+      </CardContent>
 
-      <CardContent>
+      <CardContent
+        sx={{
+          padding: 0,
+        }}
+      >
         <Description
           title={title}
           description={description}
