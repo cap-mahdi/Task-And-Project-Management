@@ -63,10 +63,16 @@ export function CustomInputField({
           sx={{
             boxShadow: 'none',
             border: '1px solid #e0e0e0',
-            height: '3.5rem',
+            // height: 'fit-content',
           }}
         >
-          <CardContent>
+          <CardContent
+            sx={
+              {
+                // height: '10rem',
+              }
+            }
+          >
             <Typography
               sx={{ color: isEditing ? 'inherit' : 'grey', fontSize: '0.7rem' }}
             >
@@ -80,7 +86,20 @@ export function CustomInputField({
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
-                sx={{ fontSize: '0.8rem' }}
+                sx={{
+                  '& input': {
+                    height: '0.8rem',
+                    width: '100%',
+                    fontSize: '0.8rem',
+                    '&:focus': {
+                      // Add focus styles here
+                    },
+                    '&:hover': {
+                      // Add hover styles here
+                    },
+                    // Add more state styles as needed
+                  },
+                }}
                 placeholder="Enter text"
               ></TextField>
             ) : (

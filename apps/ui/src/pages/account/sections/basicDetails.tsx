@@ -70,7 +70,7 @@ export function BasicDetails() {
           }}
         ></CardHeader>
         {fields.map((field, index) => (
-          <Box key={index} sx={{ mb: 2 }}>
+          <Box key={index} sx={{ mb: 1 }}>
             <CustomInputField
               title={field.title}
               value={field.value}
