@@ -14,6 +14,7 @@ import { RoomSchema } from './room.entity';
 import { TaskSchema } from './task.entity';
 import { CommentSchema } from './comment.entity';
 import { MessageSchema } from './message.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({
   name: 'user',
@@ -24,10 +25,11 @@ export class UserSchema implements Omit<User, 'workspaces' | 'projects'> {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column({ type: 'enum', enum: UserRole })

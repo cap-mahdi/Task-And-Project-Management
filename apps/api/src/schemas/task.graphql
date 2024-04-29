@@ -1,11 +1,40 @@
 type Task {
-    id: ID!
-    name: String!
-    description: String!
-    status: Status!
-    tags: [String!]!
-    milestone: Milestone!
-    comments: [Comment!]!
-    assignees: [User!]!
-    
+  id: ID!
+  name: String!
+  description: String!
+  status: Status!
+  tags: [String!]!
+  milestone: Milestone!
+  comments: [Comment!]!
+  assignees: [User!]!
+}
+
+input CreateTask {
+  name: String!
+  description: String
+  status: Status!
+  tags: [String!]
+  milestoneId: ID!
+}
+
+input UpdateTask {
+  name: String
+  description: String
+  status: Status
+  tags: [String!]
+}
+
+input AssignUsersToTask {
+  userIds: [ID!]!
+}
+
+type Query {
+  tasks: [Task!]!
+  task(id: ID!): Task
+}
+
+type Mutation {
+  createTask(input: CreateTask!): Task!
+  updateTask(id: ID!, input: UpdateTask!): Task!
+  assignUsersToTask(taskId: ID!, input: AssignUsersToTask!): Task!
 }

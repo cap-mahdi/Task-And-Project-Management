@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { UserModule } from '../user/user.module';
+import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentSchema } from '../entities/comment.entity';
 import { MessageSchema } from '../entities/message.entity';
@@ -24,7 +25,7 @@ import { configuration, validate } from '../config';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      validate,
+      // validate,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -41,8 +42,8 @@ import { configuration, validate } from '../config';
         return {
           type: 'postgres',
           // url: 'postgresql://postgres:postgres@localhost:5432/teamflow',
-          // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
-          url: configService.get<string>('database_url'),
+          url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
+          // url: configService.get<string>('database_url'),
           synchronize: true,
           // entities: [join(__dirname, '**/*.entity{.ts,.js}')],
           entities: [
@@ -62,6 +63,7 @@ import { configuration, validate } from '../config';
       },
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

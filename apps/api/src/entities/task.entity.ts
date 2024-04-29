@@ -33,8 +33,8 @@ export class TaskSchema
   @Column('simple-array')
   tags: string[];
 
-  @ManyToMany(() => UserSchema, (user) => user.tasks)
-  @JoinTable()
+  // @ManyToMany(() => UserSchema, (user) => user.tasks)
+  // @JoinTable()
   assignees: string[];
 
   @OneToMany(() => CommentSchema, (comment) => comment.task)

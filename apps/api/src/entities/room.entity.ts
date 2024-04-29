@@ -25,8 +25,8 @@ export class RoomSchema
   @ManyToOne(() => ProjectSchema, (project) => project.rooms)
   project: string;
 
-  @ManyToMany(() => UserSchema, (user) => user.rooms)
-  @JoinTable()
+  // @ManyToMany(() => UserSchema, (user) => user.rooms)
+  // @JoinTable()
   users: string[];
 
   // @OneToMany(() => MessageSchema, (message) => message.room)

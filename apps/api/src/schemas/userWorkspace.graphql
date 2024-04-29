@@ -1,11 +1,35 @@
 enum WorkspaceRole {
-    WORKSPACE_ADMIN,
-    WORKSPACE_EDITOR,
-    WORKSPACE_MEMBER
+  WORKSPACE_ADMIN
+  WORKSPACE_EDITOR
+  WORKSPACE_MEMBER
 }
 
 type UserWorkspace {
   user: User!
   workspace: Workspace!
   role: WorkspaceRole!
+}
+
+input CreateUserWorkspace {
+  userId: ID!
+  workspaceId: ID!
+  role: WorkspaceRole!
+}
+
+input UpdateUserWorkspace {
+  role: WorkspaceRole
+}
+
+type Query {
+  userWorkspaces: [UserWorkspace!]!
+  userWorkspace(userId: ID!, workspaceId: ID!): UserWorkspace
+}
+
+type Mutation {
+  createUserWorkspace(input: CreateUserWorkspace!): UserWorkspace!
+  updateUserWorkspace(
+    userId: ID!
+    workspaceId: ID!
+    input: UpdateUserWorkspace!
+  ): UserWorkspace!
 }
