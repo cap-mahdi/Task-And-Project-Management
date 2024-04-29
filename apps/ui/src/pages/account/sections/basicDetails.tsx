@@ -40,44 +40,46 @@ export function BasicDetails() {
   };
 
   return (
-    <Card
+    <Box
       sx={{
-        px: 3,
-        py: 5,
-        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
       }}
     >
-      <Grid container>
-        <Grid item sx={{ width: '30%' }}>
-          <Typography variant="h5" fontWeight={'bold'}>
-            Basic details
-          </Typography>
-        </Grid>
-        <Grid item sx={{ width: '70%' }}>
-          <CardHeader
-            avatar={<Avatar sx={{ bgcolor: red[500] }}>R</Avatar>}
-            title={
-              <a
-                href="/account"
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                Change
-              </a>
-            }
-            sx={{ mb: 2 }}
-          ></CardHeader>
-          {fields.map((field, index) => (
-            <Box key={index} sx={{ mb: 2 }}>
-              <CustomInputField
-                title={field.title}
-                value={field.value}
-                type={field.type}
-                onChange={field.onChange}
-              />
-            </Box>
-          ))}
-        </Grid>
-      </Grid>
-    </Card>
+      <Box sx={{ width: '30%', fontSize: '16px' }}>
+        <Typography fontWeight={'bold'}>Basic details</Typography>
+      </Box>
+      <Box sx={{ width: '70%' }}>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: red[500], width: 70, height: 70 }}>R</Avatar>
+          }
+          title={
+            <a
+              href="/account"
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              Change
+            </a>
+          }
+          sx={{
+            mb: 2,
+            p: 0,
+          }}
+        ></CardHeader>
+        {fields.map((field, index) => (
+          <Box key={index} sx={{ mb: 2 }}>
+            <CustomInputField
+              title={field.title}
+              value={field.value}
+              type={field.type}
+              onChange={field.onChange}
+            />
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
 }
