@@ -226,6 +226,16 @@ export class UserProject {
     role: ProjectRole;
 }
 
+export class UserRoom {
+    user: string;
+    room: string;
+}
+
+export class UserTask {
+    user: string;
+    task: string;
+}
+
 export class UserWorkspace {
     user: User;
     workspace: Workspace;

@@ -18,6 +18,6 @@ export class UserProjectSchema
   @ManyToOne(() => UserSchema, (user) => user.projects)
   user: string;
 
-  @ManyToOne(() => ProjectSchema, (project) => project.users)
+  @ManyToOne(() => ProjectSchema, (project) => project.userProject)
   project: string;
 }

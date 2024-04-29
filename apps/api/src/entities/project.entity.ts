@@ -11,6 +11,7 @@ import { WorkspaceSchema } from './workspace.entity';
 import { UserSchema } from './user.entity';
 import { MilestoneSchema } from './milestone.entity';
 import { RoomSchema } from './room.entity';
+import { UserProjectSchema } from './userProject.entity';
 
 @Entity({
   name: 'project',
@@ -36,8 +37,8 @@ export class ProjectSchema
   @OneToMany(() => RoomSchema, (room) => room.project)
   rooms: string[];
 
-  @OneToMany(() => UserSchema, (user) => user.projects)
-  users: string[];
+  @OneToMany(() => UserProjectSchema, (userProject) => userProject.project)
+  userProject: string[];
 
   @OneToMany(() => MilestoneSchema, (milestone) => milestone.project)
   milestones: string[];
