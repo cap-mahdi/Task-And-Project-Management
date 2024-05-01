@@ -9,6 +9,8 @@ export const Chat: FC = () => {
       sx={{
         display: 'flex',
         flexDirection: 'row',
+        height: '70dvh',
+        // backgroundColor: 'red',
       }}
     >
       <ChatList />

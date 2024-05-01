@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Card, Divider } from '@mui/material';
 import { SwitchStyleSettings } from './components/switchStyleSettings';
 
 export function NotificationSettings() {
@@ -27,15 +27,29 @@ export function NotificationSettings() {
     },
   ];
   return (
-    <>
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        gap: 2,
+        pt: 1,
+        px: 2,
+        mt: 2,
+        mx: 2,
+        borderRadius: 2,
+      }}
+    >
       {settings.map((setting, index) => (
-        <Box key={index}>
+        <>
           <SwitchStyleSettings
+            key={index}
             option={setting.option}
             settings={setting.settings}
           />
-        </Box>
+          <Divider />
+        </>
       ))}
-    </>
+    </Card>
   );
 }

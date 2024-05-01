@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { InvertedFeatureCard } from '../components';
 
 export function FirstSection() {
@@ -17,25 +17,33 @@ export function FirstSection() {
     color: '#979797',
   };
 
-  const imgUrl = 'https://via.placeholder.com/150';
+  const imgUrl = 'https://3back.com/app/uploads/2017/07/Team-scaled.jpg';
 
   return (
     <Container
       maxWidth={false}
-      style={{
+      sx={{
         backgroundColor: backgroundColor,
+        paddingTop: '20vh',
         minHeight: '100vh',
+        width: '100%',
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'center',
       }}
     >
-      <InvertedFeatureCard
-        imgUrl={imgUrl}
-        buttonColor={contrastColor}
-        title={title}
-        description={description}
-      ></InvertedFeatureCard>
+      <Box
+        sx={{
+          width: '75%',
+        }}
+      >
+        <InvertedFeatureCard
+          imgUrl={imgUrl}
+          buttonColor={contrastColor}
+          title={title}
+          description={description}
+        ></InvertedFeatureCard>
+      </Box>
     </Container>
   );
 }

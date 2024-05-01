@@ -5,6 +5,7 @@ import {
   Card,
   CardHeader,
   Container,
+  Divider,
   IconButton,
   ListItemText,
   Toolbar,
@@ -18,70 +19,59 @@ import { FC } from 'react';
 
 export const MenuBar: FC = () => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <AppBar
-        position="static"
+    <>
+      <Box
         sx={{
-          backgroundColor: 'white',
-          color: 'black',
-          boxShadow: 'none',
-          borderBottom: (theme) => `1px solid ${theme.palette.gray.main}`,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          // bgcolor: 'red',
         }}
+        disableGutters
       >
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
+        <Card
+          sx={{
+            // flexGrow: 1,
+            maxWidth: 345,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            height: '6dvh',
+            boxShadow: 'none',
+          }}
+        >
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: 'grey' }} aria-label="">
+                R
+              </Avatar>
+            }
+            title="Mehdi"
+            subheader="Online"
+          />
+        </Card>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 'auto',
+            // bgcolor: 'yellow',
+            height: '5dvh',
+          }}
+        >
+          <IconButton size="large">
+            <LocalPhoneOutlinedIcon />
           </IconButton>
-        </Toolbar>
-      </AppBar>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: 'white',
-          boxShadow: 'none',
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <Card sx={{ flexGrow: 1, maxWidth: 345, boxShadow: 'none' }}>
-              <CardHeader
-                avatar={
-                  <Avatar sx={{ bgcolor: 'grey' }} aria-label="">
-                    R
-                  </Avatar>
-                }
-                title="Mehdi"
-                subheader="Online"
-              />
-            </Card>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: 'auto',
-              }}
-            >
-              <IconButton size="large">
-                <LocalPhoneOutlinedIcon />
-              </IconButton>
-              <IconButton size="large">
-                <CameraAltOutlinedIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Box>
+          <IconButton size="large">
+            <CameraAltOutlinedIcon />
+          </IconButton>
+        </Box>
+      </Box>
+
+      <Divider />
+    </>
   );
 };

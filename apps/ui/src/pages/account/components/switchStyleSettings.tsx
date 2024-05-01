@@ -16,31 +16,28 @@ export function SwitchStyleSettings({
   settings,
 }: SwitchStyleSettingsProps) {
   return (
-    <Card
+    <Box
       sx={{
-        px: 3,
-        py: 5,
-        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
       }}
     >
-      <Grid container>
-        <Grid item sx={{ width: '30%' }}>
-          <Typography variant="h5" fontWeight={'bold'}>
-            {option}
-          </Typography>
-        </Grid>
-        <Grid item sx={{ width: '70%' }}>
-          {settings.map((setting, index) => (
-            <Box key={index} sx={{ mb: 2 }}>
-              <ToggleField
-                title={setting.title}
-                description={setting.description}
-              />
-              {index < settings.length - 1 && <Divider sx={{ my: 1 }} />}
-            </Box>
-          ))}
-        </Grid>
-      </Grid>
-    </Card>
+      <Box sx={{ width: '30%', fontSize: '16px' }}>
+        <Typography fontWeight={'bold'}>{option}</Typography>
+      </Box>
+      <Box sx={{ width: '70%' }}>
+        {settings.map((setting, index) => (
+          <Box key={index} sx={{ mb: 2 }}>
+            <ToggleField
+              title={setting.title}
+              description={setting.description}
+            />
+            {index < settings.length - 1 && <Divider sx={{ my: 1 }} />}
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
 }
