@@ -1,4 +1,11 @@
-import { Card, CardContent, Grid, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Grid,
+  Switch,
+  Typography,
+} from '@mui/material';
 
 interface ToggleFieldProps {
   title: string;
@@ -6,11 +13,17 @@ interface ToggleFieldProps {
 }
 export function ToggleField({ title, description }: ToggleFieldProps) {
   return (
-    <Grid container>
-      <Grid item sx={{ width: '90%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Box sx={{ width: '90%' }}>
         <Card sx={{ boxShadow: 'none' }}>
           <CardContent>
-            <Typography variant="h6" sx={{ color: 'inherit' }}>
+            <Typography sx={{ color: 'inherit', fontSize: '16px' }}>
               {title}
             </Typography>
             <Typography variant="body1" sx={{ color: 'grey' }}>
@@ -18,10 +31,10 @@ export function ToggleField({ title, description }: ToggleFieldProps) {
             </Typography>
           </CardContent>
         </Card>
-      </Grid>
-      <Grid
-        item
+      </Box>
+      <Box
         sx={{
+          // bgcolor: 'red',
           width: '10%',
           display: 'flex',
           alignItems: 'center',
@@ -29,7 +42,7 @@ export function ToggleField({ title, description }: ToggleFieldProps) {
         }}
       >
         <Switch />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { FC } from 'react';
+import { SxPropsObject } from '../../../utils/sxPropsObject';
 const messages = [
   {
     id: 1,
@@ -60,6 +61,7 @@ const messages = [
   },
   {
     id: 8,
+
     primary: 'Summer BBQ',
     secondary: `Who wants to have a cookout this weekend? I just got some furniture
       for my backyard and would love to fire up the grill.`,
@@ -74,6 +76,18 @@ const messages = [
   },
 ];
 export const MessageList: FC = () => {
+  const styles: SxPropsObject = {
+    cnvBox: {
+      fontSize: '3px',
+      maxWidth: '40%',
+      border: '1px solid #f0f0f0',
+      borderRadius: 4,
+      padding: 2,
+      marginRight: 'auto',
+      boxShadow: '14px 18px 21px -10px rgba(0,0,0,0.25)',
+      WebkitBoxShadow: '14px 18px 21px -10px rgba(0,0,0,0.25)',
+    },
+  };
   return (
     <List
       sx={{
@@ -90,19 +104,7 @@ export const MessageList: FC = () => {
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src={person} />
                 </ListItemAvatar>
-                <ListItemText
-                  // primary={primary}
-                  secondary={secondary}
-                  sx={{
-                    maxWidth: '40%',
-                    border: '1px solid #f0f0f0',
-                    borderRadius: 4,
-                    padding: 2,
-                    marginRight: 'auto',
-                    boxShadow: '14px 18px 21px -10px rgba(0,0,0,0.25)',
-                    WebkitBoxShadow: '14px 18px 21px -10px rgba(0,0,0,0.25)',
-                  }}
-                />
+                <ListItemText sx={styles.cnvBox}>{secondary}</ListItemText>
               </>
             )}
 
@@ -110,10 +112,12 @@ export const MessageList: FC = () => {
               <>
                 <ListItemText
                   // primary={primary}
-                  secondary={<Typography>{secondary}</Typography>}
+                  secondary={secondary}
                   sx={{
+                    ...styles.cnvBox,
                     color: 'white',
                     maxWidth: '40%',
+
                     border: '1px solid #f0f0f0',
                     borderRadius: 4,
                     padding: 2,
@@ -122,7 +126,9 @@ export const MessageList: FC = () => {
                     backgroundColor: (theme) => theme.palette.primary.main,
                     boxShadow: '14px 18px 21px -10px rgba(0,0,0,0.25)',
                   }}
-                />
+                >
+                  hi
+                </ListItemText>
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src={person} />
                 </ListItemAvatar>

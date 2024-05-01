@@ -10,8 +10,15 @@ import { LinearProgressWithValueLabel } from '../../../components';
 
 const SprintCard = () => {
   return (
-    <Card>
-      <CardMedia
+    <Card
+      sx={{
+        boxShadow: 'none',
+        border: '1px solid #f0f0f0',
+        borderRadius: 4,
+        padding: 2,
+      }}
+    >
+      {/* <CardMedia
         component="img"
         alt="green iguana"
         height="140"
@@ -42,7 +49,11 @@ const SprintCard = () => {
         }}
       >
         <Button size="small">See More</Button>
-      </CardActions>
+      </CardActions> */}
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum eligendi
+      quas natus vel beatae aspernatur rem aperiam quod? Doloremque tenetur illo
+      repellendus ut iure perferendis eius quibusdam! Voluptatibus, similique
+      eum.
     </Card>
   );
 };

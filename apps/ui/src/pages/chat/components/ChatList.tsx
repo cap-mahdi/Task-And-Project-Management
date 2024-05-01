@@ -10,7 +10,8 @@ export const ChatList: FC = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: 300,
+        width: '30%',
+
         gap: 2,
       }}
     >

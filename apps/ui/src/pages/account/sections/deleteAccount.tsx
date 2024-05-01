@@ -1,31 +1,28 @@
-import { Card, Grid, Typography, Button } from '@mui/material';
+import { Card, Grid, Typography, Button, Box } from '@mui/material';
 
 export function DeleteAccount() {
   return (
-    <Card
+    <Box
       sx={{
-        px: 3,
-        py: 5,
-        borderRadius: 2,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        pb: 1,
       }}
     >
-      <Grid container>
-        <Grid item sx={{ width: '30%' }}>
-          <Typography variant="h5" fontWeight={'bold'}>
-            Public profile
-          </Typography>
-        </Grid>
-        <Grid item sx={{ width: '70%' }}>
-          <Typography variant="h6" sx={{ my: 5 }}>
-            Delete your account and all of your source data. This is
-            irreversible
-          </Typography>
+      <Box sx={{ width: '30%', fontSize: '16px' }}>
+        <Typography fontWeight={'bold'}>Public profile</Typography>
+      </Box>
+      <Box sx={{ width: '70%', pl: 2 }}>
+        <Typography sx={{ my: 5 }}>
+          Delete your account and all of your source data. This is irreversible
+        </Typography>
 
-          <Button variant="outlined" color="error">
-            Delete account
-          </Button>
-        </Grid>
-      </Grid>
-    </Card>
+        <Button variant="outlined" color="error">
+          Delete account
+        </Button>
+      </Box>
+    </Box>
   );
 }

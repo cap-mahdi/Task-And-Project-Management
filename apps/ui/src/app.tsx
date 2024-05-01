@@ -18,11 +18,14 @@ const GET_USERS = gql(`
     }
   }
 `);
+import { AppContext } from './context/useAppContext';
 
 export const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <AppContext.Provider>
+        <RouterProvider router={router} />
+      </AppContext.Provider>
     </ThemeProvider>
   );
 };

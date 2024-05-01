@@ -44,7 +44,15 @@ export function SideBar({ toolbarSize }) {
     >
       {/* Main Menu */}
       <Toolbar sx={{ height: toolbarSize }} />
-      <Box sx={{ overflow: 'auto', p: 2 }}>
+      <Box
+        sx={{
+          overflow: 'auto',
+          p: 2,
+          '&::-webkit-scrollbar': {
+            display: 'none', // Hide the scrollbar in WebKit browsers
+          },
+        }}
+      >
         <Search width={drawerWidth} />
         <List>
           <Typography sx={{ m: 1, fontFamily: typography.fontFamily }}>

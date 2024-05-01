@@ -2,7 +2,7 @@ import {
   Button,
   Card,
   CardContent,
-  Grid,
+  Box,
   TextField,
   Typography,
 } from '@mui/material';
@@ -49,13 +49,32 @@ export function CustomInputField({
   };
 
   return (
-    <Grid container>
-      <Grid item sx={{ width: '90%' }}>
-        <Card sx={{ boxShadow: 'none', border: '1px solid #e0e0e0' }}>
-          <CardContent>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 2,
+        alignItems: 'center',
+      }}
+    >
+      <Box sx={{ width: '90%' }}>
+        <Card
+          sx={{
+            boxShadow: 'none',
+            border: '1px solid #e0e0e0',
+            // height: 'fit-content',
+          }}
+        >
+          <CardContent
+            sx={
+              {
+                // height: '10rem',
+              }
+            }
+          >
             <Typography
-              variant="body1"
-              sx={{ color: isEditing ? 'inherit' : 'grey' }}
+              sx={{ color: isEditing ? 'inherit' : 'grey', fontSize: '0.7rem' }}
             >
               {title}
             </Typography>
@@ -67,10 +86,24 @@ export function CustomInputField({
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
+                sx={{
+                  '& input': {
+                    height: '0.8rem',
+                    width: '100%',
+                    fontSize: '0.8rem',
+                    '&:focus': {
+                      // Add focus styles here
+                    },
+                    '&:hover': {
+                      // Add hover styles here
+                    },
+                    // Add more state styles as needed
+                  },
+                }}
                 placeholder="Enter text"
               ></TextField>
             ) : (
-              <Typography variant="h6" sx={{ color: 'grey' }}>
+              <Typography sx={{ color: 'grey', fontSize: '0.8rem' }}>
                 {value || 'Press Edit to enter info'}
               </Typography>
             )}
@@ -82,9 +115,8 @@ export function CustomInputField({
             )}
           </CardContent>
         </Card>
-      </Grid>
-      <Grid
-        item
+      </Box>
+      <Box
         sx={{
           width: '10%',
           display: 'flex',
@@ -99,7 +131,7 @@ export function CustomInputField({
         >
           {isEditing ? 'Save' : 'Edit'}
         </Button>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

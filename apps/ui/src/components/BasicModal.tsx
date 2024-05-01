@@ -13,14 +13,18 @@ const style = {
   bgcolor: '#0000000',
 };
 
-export default function BasicModal({ children }) {
-  const [open, setOpen] = React.useState(false);
+export default function BasicModal({ children, setOpen, open }) {
+  // const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    console.log('close');
+    setOpen(false);
+    // setOpenDetails(false);
+  };
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
         onClose={handleClose}

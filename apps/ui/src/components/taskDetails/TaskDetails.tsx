@@ -26,7 +26,7 @@ const description =
 
 const title = 'Design a new logo for the company';
 
-export function TaskDetails(props) {
+export function TaskDetails({ task }) {
   return (
     <Card
       sx={{
@@ -51,6 +51,7 @@ export function TaskDetails(props) {
           //   bgcolor: (theme) => theme.palette.acapulco.main,
         }}
       >
+        {/* <h1>{task.title}</h1> */}
         <TaskHeader />
         {/* ------------------ TASK DETAILS ----------------*/}
         <Box

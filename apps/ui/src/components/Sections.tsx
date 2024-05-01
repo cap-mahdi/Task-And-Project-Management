@@ -5,7 +5,7 @@ const styles = {
   wrapper: {
     mt: 2,
 
-    mb: '12px',
+    mb: '10px',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

@@ -25,9 +25,12 @@ export const InvertedFeatureCard: FC<InvertedFeatureCardProps> = ({
     <Card
       sx={{
         display: 'flex',
-        width: '60vw',
+        justifyContent: 'space-between',
+
+        width: '100%',
         boxShadow: 'none',
         backgroundColor: 'transparent',
+        borderRadius: '0.5rem',
       }}
     >
       <CardContent sx={{ width: '35vw' }}>
@@ -38,7 +41,13 @@ export const InvertedFeatureCard: FC<InvertedFeatureCardProps> = ({
         component="img"
         image={imgUrl}
         alt="image"
-        sx={{ width: '25vw', objectFit: 'cover', marginRight: '50px' }}
+        sx={{
+          width: '20vw',
+          maxHeight: '30vw',
+          objectFit: 'fill',
+
+          borderRadius: '0.8rem',
+        }}
       />
     </Card>
   );

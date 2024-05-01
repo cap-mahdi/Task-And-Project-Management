@@ -22,7 +22,8 @@ export function Tasks() {
         flexDirection="row"
         sx={{
           justifyContent: 'center',
-          padding: '4rem',
+          // padding: '4rem',
+
           gap: '2rem',
         }}
       >

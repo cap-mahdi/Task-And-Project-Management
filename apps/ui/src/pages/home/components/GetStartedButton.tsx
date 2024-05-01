@@ -1,5 +1,6 @@
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { theme } from '../../../theme';
 
 interface GetStartedButtonProps {
   buttonColor: string;
@@ -7,13 +8,28 @@ interface GetStartedButtonProps {
 
 export function GetStartedButton({ buttonColor }: GetStartedButtonProps) {
   return (
-    <Button
-      color="secondary"
-      href="#"
-      endIcon={<ArrowForwardIcon />}
-      sx={{ textTransform: 'none', color: buttonColor }}
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        cursor: 'pointer',
+        '&:hover': {
+          color: theme.palette.albescentWhite.main,
+        },
+      }}
     >
-      Get Started
-    </Button>
+      <Typography
+        href="#"
+        sx={{ textTransform: 'none', color: buttonColor, fontWeight: 'medium' }}
+      >
+        Get Started
+      </Typography>
+      <ArrowForwardIcon
+        sx={{
+          color: (theme) => theme.palette.albescentWhite.main,
+        }}
+      />
+    </Box>
   );
 }

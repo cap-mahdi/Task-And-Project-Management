@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 export function Sponsors() {
@@ -17,16 +17,27 @@ export function Sponsors() {
   }, []);
 
   return (
-    <Grid container spacing={8} justifyContent={'center'}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+      }}
+    >
       {sponsorImages.map((image, index) => (
         <Grid item key={index}>
           <img
             src={image}
             alt={'sponsor'}
-            style={{ width: '100px', height: '100px' }}
+            style={{
+              width: '5rem',
+              height: '3rem',
+            }}
           />
         </Grid>
       ))}
-    </Grid>
+    </Box>
   );
 }

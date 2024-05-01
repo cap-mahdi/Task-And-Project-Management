@@ -18,11 +18,14 @@ export const Quote: FC<QuoteProps> = ({
   backgroundColor,
 }) => {
   return (
-    <Grid
+    <Box
       container
       display="block"
-      spacing={2}
-      style={{ backgroundColor: backgroundColor }}
+      sx={{
+        backgroundColor: backgroundColor,
+        minWidth: '30%',
+        pt: '1rem',
+      }}
     >
       <Grid item>
         <FormatQuoteIcon fontSize="large" style={{ color: '#473BF0' }} />
@@ -34,7 +37,7 @@ export const Quote: FC<QuoteProps> = ({
           fontWeight="bold"
           gutterBottom
           maxWidth="300px"
-          style={{ color: textColor, overflowWrap: 'break-word' }}
+          sx={{ color: textColor, overflowWrap: 'break-word' }}
         >
           {text}
         </Typography>
@@ -45,7 +48,7 @@ export const Quote: FC<QuoteProps> = ({
           <Typography
             variant="subtitle2"
             fontWeight="bold"
-            style={{ color: textColor, marginRight: '1rem' }}
+            sx={{ color: textColor, marginRight: '1rem' }}
           >
             {personName}
           </Typography>
@@ -55,6 +58,6 @@ export const Quote: FC<QuoteProps> = ({
           </Typography>
         </Box>
       </Grid>
-    </Grid>
+    </Box>
   );
 };

@@ -25,7 +25,8 @@ export const FeatureCard: FC<FeatureCardProps> = ({
     <Card
       sx={{
         display: 'flex',
-        width: '60vw',
+        justifyContent: 'space-between',
+        width: '100%',
         boxShadow: 'none',
         backgroundColor: 'transparent',
       }}
@@ -34,7 +35,13 @@ export const FeatureCard: FC<FeatureCardProps> = ({
         component="img"
         image={imgUrl}
         alt="image"
-        sx={{ width: '25vw', objectFit: 'cover', marginRight: '50px' }}
+        sx={{
+          width: '25vw',
+          // maxHeight: '30vw',
+          objectFit: 'fill',
+          marginRight: '50px',
+          // borderRadius: '0.5rem',
+        }}
       />
       <CardContent sx={{ width: '35vw' }}>
         <Description title={title} description={description}></Description>
