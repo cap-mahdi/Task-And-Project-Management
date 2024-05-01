@@ -1,0 +1,32 @@
+enum ProjectRole {
+  Project_ADMIN
+  Project_EDITOR
+  Project_MEMBER
+}
+
+type UserProject {
+  id: ID!
+  user: User!
+  project: Project!
+  role: ProjectRole!
+}
+
+input CreateUserProject {
+  userId: ID!
+  projectId: ID!
+  role: ProjectRole!
+}
+
+input UpdateUserProject {
+  role: ProjectRole
+}
+
+type Query {
+  getProjectUsers(projectId: ID!): [UserProject!]!
+  userProject(userId: ID!, projectId: ID!): UserProject!
+}
+
+type Mutation {
+  addUsersToProject(projectId: ID!, userIds: [ID!]!): [UserProject!]!
+  deleteUsersFromProject(projectId: ID!, userIds: [ID!]!): [UserProject!]!
+}
