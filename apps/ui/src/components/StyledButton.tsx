@@ -1,7 +1,13 @@
-import { Button } from '@mui/material';
+import { Button, SxProps } from '@mui/material';
 import React from 'react';
 
-export function StyledButton({ sx, onClick, children }) {
+interface StytledButtonProps {
+  sx?: SxProps;
+  onClick?: () => void;
+  children?: React.ReactNode;
+}
+
+export function StyledButton({ sx, onClick, children }: StytledButtonProps) {
   return (
     <Button
       onClick={onClick}

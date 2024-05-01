@@ -54,6 +54,10 @@ export const router = createBrowserRouter([
             element: <Chat />,
           },
           {
+            path: 'sprints',
+            element: <Sprint />,
+          },
+          {
             path: 'account/general',
             element: <GeneralSettings />,
           },
