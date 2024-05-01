@@ -48,6 +48,12 @@ export class UpdateMilestone {
     status?: Nullable<Status>;
 }
 
+export class CreateProjectInput {
+    name: string;
+    description: string;
+    workspaceId: string;
+}
+
 export class CreateTask {
     name: string;
     description?: Nullable<string>;
@@ -73,6 +79,12 @@ export class CreateUserInput {
     password: string;
 }
 
+export class GetUserInput {
+    id?: Nullable<string>;
+    email?: Nullable<string>;
+    name?: Nullable<string>;
+}
+
 export class CreateUserProject {
     userId: string;
     projectId: string;
@@ -83,22 +95,16 @@ export class UpdateUserProject {
     role?: Nullable<ProjectRole>;
 }
 
-export class CreateUserWorkspace {
-    userId: string;
-    workspaceId: string;
-    role: WorkspaceRole;
-}
-
 export class UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
 }
 
-export class CreateWorkspace {
+export class CreateWorkspaceInput {
     name: string;
     description?: Nullable<string>;
 }
 
-export class UpdateWorkspace {
+export class UpdateWorkspaceInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
 }
@@ -134,11 +140,15 @@ export abstract class IQuery {
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
 
+    abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+
     abstract tasks(): Task[] | Promise<Task[]>;
 
     abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
     abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
+
+    abstract getUsersByParams(input: GetUserInput): Nullable<User[]> | Promise<Nullable<User[]>>;
 
     abstract getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
 
@@ -158,6 +168,8 @@ export abstract class IMutation {
 
     abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
 
+    abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
+
     abstract createTask(input: CreateTask): Task | Promise<Task>;
 
     abstract updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
@@ -170,13 +182,11 @@ export abstract class IMutation {
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
-    abstract createUserWorkspace(input: CreateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-
     abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
 
-    abstract createWorkspace(input: CreateWorkspace): Workspace | Promise<Workspace>;
+    abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 
-    abstract updateWorkspace(id: string, input: UpdateWorkspace): Workspace | Promise<Workspace>;
+    abstract updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
 }
 
 export class Project {
@@ -186,7 +196,7 @@ export class Project {
     createdAt: Date;
     workspace: Workspace;
     rooms: Room[];
-    users: UserProject[];
+    userProjects: UserProject[];
     milestones: Milestone[];
 }
 
@@ -216,11 +226,12 @@ export class User {
     password: string;
     createdAt: Date;
     role: UserRole;
-    workspaces: UserWorkspace[];
-    projects: UserProject[];
+    userWorkspaces: UserWorkspace[];
+    userProjects: UserProject[];
 }
 
 export class UserProject {
+    id: string;
     user: User;
     project: Project;
     role: ProjectRole;
@@ -237,6 +248,7 @@ export class UserTask {
 }
 
 export class UserWorkspace {
+    id: string;
     user: User;
     workspace: Workspace;
     role: WorkspaceRole;
@@ -247,7 +259,7 @@ export class Workspace {
     name: string;
     description: string;
     createdAt: Date;
-    users: UserWorkspace[];
+    userWorkspaces: UserWorkspace[];
     projects: Project[];
 }
 

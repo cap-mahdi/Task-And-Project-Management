@@ -9,15 +9,15 @@ import { WorkspaceSchema } from './workspace.entity';
 export class UserWorkspaceSchema
   implements Omit<UserWorkspace, 'workspace' | 'user'>
 {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'enum', enum: WorkspaceRole })
   role: WorkspaceRole;
 
-  @ManyToOne(() => UserSchema, (user) => user.workspaces)
-  user: string;
+  @ManyToOne(() => UserSchema, (user) => user.userWorkspaces)
+  user: UserSchema;
 
-  @ManyToOne(() => WorkspaceSchema, (workspace) => workspace.users)
-  workspace: string;
+  @ManyToOne(() => WorkspaceSchema, (workspace) => workspace.userWorkspaces)
+  workspace: WorkspaceSchema;
 }

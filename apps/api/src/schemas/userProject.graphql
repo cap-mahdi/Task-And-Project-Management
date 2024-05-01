@@ -5,6 +5,7 @@ enum ProjectRole {
 }
 
 type UserProject {
+  id: ID!
   user: User!
   project: Project!
   role: ProjectRole!

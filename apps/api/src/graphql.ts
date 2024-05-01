@@ -48,6 +48,12 @@ export interface UpdateMilestone {
     status?: Nullable<Status>;
 }
 
+export interface CreateProjectInput {
+    name: string;
+    description: string;
+    workspaceId: string;
+}
+
 export interface CreateTask {
     name: string;
     description?: Nullable<string>;
@@ -73,6 +79,12 @@ export interface CreateUserInput {
     password: string;
 }
 
+export interface GetUserInput {
+    id?: Nullable<string>;
+    email?: Nullable<string>;
+    name?: Nullable<string>;
+}
+
 export interface CreateUserProject {
     userId: string;
     projectId: string;
@@ -83,22 +95,16 @@ export interface UpdateUserProject {
     role?: Nullable<ProjectRole>;
 }
 
-export interface CreateUserWorkspace {
-    userId: string;
-    workspaceId: string;
-    role: WorkspaceRole;
-}
-
 export interface UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
 }
 
-export interface CreateWorkspace {
+export interface CreateWorkspaceInput {
     name: string;
     description?: Nullable<string>;
 }
 
-export interface UpdateWorkspace {
+export interface UpdateWorkspaceInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
 }
@@ -132,9 +138,11 @@ export interface Milestone {
 export interface IQuery {
     milestones(): Milestone[] | Promise<Milestone[]>;
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
+    projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
     tasks(): Task[] | Promise<Task[]>;
     task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
     users(): Nullable<User[]> | Promise<Nullable<User[]>>;
+    getUsersByParams(input: GetUserInput): Nullable<User[]> | Promise<Nullable<User[]>>;
     getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
     userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
     userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
@@ -146,16 +154,16 @@ export interface IQuery {
 export interface IMutation {
     createMilestone(input: CreateMilestone): Milestone | Promise<Milestone>;
     updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
+    createProject(input: CreateProjectInput): Project | Promise<Project>;
     createTask(input: CreateTask): Task | Promise<Task>;
     updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
     assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
     createUser(createUserInput: CreateUserInput): User | Promise<User>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
-    createUserWorkspace(input: CreateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
     updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-    createWorkspace(input: CreateWorkspace): Workspace | Promise<Workspace>;
-    updateWorkspace(id: string, input: UpdateWorkspace): Workspace | Promise<Workspace>;
+    createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
+    updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
 }
 
 export interface Project {
@@ -165,7 +173,7 @@ export interface Project {
     createdAt: Date;
     workspace: Workspace;
     rooms: Room[];
-    users: UserProject[];
+    userProjects: UserProject[];
     milestones: Milestone[];
 }
 
@@ -195,11 +203,12 @@ export interface User {
     password: string;
     createdAt: Date;
     role: UserRole;
-    workspaces: UserWorkspace[];
-    projects: UserProject[];
+    userWorkspaces: UserWorkspace[];
+    userProjects: UserProject[];
 }
 
 export interface UserProject {
+    id: string;
     user: User;
     project: Project;
     role: ProjectRole;
@@ -216,6 +225,7 @@ export interface UserTask {
 }
 
 export interface UserWorkspace {
+    id: string;
     user: User;
     workspace: Workspace;
     role: WorkspaceRole;
@@ -226,7 +236,7 @@ export interface Workspace {
     name: string;
     description: string;
     createdAt: Date;
-    users: UserWorkspace[];
+    userWorkspaces: UserWorkspace[];
     projects: Project[];
 }
 

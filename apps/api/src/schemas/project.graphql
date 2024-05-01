@@ -1,11 +1,24 @@
 type Project {
-    id: ID!
-    name: String!
-    description: String!
-    createdAt: Date!
-    workspace: Workspace!
-    rooms: [Room!]!
-    users: [UserProject!]!
-    milestones: [Milestone!]!
+  id: ID! #done
+  name: String! #done
+  description: String! #done
+  createdAt: Date! #done
+  workspace: Workspace! #done
+  rooms: [Room!]!
+  userProjects: [UserProject!]! #done
+  milestones: [Milestone!]!
+}
 
+type Query {
+  projects: [Project!]
+}
+
+type Mutation {
+  createProject(input: CreateProjectInput!): Project! #done²
+}
+
+input CreateProjectInput {
+  name: String!
+  description: String!
+  workspaceId: ID!
 }

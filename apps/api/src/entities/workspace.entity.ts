@@ -8,12 +8,15 @@ import {
 import { Workspace } from '../graphql';
 import { UserWorkspaceSchema } from './userWorkspace.entity';
 import { ProjectSchema } from './project.entity';
+import { UserSchema } from './user.entity';
 
 @Entity({
   name: 'workspace',
 })
-export class WorkspaceSchema implements Omit<Workspace, 'users' | 'projects'> {
-  @PrimaryGeneratedColumn()
+export class WorkspaceSchema
+  implements Omit<Workspace, 'userWorkspaces' | 'projects'>
+{
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -29,8 +32,8 @@ export class WorkspaceSchema implements Omit<Workspace, 'users' | 'projects'> {
     () => UserWorkspaceSchema,
     (userWorkspace) => userWorkspace.workspace
   )
-  users: string[];
+  userWorkspaces: UserWorkspaceSchema[];
 
   @OneToMany(() => ProjectSchema, (project) => project.workspace)
-  projects: string[];
+  projects: ProjectSchema[];
 }

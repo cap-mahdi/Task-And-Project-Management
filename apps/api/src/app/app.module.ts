@@ -19,6 +19,11 @@ import { UserProjectSchema } from '../entities/userProject.entity';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { WorkspaceSchema } from '../entities/workspace.entity';
 import { configuration, validate } from '../config';
+import { WorkspaceModule } from '../workspace/workspace.module';
+import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
+import { Project } from 'ts-morph';
+import { ProjectModule } from '../project/project.module';
+import { UserProjectModule } from '../user-project/user-project.module';
 
 @Module({
   imports: [
@@ -34,6 +39,7 @@ import { configuration, validate } from '../config';
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
       },
+      context: ({ req }) => ({ req }),
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -64,6 +70,10 @@ import { configuration, validate } from '../config';
     }),
     UserModule,
     AuthModule,
+    WorkspaceModule,
+    UserWorkspaceModule,
+    ProjectModule,
+    UserProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

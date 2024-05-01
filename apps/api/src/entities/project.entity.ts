@@ -17,7 +17,8 @@ import { UserProjectSchema } from './userProject.entity';
   name: 'project',
 })
 export class ProjectSchema
-  implements Omit<Project, 'workspace' | 'users' | 'rooms' | 'milestones'>
+  implements
+    Omit<Project, 'workspace' | 'userProjects' | 'rooms' | 'milestones'>
 {
   @PrimaryGeneratedColumn()
   id: string;
@@ -32,13 +33,13 @@ export class ProjectSchema
   createdAt: Date;
 
   @ManyToOne(() => WorkspaceSchema, (workspace) => workspace.projects)
-  workspace: string;
+  workspace: WorkspaceSchema;
 
   @OneToMany(() => RoomSchema, (room) => room.project)
   rooms: string[];
 
   @OneToMany(() => UserProjectSchema, (userProject) => userProject.project)
-  userProject: string[];
+  userProjects: UserProjectSchema[];
 
   @OneToMany(() => MilestoneSchema, (milestone) => milestone.project)
   milestones: string[];

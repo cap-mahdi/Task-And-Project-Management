@@ -19,8 +19,10 @@ import { Exclude } from 'class-transformer';
 @Entity({
   name: 'user',
 })
-export class UserSchema implements Omit<User, 'workspaces' | 'projects'> {
-  @PrimaryGeneratedColumn()
+export class UserSchema
+  implements Omit<User, 'userWorkspaces' | 'userProjects'>
+{
+  @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   name: string;
@@ -39,10 +41,10 @@ export class UserSchema implements Omit<User, 'workspaces' | 'projects'> {
   createdAt: Date;
 
   @OneToMany(() => UserWorkspaceSchema, (userWorkspace) => userWorkspace.user)
-  workspaces: string[];
+  userWorkspaces: UserWorkspaceSchema[];
 
   @OneToMany(() => UserProjectSchema, (userProject) => userProject.user)
-  projects: string[];
+  userProjects: UserProjectSchema[];
 
   @OneToMany(() => CommentSchema, (comment) => comment.user)
   comments: string[];

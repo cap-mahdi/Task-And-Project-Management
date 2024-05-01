@@ -1,18 +1,18 @@
 type Workspace {
-  id: ID!
-  name: String!
-  description: String!
-  createdAt: Date!
-  users: [UserWorkspace!]!
+  id: ID! #done
+  name: String! #done
+  description: String! #done
+  createdAt: Date! #done
+  userWorkspaces: [UserWorkspace!]! #done
   projects: [Project!]!
 }
 
-input CreateWorkspace {
+input CreateWorkspaceInput {
   name: String!
   description: String
 }
 
-input UpdateWorkspace {
+input UpdateWorkspaceInput {
   name: String
   description: String
 }
@@ -23,6 +23,6 @@ type Query {
 }
 
 type Mutation {
-  createWorkspace(input: CreateWorkspace!): Workspace!
-  updateWorkspace(id: ID!, input: UpdateWorkspace!): Workspace!
+  createWorkspace(input: CreateWorkspaceInput!): Workspace! #done
+  updateWorkspace(id: ID!, input: UpdateWorkspaceInput!): Workspace!
 }

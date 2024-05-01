@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProjectRole, UserProject } from '../graphql';
 import { UserSchema } from './user.entity';
 import { ProjectSchema } from './project.entity';
+import { Project } from 'ts-morph';
 
 @Entity({
   name: 'user_project',
@@ -9,15 +10,15 @@ import { ProjectSchema } from './project.entity';
 export class UserProjectSchema
   implements Omit<UserProject, 'user' | 'project'>
 {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'enum', enum: ProjectRole })
   role: ProjectRole;
 
-  @ManyToOne(() => UserSchema, (user) => user.projects)
-  user: string;
+  @ManyToOne(() => UserSchema, (user) => user.userProjects)
+  user: UserSchema;
 
-  @ManyToOne(() => ProjectSchema, (project) => project.userProject)
-  project: string;
+  @ManyToOne(() => ProjectSchema, (project) => project.userProjects)
+  project: ProjectSchema;
 }

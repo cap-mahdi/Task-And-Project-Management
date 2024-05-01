@@ -9,38 +9,46 @@ import {
 import { UserSchema } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserRole } from '../graphql';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
-import { CreateUserInputDto } from './createUser.dto';
+import { GetUserInput } from '../graphql';
 
 @Resolver('User')
 export class UserResolver {
-  // constructor(
-  //   @InjectRepository(UserSchema)
-  //   private userRepository: Repository<UserSchema>,
-  //   @InjectRepository(UserWorkspaceSchema)
-  //   private userWorkspaceRepository: Repository<UserWorkspaceSchema>
-  // ) {}
-  // @Query()
-  // async users() {
-  //   return this.userRepository.find();
-  // }
-  // @Mutation()
-  // async createUser(
-  //   @Args('createUserInput') createUserInput: CreateUserInputDto
-  // ) {
-  //   console.log(createUserInput);
-  //   return this.userRepository.save({
-  //     ...createUserInput,
-  //     role: UserRole.USER,
-  //   });
-  // }
-  // @ResolveField()
-  // async workspaces(@Parent() user: UserSchema) {
-  //   return this.userWorkspaceRepository.find({
-  //     where: {
-  //       user: user.id,
-  //     },
-  //   });
-  // }
+  constructor(
+    @InjectRepository(UserSchema)
+    private userRepository: Repository<UserSchema>,
+    @InjectRepository(UserWorkspaceSchema)
+    private userWorkspaceRepository: Repository<UserWorkspaceSchema>
+  ) {}
+
+  @Query()
+  async users() {
+    const users = await this.userRepository.find();
+    console.info('users', users);
+    return users;
+  }
+
+  @Query()
+  async getUsersByParams(
+    @Args('input') input: GetUserInput
+  ): Promise<UserSchema[]> {
+    return await this.userRepository.find({
+      where: {
+        ...input,
+      },
+    });
+  }
+
+  @ResolveField('userWorkspaces')
+  async workspaces(@Parent() user: UserSchema): Promise<UserWorkspaceSchema[]> {
+    console.info('user', user);
+    const userWorkspaces = await this.userWorkspaceRepository.find({
+      where: {
+        user: { id: user.id },
+      },
+      relations: ['user'],
+    });
+    console.info('userWorkspaces', userWorkspaces);
+    return userWorkspaces;
+  }
 }

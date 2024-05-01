@@ -5,15 +5,10 @@ enum WorkspaceRole {
 }
 
 type UserWorkspace {
-  user: User!
-  workspace: Workspace!
-  role: WorkspaceRole!
-}
-
-input CreateUserWorkspace {
-  userId: ID!
-  workspaceId: ID!
-  role: WorkspaceRole!
+  id: ID! #done
+  user: User! #done
+  workspace: Workspace! #done
+  role: WorkspaceRole! #done
 }
 
 input UpdateUserWorkspace {
@@ -21,12 +16,11 @@ input UpdateUserWorkspace {
 }
 
 type Query {
-  userWorkspaces: [UserWorkspace!]!
+  userWorkspaces: [UserWorkspace!]! #done
   userWorkspace(userId: ID!, workspaceId: ID!): UserWorkspace
 }
 
 type Mutation {
-  createUserWorkspace(input: CreateUserWorkspace!): UserWorkspace!
   updateUserWorkspace(
     userId: ID!
     workspaceId: ID!
