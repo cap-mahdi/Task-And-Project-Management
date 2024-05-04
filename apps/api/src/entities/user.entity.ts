@@ -2,25 +2,25 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User, UserRole } from '../graphql';
 import { UserWorkspaceSchema } from './userWorkspace.entity';
 import { UserProjectSchema } from './userProject.entity';
-import { RoomSchema } from './room.entity';
-import { TaskSchema } from './task.entity';
+
 import { CommentSchema } from './comment.entity';
 import { MessageSchema } from './message.entity';
 import { Exclude } from 'class-transformer';
+import { UserRoomSchema } from './userRoom.entity';
+import { UserTaskSchema } from './userTask.entity';
 
 @Entity({
   name: 'user',
 })
 export class UserSchema
-  implements Omit<User, 'userWorkspaces' | 'userProjects'>
+  implements
+    Omit<User, 'userWorkspaces' | 'userProjects' | 'userRooms' | 'userTasks'>
 {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -47,16 +47,14 @@ export class UserSchema
   userProjects: UserProjectSchema[];
 
   @OneToMany(() => CommentSchema, (comment) => comment.user)
-  comments: string[];
+  comments: CommentSchema[];
 
-  @ManyToMany(() => TaskSchema, (task) => task.assignees)
-  @JoinTable()
-  tasks: string[];
+  @OneToMany(() => UserTaskSchema, (userTask) => userTask.user)
+  userTasks: UserTaskSchema[];
 
-  @ManyToMany(() => RoomSchema, (room) => room.users)
-  @JoinTable()
-  rooms: string[];
+  @OneToMany(() => UserRoomSchema, (userRooms) => userRooms.user)
+  userRooms: UserRoomSchema[];
 
   @OneToMany(() => MessageSchema, (message) => message.sender)
-  messages: string[];
+  messages: MessageSchema[];
 }

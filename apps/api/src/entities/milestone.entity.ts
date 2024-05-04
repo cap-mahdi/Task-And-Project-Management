@@ -32,8 +32,8 @@ export class MilestoneSchema implements Omit<Milestone, 'tasks' | 'project'> {
   status: Status;
 
   @ManyToOne(() => ProjectSchema, (project) => project.milestones)
-  project: string;
+  project: ProjectSchema;
 
   @OneToMany(() => TaskSchema, (task) => task.milestone)
-  tasks: string[];
+  tasks: TaskSchema[];
 }

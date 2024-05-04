@@ -36,11 +36,11 @@ export class ProjectSchema
   workspace: WorkspaceSchema;
 
   @OneToMany(() => RoomSchema, (room) => room.project)
-  rooms: string[];
+  rooms: RoomSchema[];
 
   @OneToMany(() => UserProjectSchema, (userProject) => userProject.project)
   userProjects: UserProjectSchema[];
 
   @OneToMany(() => MilestoneSchema, (milestone) => milestone.project)
-  milestones: string[];
+  milestones: MilestoneSchema[];
 }

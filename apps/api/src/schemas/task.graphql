@@ -6,7 +6,7 @@ type Task {
   tags: [String!]!
   milestone: Milestone!
   comments: [Comment!]!
-  assignees: [User!]!
+  userTasks: [UserTask!]!
 }
 
 input CreateTask {

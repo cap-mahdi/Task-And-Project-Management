@@ -1,12 +1,35 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import { useUser } from '../services/auth';
 
-const initialState = {};
-const AppContext = createContext(initialState);
+interface AppState {
+  token: string;
+  user: any;
+}
+const initialState: AppState = {
+  token: '',
+  user: null,
+};
+
+const AppContext = createContext({});
+
+interface AppProviderProps {
+  children: React.ReactNode;
+}
+
+const AppProvider = ({ children }: AppProviderProps) => {
+  const [state, setState] = useState(initialState);
+  return (
+    <AppContext.Provider value={{ state, setState }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
 const { Provider, Consumer } = AppContext;
 
-export { AppContext, Provider, Consumer };
-
 export default function useAppContext() {
-  const appValue = useContext(AppContext);
-  return appValue;
+  const { state, setState } = useContext(AppContext);
+  return [state, setState];
 }
+export { AppProvider, useAppContext };

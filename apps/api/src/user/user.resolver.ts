@@ -11,6 +11,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { GetUserInput } from '../graphql';
+import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
+import { UseGuards } from '@nestjs/common';
+import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 
 @Resolver('User')
 export class UserResolver {
@@ -37,6 +40,19 @@ export class UserResolver {
         ...input,
       },
     });
+  }
+  @Query()
+  @UseGuards(GraphQLAuthGaurd)
+  async getConnectedUser(@GetUserGQL() user: UserSchema): Promise<UserSchema> {
+    const connectedUser = await this.userRepository.findOne({
+      where: {
+        id: user.id,
+      },
+    });
+    delete connectedUser.password;
+    console.log(connectedUser);
+
+    return connectedUser;
   }
 
   @ResolveField('userWorkspaces')

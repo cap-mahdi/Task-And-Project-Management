@@ -23,8 +23,8 @@ export class MessageSchema implements Omit<Message, 'room' | 'sender'> {
   createdAt: Date;
 
   @ManyToOne(() => RoomSchema, (room) => room.messages)
-  room: string;
+  room: RoomSchema;
 
   @ManyToOne(() => UserSchema, (user) => user.messages)
-  sender: string;
+  sender: UserSchema;
 }

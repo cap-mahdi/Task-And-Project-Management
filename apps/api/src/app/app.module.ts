@@ -18,12 +18,14 @@ import { TaskSchema } from '../entities/task.entity';
 import { UserProjectSchema } from '../entities/userProject.entity';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { WorkspaceSchema } from '../entities/workspace.entity';
-import { configuration, validate } from '../config';
+import { configuration } from '../config';
 import { WorkspaceModule } from '../workspace/workspace.module';
 import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
 import { Project } from 'ts-morph';
 import { ProjectModule } from '../project/project.module';
 import { UserProjectModule } from '../user-project/user-project.module';
+import { UserRoomSchema } from '../entities/userRoom.entity';
+import { UserTaskSchema } from '../entities/userTask.entity';
 
 @Module({
   imports: [
@@ -47,8 +49,8 @@ import { UserProjectModule } from '../user-project/user-project.module';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          url: 'postgresql://postgres:root@localhost:5432/teamflow',
-          // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
+          // url: 'postgresql://postgres:root@localhost:5432/teamflow',
+          url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           // url: configService.get<string>('database_url'),
           synchronize: true,
           // entities: [join(__dirname, '**/*.entity{.ts,.js}')],
@@ -61,6 +63,8 @@ import { UserProjectModule } from '../user-project/user-project.module';
             TaskSchema,
             UserSchema,
             UserProjectSchema,
+            UserRoomSchema,
+            UserTaskSchema,
             UserWorkspaceSchema,
             WorkspaceSchema,
           ],

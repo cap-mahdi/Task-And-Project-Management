@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserWorkspace, WorkspaceRole } from '../graphql';
 import { UserSchema } from './user.entity';
 import { WorkspaceSchema } from './workspace.entity';
@@ -14,7 +20,8 @@ export class UserWorkspaceSchema
 
   @Column({ type: 'enum', enum: WorkspaceRole })
   role: WorkspaceRole;
-
+  @CreateDateColumn({ type: 'timestamp' })
+  addedAt: Date;
   @ManyToOne(() => UserSchema, (user) => user.userWorkspaces)
   user: UserSchema;
 

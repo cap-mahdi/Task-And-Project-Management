@@ -150,6 +150,8 @@ export abstract class IQuery {
 
     abstract getUsersByParams(input: GetUserInput): Nullable<User[]> | Promise<Nullable<User[]>>;
 
+    abstract getConnectedUser(): User | Promise<User>;
+
     abstract getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
 
     abstract userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
@@ -204,7 +206,7 @@ export class Room {
     id: string;
     createdAt: Date;
     project: Project;
-    users: User[];
+    userRooms: UserRoom[];
     messages: Message[];
 }
 
@@ -216,7 +218,7 @@ export class Task {
     tags: string[];
     milestone: Milestone;
     comments: Comment[];
-    assignees: User[];
+    userTasks: UserTask[];
 }
 
 export class User {
@@ -228,6 +230,8 @@ export class User {
     role: UserRole;
     userWorkspaces: UserWorkspace[];
     userProjects: UserProject[];
+    userRooms: UserRoom[];
+    userTasks: UserTask[];
 }
 
 export class UserProject {
@@ -235,21 +239,25 @@ export class UserProject {
     user: User;
     project: Project;
     role: ProjectRole;
+    addedAt: Date;
 }
 
 export class UserRoom {
-    user: string;
-    room: string;
+    id: string;
+    user: User;
+    room: Room;
 }
 
 export class UserTask {
-    user: string;
-    task: string;
+    id: string;
+    user: User;
+    task: Task;
 }
 
 export class UserWorkspace {
     id: string;
     user: User;
+    addedAt: Date;
     workspace: Workspace;
     role: WorkspaceRole;
 }

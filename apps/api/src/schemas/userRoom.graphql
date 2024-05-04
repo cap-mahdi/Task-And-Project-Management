@@ -1,0 +1,5 @@
+type UserRoom {
+  id: ID!
+  user: User!
+  room: Room!
+}

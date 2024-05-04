@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ProjectRole, UserProject } from '../graphql';
 import { UserSchema } from './user.entity';
 import { ProjectSchema } from './project.entity';
@@ -15,6 +21,8 @@ export class UserProjectSchema
 
   @Column({ type: 'enum', enum: ProjectRole })
   role: ProjectRole;
+  @CreateDateColumn({ type: 'timestamp' })
+  addedAt: Date;
 
   @ManyToOne(() => UserSchema, (user) => user.userProjects)
   user: UserSchema;

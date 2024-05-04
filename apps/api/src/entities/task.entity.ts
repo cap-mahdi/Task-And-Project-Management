@@ -11,12 +11,13 @@ import { UserSchema } from './user.entity';
 import { Status, Task } from '../graphql';
 import { CommentSchema } from './comment.entity';
 import { MilestoneSchema } from './milestone.entity';
+import { UserTaskSchema } from './userTask.entity';
 
 @Entity({
   name: 'task',
 })
 export class TaskSchema
-  implements Omit<Task, 'assignees' | 'comments' | 'milestone'>
+  implements Omit<Task, 'userTasks' | 'comments' | 'milestone'>
 {
   @PrimaryGeneratedColumn()
   id: string;
@@ -33,13 +34,12 @@ export class TaskSchema
   @Column('simple-array')
   tags: string[];
 
-  // @ManyToMany(() => UserSchema, (user) => user.tasks)
-  // @JoinTable()
-  assignees: string[];
+  @OneToMany(() => UserTaskSchema, (userTask) => userTask.task)
+  userTasks: UserTaskSchema[];
 
   @OneToMany(() => CommentSchema, (comment) => comment.task)
-  comments: string[];
+  comments: CommentSchema[];
 
   @ManyToOne(() => MilestoneSchema, (milestone) => milestone.tasks)
-  milestone: string;
+  milestone: MilestoneSchema;
 }

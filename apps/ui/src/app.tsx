@@ -1,31 +1,23 @@
-import { RouterProvider } from 'react-router-dom';
+import { RouterProvider, useNavigate } from 'react-router-dom';
 import { router } from './pages';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './theme';
-import { useQuery } from '@apollo/client';
-import { gql } from './__generated__';
-
-const GET_USERS = gql(`
-  query GetUsers {
-    users {
-      id
-      name
-      workspaces {
-        workspace {
-          name
-        }
-      }
-    }
-  }
-`);
-import { AppContext } from './context/useAppContext';
+import useAppContext from './context/useAppContext';
+import { useEffect } from 'react';
+import { checkAuth, useUser } from './services/auth';
 
 export const App = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <AppContext.Provider>
-        <RouterProvider router={router} />
-      </AppContext.Provider>
-    </ThemeProvider>
-  );
+  const [globalState, setGlobalState] = useAppContext();
+  const { user, error } = useUser();
+
+  useEffect(() => {
+    if (user && !error) {
+      console.log('user from app', user);
+
+      setGlobalState((prevState) => ({
+        ...prevState,
+        user,
+      }));
+    }
+  }, [user, setGlobalState]);
+
+  return <RouterProvider router={router} />;
 };

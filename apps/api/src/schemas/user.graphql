@@ -12,11 +12,14 @@ type User {
   role: UserRole! #done
   userWorkspaces: [UserWorkspace!]! #done
   userProjects: [UserProject!]!
+  userRooms: [UserRoom!]!
+  userTasks: [UserTask!]!
 }
 
 type Query {
   users: [User!]
   getUsersByParams(input: GetUserInput!): [User!]
+  getConnectedUser: User!
 }
 
 type Mutation {
