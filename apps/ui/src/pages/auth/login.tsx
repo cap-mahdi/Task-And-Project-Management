@@ -7,11 +7,41 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FC } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { AuthLayout } from '../../layout';
 import { LinkableCaption } from './common';
+import { LoginRequest } from '../../services/auth';
+import { useMutation } from '@apollo/client';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
+import Client from '../../services/api';
+import useAppContext from '../../context/useAppContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginCard = () => {
+  const navigate = useNavigate();
+  const [globalState, setGlobalState] = useAppContext();
+  const onStorageChange = useCallback(
+    (newValue) => {
+      setGlobalState((prevState) => ({
+        ...prevState,
+        token: newValue,
+      }));
+      if (newValue) navigate('/app');
+    },
+
+    [setGlobalState]
+  );
+
+  const [token, setToken] = useLocalStorageState({
+    key: 'token',
+    // initialState: '',
+    onStorageChange,
+  });
+
+  const [createLoginRequest] = useMutation(LoginRequest);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   return (
     <Card
       sx={{
@@ -37,6 +67,8 @@ const LoginCard = () => {
           Email
         </InputLabel>
         <TextField
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           id="email"
           type="email"
           placeholder="i.e john@mail.com"
@@ -68,7 +100,13 @@ const LoginCard = () => {
             Forgot password?
           </Typography>
         </Stack>
-        <TextField id="password" type="password" size="small" />
+        <TextField
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          id="password"
+          type="password"
+          size="small"
+        />
       </Stack>
       <Stack spacing={1} direction={'row'} alignItems={'center'}>
         <Checkbox />
@@ -81,6 +119,19 @@ const LoginCard = () => {
         </Typography>
       </Stack>
       <Button
+        disabled={email === '' || password === ''}
+        onClick={() => {
+          setEmail('');
+          setPassword('');
+
+          Client.post({
+            request: createLoginRequest,
+            data: { email, password },
+          }).then((res) => {
+            console.log('from login', res);
+            setToken(res.data.createPost.accessToken);
+          });
+        }}
         variant="contained"
         sx={{
           padding: '10px 0',
@@ -97,7 +148,7 @@ const LoginBottomCaption = () => {
     <LinkableCaption
       caption="Don't have an account?"
       linkText="Create an Account"
-      linkPath="/auth/register"
+      linkPath="/register"
     />
   );
 };

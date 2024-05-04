@@ -1,6 +1,7 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { SxPropsObject } from '../utils/sxPropsObject';
 import { title } from 'process';
+import { Link } from 'react-router-dom';
 
 const sections = ['Demos', 'Pages', 'Support', 'Contact'];
 const name = 'TeamFlow.io';
@@ -50,7 +51,12 @@ export function NavBar(props) {
           ))}
 
           <Button color="inherit" sx={styles.mainButton}>
-            {mainButton}
+            <Link
+              to={'/login'}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              {mainButton}
+            </Link>
           </Button>
         </Toolbar>
       </AppBar>

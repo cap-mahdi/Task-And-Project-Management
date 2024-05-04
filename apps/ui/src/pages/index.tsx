@@ -21,6 +21,7 @@ import { TaskDetails } from '../components/taskDetails/TaskDetails';
 import { MainLayout } from '../layout/MainLayout';
 import { Task } from './tasks/components/Task';
 import { DashboardNavBar } from '../components/DashboardNavBar';
+import { ProtectedRoute } from '../components/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: '/auth',
+    path: '/',
     children: [
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
@@ -38,7 +39,10 @@ export const router = createBrowserRouter([
   {
     path: '/app',
     element: (
-      <DashboardLayout NavBar={<DashboardNavBar />} SideBar={<SideBar />} />
+      <ProtectedRoute>
+        {' '}
+        <DashboardLayout NavBar={<DashboardNavBar />} SideBar={<SideBar />} />
+      </ProtectedRoute>
     ),
     children: [
       {

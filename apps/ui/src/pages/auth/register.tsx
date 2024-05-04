@@ -9,11 +9,43 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FC } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { AuthLayout } from '../../layout';
 import { LinkableCaption } from './common';
+import { useNavigate } from 'react-router-dom';
+import useAppContext from '../../context/useAppContext';
+import { useLocalStorageState } from '../../hooks/useLocalStorageState';
+import { useMutation } from '@apollo/client';
+import { SignupRequest } from '../../services/auth';
+import Client from '../../services/api';
 
 const RegisterCard = () => {
+  const navigate = useNavigate();
+  const [globalState, setGlobalState] = useAppContext();
+  const onStorageChange = useCallback(
+    (newValue) => {
+      setGlobalState((prevState) => ({
+        ...prevState,
+        token: newValue,
+      }));
+      if (newValue) navigate('/app');
+    },
+
+    [setGlobalState]
+  );
+
+  const [token, setToken] = useLocalStorageState({
+    key: 'token',
+    // initialState: '',
+    onStorageChange,
+  });
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [createLoginRequest] = useMutation(SignupRequest);
+
   return (
     <Card
       sx={{
@@ -38,7 +70,13 @@ const RegisterCard = () => {
         >
           First & Last Name
         </InputLabel>
-        <TextField id="name" placeholder="i.e john doe" size="small" />
+        <TextField
+          id="name"
+          placeholder="i.e john doe"
+          size="small"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </Stack>
       <Stack spacing={1}>
         <InputLabel
@@ -56,6 +94,8 @@ const RegisterCard = () => {
           type="email"
           placeholder="i.e john@mail.com"
           size="small"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </Stack>
       <Stack spacing={1}>
@@ -69,7 +109,13 @@ const RegisterCard = () => {
         >
           Password
         </InputLabel>
-        <TextField id="password" type="password" size="small" />
+        <TextField
+          id="password"
+          type="password"
+          size="small"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </Stack>
       <Stack spacing={1}>
         <InputLabel
@@ -82,7 +128,13 @@ const RegisterCard = () => {
         >
           Confirm Password
         </InputLabel>
-        <TextField id="confirmPassword" type="password" size="small" />
+        <TextField
+          id="confirmPassword"
+          type="password"
+          size="small"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
       </Stack>
       <Stack spacing={1} direction={'row'} alignItems={'center'}>
         <Checkbox />
@@ -99,6 +151,26 @@ const RegisterCard = () => {
         sx={{
           padding: '10px 0',
           borderRadius: 2,
+        }}
+        disabled={
+          email === '' ||
+          password === '' ||
+          name === '' ||
+          confirmPassword === ''
+        }
+        onClick={() => {
+          setEmail('');
+          setName('');
+          setPassword('');
+          setConfirmPassword('');
+
+          Client.post({
+            request: createLoginRequest,
+            data: { email, password, name, confirmPassword },
+          }).then((res) => {
+            console.log('from Signup', res);
+            setToken(res.data.createPost.accessToken);
+          });
         }}
       >
         Create an account

@@ -17,4 +17,9 @@ export class CreateUserInputDto implements CreateUserInput {
   @MinLength(3)
   @IsNotEmpty()
   password: string;
+  @ApiProperty()
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  confirmPassword: string;
 }

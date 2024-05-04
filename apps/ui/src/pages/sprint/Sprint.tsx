@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Button, Card, Paper, Typography } from '@mui/material';
+import { Box, Button, Card, Divider, Paper, Typography } from '@mui/material';
 import { SprintSettings, SprintsList, TimeLeft } from './components';
 import { StyledButton } from '../../components';
 import { SxPropsObject } from '../../utils/sxPropsObject';
@@ -44,45 +44,93 @@ const Sprint = () => {
           Nice progress so far, keep it up!
         </Typography>
       </Box>
-      <Card
+      <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          py: 1,
-          px: 3,
-          borderRadius: 2,
-          boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
-          gap: 1,
+          gap: '1rem',
+          justifyContent: 'space-between',
         }}
       >
-        <SemiCircleProgress
-          percentage={20}
-          size={{
-            width: 200,
-            height: 100,
-          }}
-          strokeWidth={10}
-          strokeColor="#468189"
-          hasBackground={true}
-          bgStrokeColor="#EBEEFE"
-        />
-        <Typography sx={styles.title}>
-          Not so much time left on this sprint. Keep Going
-        </Typography>
-        <Typography sx={styles.subTitle}>
-          You have used 80% of your available spots. Upgrade plan to create more
-          projects.{' '}
-        </Typography>
-        <StyledButton
+        <Card
           sx={{
-            width: '15rem',
-            borderRadius: '0.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            py: 1,
+            px: 3,
+            borderRadius: 2,
+            boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
+            gap: 1,
+            width: '100%',
           }}
         >
-          Continue: Sprint Name
-        </StyledButton>
-      </Card>
+          <SemiCircleProgress
+            percentage={20}
+            size={{
+              width: 200,
+              height: 100,
+            }}
+            strokeWidth={10}
+            strokeColor="#468189"
+            hasBackground={true}
+            bgStrokeColor="#EBEEFE"
+          />
+          <Typography sx={styles.title}>
+            Not so much time left on this sprint. Keep Going
+          </Typography>
+          <Typography sx={styles.subTitle}>
+            You have used 80% of your available spots. Upgrade plan to create
+            more projects.{' '}
+          </Typography>
+          <StyledButton
+            sx={{
+              width: '15rem',
+              borderRadius: '0.5rem',
+            }}
+          >
+            Continue: Sprint Name
+          </StyledButton>
+        </Card>
+        <Card
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            py: 2,
+            px: 2,
+            borderRadius: 2.5,
+            border: 'solid 2px #6C737F22',
+
+            boxShadow: ' none',
+            gap: 1,
+            // width: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              height: '50%',
+              // bgcolor: 'red',
+            }}
+          >
+            <Typography sx={styles.title}>Sprint Settings</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}
+            >
+              Manage your sprint settings
+              <StyledButton>Add Sprint </StyledButton>
+            </Box>
+          </Box>
+          <Divider />
+          <Typography>Hi</Typography>
+        </Card>
+      </Box>
     </Box>
   );
 };

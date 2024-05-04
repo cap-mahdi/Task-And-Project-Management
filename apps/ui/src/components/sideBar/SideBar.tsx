@@ -15,6 +15,7 @@ import { ListItemMenuButton } from './ListItemMenuButton';
 import { menuButtons } from './menuButtonsData';
 import { NestedList } from './NestedList';
 import { MouseEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 270;
 
@@ -59,37 +60,46 @@ export function SideBar({ toolbarSize }) {
             Main Menu
           </Typography>
           {menuButtons.map((details, index) => (
-            <ListItem
-              key={details.text}
-              disablePadding
-              sx={{ px: 0, mb: 1 }}
-              onClick={(e) => {
-                handleMenuClick(e, details);
+            <Link
+              to={details.link}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
               }}
             >
-              <ListItemMenuButton
-                selected={selectedMenu === details.text ? true : false}
+              <ListItem
+                key={details.text}
+                disablePadding
+                sx={{ px: 0, mb: 1 }}
+                onClick={(e) => {
+                  handleMenuClick(e, details);
+                  if (details?.onClick) details?.onClick();
+                }}
               >
-                <Box
-                  sx={{
-                    //  bgcolor: palette.acapulco.main,
-                    pr: 1,
-                    width: 24,
-                    height: 24,
-                    m: 0.5,
-                  }}
-                  display={'flex'}
-                  flex={'column'}
-                  justifyItems={'center'}
+                <ListItemMenuButton
+                  selected={selectedMenu === details.text ? true : false}
                 >
-                  {<details.icon color={palette.blackPearl.main} />}
-                </Box>
-                <ListItemText
-                  primary={details.text}
-                  sx={{ color: palette.blackPearl.main }}
-                />
-              </ListItemMenuButton>
-            </ListItem>
+                  <Box
+                    sx={{
+                      //  bgcolor: palette.acapulco.main,
+                      pr: 1,
+                      width: 24,
+                      height: 24,
+                      m: 0.5,
+                    }}
+                    display={'flex'}
+                    flex={'column'}
+                    justifyItems={'center'}
+                  >
+                    {<details.icon color={palette.blackPearl.main} />}
+                  </Box>
+                  <ListItemText
+                    primary={details.text}
+                    sx={{ color: palette.blackPearl.main }}
+                  />
+                </ListItemMenuButton>
+              </ListItem>
+            </Link>
           ))}
         </List>
         <Divider

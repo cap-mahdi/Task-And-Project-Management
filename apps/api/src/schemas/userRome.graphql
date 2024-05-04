@@ -1,4 +1,0 @@
-type UserRoom {
-  user: ID!
-  room: ID!
-}

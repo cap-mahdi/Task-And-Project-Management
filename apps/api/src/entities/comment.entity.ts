@@ -23,8 +23,8 @@ export class CommentSchema implements Omit<Comment, 'task' | 'user'> {
   createdAt: Date;
 
   @ManyToOne(() => UserSchema, (user) => user.comments)
-  user: string;
+  user: UserSchema;
 
   @ManyToOne(() => TaskSchema, (task) => task.comments)
-  task: string;
+  task: TaskSchema;
 }

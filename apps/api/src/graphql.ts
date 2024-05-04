@@ -143,6 +143,7 @@ export interface IQuery {
     task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
     users(): Nullable<User[]> | Promise<Nullable<User[]>>;
     getUsersByParams(input: GetUserInput): Nullable<User[]> | Promise<Nullable<User[]>>;
+    getConnectedUser(): User | Promise<User>;
     getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
     userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
     userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
@@ -181,7 +182,7 @@ export interface Room {
     id: string;
     createdAt: Date;
     project: Project;
-    users: User[];
+    userRooms: UserRoom[];
     messages: Message[];
 }
 
@@ -193,7 +194,7 @@ export interface Task {
     tags: string[];
     milestone: Milestone;
     comments: Comment[];
-    assignees: User[];
+    userTasks: UserTask[];
 }
 
 export interface User {
@@ -205,6 +206,8 @@ export interface User {
     role: UserRole;
     userWorkspaces: UserWorkspace[];
     userProjects: UserProject[];
+    userRooms: UserRoom[];
+    userTasks: UserTask[];
 }
 
 export interface UserProject {
@@ -212,21 +215,25 @@ export interface UserProject {
     user: User;
     project: Project;
     role: ProjectRole;
+    addedAt: Date;
 }
 
 export interface UserRoom {
-    user: string;
-    room: string;
+    id: string;
+    user: User;
+    room: Room;
 }
 
 export interface UserTask {
-    user: string;
-    task: string;
+    id: string;
+    user: User;
+    task: Task;
 }
 
 export interface UserWorkspace {
     id: string;
     user: User;
+    addedAt: Date;
     workspace: Workspace;
     role: WorkspaceRole;
 }
