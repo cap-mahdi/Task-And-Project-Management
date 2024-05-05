@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -27,4 +28,6 @@ export class MessageSchema implements Omit<Message, 'room' | 'sender'> {
 
   @ManyToOne(() => UserSchema, (user) => user.messages)
   sender: UserSchema;
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

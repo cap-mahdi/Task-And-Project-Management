@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProjectRole, UserRoom } from '../graphql';
 import { UserSchema } from './user.entity';
 
@@ -19,4 +19,7 @@ export class UserRoomSchema implements Omit<UserRoom, 'user' | 'room'> {
 
   @ManyToOne(() => RoomSchema, (project) => project.userRooms)
   room: RoomSchema;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

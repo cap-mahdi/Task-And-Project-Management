@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -36,4 +37,7 @@ export class WorkspaceSchema
 
   @OneToMany(() => ProjectSchema, (project) => project.workspace)
   projects: ProjectSchema[];
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }
