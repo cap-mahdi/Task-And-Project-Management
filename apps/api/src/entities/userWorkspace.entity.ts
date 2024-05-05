@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -12,6 +13,7 @@ import { WorkspaceSchema } from './workspace.entity';
 @Entity({
   name: 'user_workspace',
 })
+@Index(['user', 'workspace'], { unique: true })
 export class UserWorkspaceSchema
   implements Omit<UserWorkspace, 'workspace' | 'user'>
 {
