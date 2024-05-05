@@ -3,21 +3,21 @@ import {
   BellIcon,
   ListBulletIcon,
   ArrowRightStartOnRectangleIcon,
-  Squares2X2Icon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 import { link } from 'fs';
 
 export const menuButtons = [
   { text: 'Home', icon: HomeIcon, link: '' },
   {
-    text: 'Dashboard',
-    icon: Squares2X2Icon,
-    link: 'sprints',
+    text: 'Account',
+    icon: UserIcon,
+    link: 'account/general',
   },
   {
     text: 'Notifications',
     icon: BellIcon,
-    link: 'chat',
+    link: 'notification',
   },
   {
     text: 'My Tasks',

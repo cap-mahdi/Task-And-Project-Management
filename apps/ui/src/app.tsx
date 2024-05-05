@@ -1,5 +1,5 @@
 import { RouterProvider, useNavigate } from 'react-router-dom';
-import { router } from './pages';
+import { router } from './routers';
 import useAppContext from './context/useAppContext';
 import { useEffect } from 'react';
 import { checkAuth, useUser } from './services/auth';

@@ -2,7 +2,19 @@ import React from 'react';
 import { Sections } from './Sections';
 import { Box, Divider, Typography } from '@mui/material';
 
-export function SectionHeader(props) {
+interface SectionHeaderProps {
+  data: {
+    sectionTitle: string;
+    sections: {
+      title: string;
+      link: string;
+      enableLink: boolean;
+      onSelected: () => void;
+    }[];
+  };
+}
+
+export function SectionHeader({ data }: SectionHeaderProps) {
   return (
     <Box
       sx={{
@@ -25,10 +37,9 @@ export function SectionHeader(props) {
           mb: 3,
         }}
       >
-        {' '}
-        Projet PPP
+        {data.sectionTitle}
       </Typography>
-      <Sections />
+      <Sections sections={data.sections} />
       <Divider />
     </Box>
   );
