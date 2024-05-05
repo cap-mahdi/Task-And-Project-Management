@@ -5,6 +5,7 @@ type Workspace {
   createdAt: Date! #done
   userWorkspaces: [UserWorkspace!]! #done
   projects: [Project!]!
+  creator: User!
 }
 
 input CreateWorkspaceInput {
