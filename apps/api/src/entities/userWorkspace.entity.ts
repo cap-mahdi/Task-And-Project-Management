@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -27,4 +28,7 @@ export class UserWorkspaceSchema
 
   @ManyToOne(() => WorkspaceSchema, (workspace) => workspace.userWorkspaces)
   workspace: WorkspaceSchema;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }
