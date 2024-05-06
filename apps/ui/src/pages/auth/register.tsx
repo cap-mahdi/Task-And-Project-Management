@@ -1,8 +1,6 @@
 import {
-  Box,
   Button,
   Card,
-  CardHeader,
   Checkbox,
   InputLabel,
   Stack,
@@ -16,34 +14,26 @@ import { useNavigate } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { useMutation } from '@apollo/client';
-import { SignupRequest } from '../../services/auth';
+import {
+  RegisterSchema,
+  RegisterType,
+  SignupRequest,
+} from '../../services/auth';
 import Client from '../../services/api';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { EMAIL_REGEX } from '../../utils';
-
-const schema = yup.object().shape({
-  email: yup.string().email().matches(EMAIL_REGEX, 'Invalid email').required(),
-  password: yup.string().min(8).required(),
-  name: yup.string().required(),
-});
 
 const RegisterCard = () => {
   const navigate = useNavigate();
 
   const [globalState, setGlobalState] = useAppContext();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
+  const { register, handleSubmit, control } = useForm<RegisterType>({
+    resolver: yupResolver(RegisterSchema),
   });
 
   const onStorageChange = useCallback(
     (newValue: any) => {
-      setGlobalState((prevState: any) => ({
+      setGlobalState((prevState: RegisterType) => ({
         ...prevState,
         token: newValue,
       }));
@@ -59,26 +49,18 @@ const RegisterCard = () => {
     onStorageChange,
   });
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: RegisterType) => {
     // const { email, password, name, confirmPassword } = data;
-    setEmail('');
-    setName('');
-    setPassword('');
-    setConfirmPassword('');
-
+    console.log('register data ', data);
     Client.post({
       request: createLoginRequest,
-      data: { email, password, name, confirmPassword },
+      data: data,
     }).then((res) => {
       console.log('from Signup', res);
       setToken(res.data.createPost.accessToken);
     });
   };
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [createLoginRequest] = useMutation(SignupRequest);
 
   return (
@@ -107,13 +89,19 @@ const RegisterCard = () => {
         >
           First & Last Name
         </InputLabel>
-        <TextField
-          {...register('name')}
-          id="name"
-          placeholder="i.e john doe"
-          size="small"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+        <Controller
+          control={control}
+          name="name"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="name"
+              placeholder="i.e john doe"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
       <Stack spacing={1}>
@@ -127,25 +115,21 @@ const RegisterCard = () => {
         >
           Email
         </InputLabel>
-        <TextField
-          {...register('email')}
-          id="email"
-          type="email"
-          placeholder="i.e john@mail.com"
-          size="small"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        <Controller
+          control={control}
+          name="email"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="email"
+              type="email"
+              placeholder="gdoura@gmail.com"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
-        {errors.email && (
-          <Typography
-            sx={{
-              color: 'red',
-              fontSize: 12,
-            }}
-          >
-            {errors.email.message}
-          </Typography>
-        )}
       </Stack>
 
       <Stack spacing={1}>
@@ -159,25 +143,20 @@ const RegisterCard = () => {
         >
           Password
         </InputLabel>
-        <TextField
-          {...register('password')}
-          id="password"
-          type="password"
-          size="small"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <Controller
+          control={control}
+          name="password"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="password"
+              type="password"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
-
-        {errors.password && (
-          <Typography
-            sx={{
-              color: 'red',
-              fontSize: 12,
-            }}
-          >
-            {errors.password.message}
-          </Typography>
-        )}
       </Stack>
       <Stack spacing={1}>
         <InputLabel
@@ -190,12 +169,19 @@ const RegisterCard = () => {
         >
           Confirm Password
         </InputLabel>
-        <TextField
-          id="confirmPassword"
-          type="password"
-          size="small"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+        <Controller
+          control={control}
+          name="confirmPassword"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="confirmPassword"
+              type="password"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
       <Stack spacing={1} direction={'row'} alignItems={'center'}>
@@ -214,26 +200,6 @@ const RegisterCard = () => {
           padding: '10px 0',
           borderRadius: 2,
         }}
-        disabled={
-          email === '' ||
-          password === '' ||
-          name === '' ||
-          confirmPassword === ''
-        }
-        // onClick={() => {
-        //   setEmail('');
-        //   setName('');
-        //   setPassword('');
-        //   setConfirmPassword('');
-
-        //   Client.post({
-        //     request: createLoginRequest,
-        //     data: { email, password, name, confirmPassword },
-        //   }).then((res) => {
-        //     console.log('from Signup', res);
-        //     setToken(res.data.createPost.accessToken);
-        //   });
-        // }}
         type="submit"
       >
         Create an account
