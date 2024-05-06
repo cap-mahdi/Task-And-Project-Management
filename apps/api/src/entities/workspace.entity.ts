@@ -3,10 +3,11 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Workspace } from '../graphql';
+import { User, Workspace } from '../graphql';
 import { UserWorkspaceSchema } from './userWorkspace.entity';
 import { ProjectSchema } from './project.entity';
 import { UserSchema } from './user.entity';
@@ -15,8 +16,7 @@ import { UserSchema } from './user.entity';
   name: 'workspace',
 })
 export class WorkspaceSchema
-  implements Omit<Workspace, 'userWorkspaces' | 'projects'>
-{
+  implements Omit<Workspace, 'userWorkspaces' | 'projects'> {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -37,6 +37,9 @@ export class WorkspaceSchema
 
   @OneToMany(() => ProjectSchema, (project) => project.workspace)
   projects: ProjectSchema[];
+
+  @ManyToOne(() => UserSchema, (user) => user.createdWorkspaces)
+  creator: User;
 
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date;

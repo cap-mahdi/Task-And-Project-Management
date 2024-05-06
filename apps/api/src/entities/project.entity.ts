@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Project } from '../graphql';
+import { Project, User } from '../graphql';
 import { WorkspaceSchema } from './workspace.entity';
 import { UserSchema } from './user.entity';
 import { MilestoneSchema } from './milestone.entity';
@@ -19,8 +19,7 @@ import { UserProjectSchema } from './userProject.entity';
 })
 export class ProjectSchema
   implements
-    Omit<Project, 'workspace' | 'userProjects' | 'rooms' | 'milestones'>
-{
+  Omit<Project, 'workspace' | 'userProjects' | 'rooms' | 'milestones'> {
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -44,6 +43,9 @@ export class ProjectSchema
 
   @OneToMany(() => MilestoneSchema, (milestone) => milestone.project)
   milestones: MilestoneSchema[];
+
+  @ManyToOne(() => UserSchema, (user) => user.createdProjects)
+  creator: User;
 
   @DeleteDateColumn({ type: 'timestamp' })
   deletedAt: Date;
