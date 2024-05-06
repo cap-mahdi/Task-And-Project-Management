@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User, UserRole } from '../graphql';
+import { Project, User, UserRole, Workspace } from '../graphql';
 import { UserWorkspaceSchema } from './userWorkspace.entity';
 import { UserProjectSchema } from './userProject.entity';
 
@@ -15,6 +15,8 @@ import { MessageSchema } from './message.entity';
 import { Exclude } from 'class-transformer';
 import { UserRoomSchema } from './userRoom.entity';
 import { UserTaskSchema } from './userTask.entity';
+import { ProjectSchema } from './project.entity';
+import { WorkspaceSchema } from './workspace.entity';
 
 @Entity({
   name: 'user',
@@ -59,6 +61,18 @@ export class UserSchema
 
   @OneToMany(() => MessageSchema, (message) => message.sender)
   messages: MessageSchema[];
+
+  @OneToMany(() => ProjectSchema, (project) => project.creator)
+  createdProjects: Project[];
+
+  @OneToMany(() => WorkspaceSchema, (workspace) => workspace.creator)
+  createdWorkspaces: Workspace[];
+
+  @OneToMany(() => ProjectSchema, (project) => project.creator)
+  createdProjects: Project[];
+
+  @OneToMany(() => WorkspaceSchema, (workspace) => workspace.creator)
+  createdWorkspaces: Workspace[];
 
   @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;

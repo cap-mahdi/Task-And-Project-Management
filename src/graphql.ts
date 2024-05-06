@@ -200,6 +200,7 @@ export class Project {
     rooms: Room[];
     userProjects: UserProject[];
     milestones: Milestone[];
+    creator: User;
 }
 
 export class Room {
@@ -232,6 +233,8 @@ export class User {
     userProjects: UserProject[];
     userRooms: UserRoom[];
     userTasks: UserTask[];
+    createdWorkspaces: Workspace[];
+    createdProjects: Project[];
 }
 
 export class UserProject {
@@ -269,6 +272,7 @@ export class Workspace {
     createdAt: Date;
     userWorkspaces: UserWorkspace[];
     projects: Project[];
+    creator: User;
 }
 
 type Nullable<T> = T | null;
