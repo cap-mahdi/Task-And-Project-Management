@@ -68,12 +68,6 @@ export class UserSchema
   @OneToMany(() => WorkspaceSchema, (workspace) => workspace.creator)
   createdWorkspaces: Workspace[];
 
-  @OneToMany(() => ProjectSchema, (project) => project.creator)
-  createdProjects: Project[];
-
-  @OneToMany(() => WorkspaceSchema, (workspace) => workspace.creator)
-  createdWorkspaces: Workspace[];
-
   @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }

@@ -10,6 +10,7 @@ import {
 import { User, Workspace } from '../graphql';
 import { UserWorkspaceSchema } from './userWorkspace.entity';
 import { ProjectSchema } from './project.entity';
+import { UserSchema } from './user.entity';
 
 @Entity({
   name: 'workspace',
@@ -37,9 +38,6 @@ export class WorkspaceSchema
 
   @OneToMany(() => ProjectSchema, (project) => project.workspace)
   projects: ProjectSchema[];
-
-  @ManyToOne(() => UserSchema, (user) => user.createdWorkspaces)
-  creator: User;
 
   @ManyToOne(() => UserSchema, (user) => user.createdWorkspaces)
   creator: User;
