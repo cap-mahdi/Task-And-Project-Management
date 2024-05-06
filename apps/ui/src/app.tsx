@@ -1,8 +1,8 @@
-import { RouterProvider, useNavigate } from 'react-router-dom';
-import { router } from './pages';
+import { RouterProvider } from 'react-router-dom';
 import useAppContext from './context/useAppContext';
 import { useEffect } from 'react';
-import { checkAuth, useUser } from './services/auth';
+import { useUser } from './services/auth';
+import { router } from './routers';
 
 export const App = () => {
   const [globalState, setGlobalState] = useAppContext();
