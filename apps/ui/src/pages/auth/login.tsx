@@ -24,6 +24,7 @@ const LoginCard = () => {
   const [globalState, setGlobalState] = useAppContext();
   const { handleSubmit, control } = useForm<LoginType>({
     resolver: yupResolver(LoginSchema),
+    mode: 'onBlur',
   });
 
   const onStorageChange = useCallback(
@@ -47,7 +48,7 @@ const LoginCard = () => {
   const [createLoginRequest] = useMutation(LoginRequest);
   const onSubmitForm = (data: LoginType) => {
     console.log('data login ', data);
-    return;
+    // return;
     Client.post({
       request: createLoginRequest,
       data,
