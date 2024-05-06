@@ -18,6 +18,7 @@ import { UserProjectSchema } from '../entities/userProject.entity';
 import { UserSchema } from '../entities/user.entity';
 
 @Resolver('Project')
+@UseGuards(GraphQLAuthGaurd)
 export class ProjectResolver {
   constructor(
     @InjectRepository(ProjectSchema)
@@ -29,7 +30,6 @@ export class ProjectResolver {
   ) { }
 
   @Mutation('createProject')
-  @UseGuards(GraphQLAuthGaurd)
   async createProject(
     @Args('input') createProjectInput: CreateProjectInput,
     @GetUserGQL() user: UserSchema
@@ -59,7 +59,6 @@ export class ProjectResolver {
 
 
   @Query('projects')
-  @UseGuards(GraphQLAuthGaurd)
   async projects(@GetUserGQL() user: UserSchema): Promise<ProjectSchema[]> {
     const userProjects: UserProjectSchema[] =
       await this.userProjectRepository.find({

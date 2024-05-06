@@ -18,6 +18,7 @@ import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { WorkspaceRoles } from '../auth/decorators/workspace-roles.decorator';
 
 @Resolver('Workspace')
+@UseGuards(GraphQLAuthGaurd)
 export class WorkspaceResolver {
   constructor(
     @InjectRepository(UserWorkspaceSchema)
@@ -28,7 +29,6 @@ export class WorkspaceResolver {
   ) { }
 
   @Mutation('createWorkspace')
-  @UseGuards(GraphQLAuthGaurd)
   async createWorkspace(
     @Args('input') createWorkspaceInput: CreateWorkspaceInput,
     @GetUserGQL() user: UserSchema
@@ -55,11 +55,13 @@ export class WorkspaceResolver {
     @GetUserGQL() user: UserSchema
   ): Promise<WorkspaceSchema> {
 
+
     const workspace = await this.workspaceRepository.findOne({
       where: {
         id: id
       }
     });
+
 
     if (!workspace) {
       throw new Error('Workspace not found');
@@ -76,6 +78,7 @@ export class WorkspaceResolver {
       },
     });
 
+
     if (!userWorkspace) {
       throw new Error('User not member of the workspace');
     }
@@ -85,6 +88,7 @@ export class WorkspaceResolver {
       throw new Error('Unauthorized access');
     }
 
+
     return this.workspaceRepository.save({
       ...workspace,
       ...updateWorkspaceInput,
@@ -92,7 +96,6 @@ export class WorkspaceResolver {
   }
 
   @Query('workspaces')
-  @UseGuards(GraphQLAuthGaurd)
   async workspaces(@GetUserGQL() user: UserSchema): Promise<WorkspaceSchema[]> {
     console.info('user', user);
     const userWorkspaces: UserWorkspaceSchema[] =

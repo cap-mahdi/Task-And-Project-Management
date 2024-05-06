@@ -13,22 +13,12 @@ import { LinkableCaption } from './common';
 import { useNavigate } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-<<<<<<< HEAD
-import { SignupRequest } from '../../services/auth';
-import Client from '../../services/api';
-import { useMutation } from '@apollo/client';
-import { useCustomMutation } from '../../hooks/useCustomMutation';
-=======
-import { useMutation } from '@apollo/client';
-import {
-  RegisterSchema,
-  RegisterType,
-  SignupRequest,
-} from '../../services/auth';
-import Client from '../../services/api';
-import { Controller, useForm } from 'react-hook-form';
+import { RegisterSchema, RegisterType, SignupRequest } from '../../services/auth/signup';
 import { yupResolver } from '@hookform/resolvers/yup';
->>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
+import { useForm, Controller } from 'react-hook-form';
+import { useMutation } from '@apollo/client';
+import Client from '../../services/api';
+
 
 const RegisterCard = () => {
   const navigate = useNavigate();
@@ -57,13 +47,10 @@ const RegisterCard = () => {
     onStorageChange,
   });
 
-<<<<<<< HEAD
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [createLoginRequest] = useCustomMutation(SignupRequest);
-=======
   const onSubmitForm = (data: RegisterType) => {
     // const { email, password, name, confirmPassword } = data;
     console.log('register data ', data);
@@ -77,7 +64,6 @@ const RegisterCard = () => {
   };
 
   const [createLoginRequest] = useMutation(SignupRequest);
->>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
 
   return (
     <Card

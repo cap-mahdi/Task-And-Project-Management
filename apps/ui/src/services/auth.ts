@@ -1,6 +1,6 @@
 import { Login } from '@mui/icons-material';
 import RestClient from './api';
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import useAppContext from '../context/useAppContext';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
 import { useCustomQuery } from '../hooks/useCustomQuery';
@@ -50,7 +50,7 @@ const getConnectedUserRequest = gql`
 
 export const useUser = () => {
   console.log('HEEEEREE');
-  const { data, error, loading } = useCustomQuery(getConnectedUserRequest, true);
+  const { data, error, loading } = useQuery(getConnectedUserRequest);
   console.log('data', data);
   console.log('data', data?.getConnectedUser);
 

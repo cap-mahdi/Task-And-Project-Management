@@ -10,22 +10,15 @@ import {
 import { FC, useCallback } from 'react';
 import { AuthLayout } from '../../layout';
 import { LinkableCaption } from './common';
-<<<<<<< HEAD
-import { LoginRequest } from '../../services/auth';
-=======
 import { useMutation } from '@apollo/client';
->>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import Client from '../../services/api';
 import useAppContext from '../../context/useAppContext';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
-import { useMutation } from '@apollo/client';
-=======
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoginRequest, LoginSchema, LoginType } from '../../services';
->>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
+import { LoginRequest } from '../../services';
+import { LoginSchema, LoginType } from '../../services/auth/login';
 
 const LoginCard = () => {
   const navigate = useNavigate();
