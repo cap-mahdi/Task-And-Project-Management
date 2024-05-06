@@ -9,7 +9,6 @@ import {
 import { Workspace } from '../graphql';
 import { UserWorkspaceSchema } from './userWorkspace.entity';
 import { ProjectSchema } from './project.entity';
-import { UserSchema } from './user.entity';
 
 @Entity({
   name: 'workspace',
@@ -38,6 +37,6 @@ export class WorkspaceSchema
   @OneToMany(() => ProjectSchema, (project) => project.workspace)
   projects: ProjectSchema[];
 
-  @DeleteDateColumn({ type: 'timestamp' })
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }

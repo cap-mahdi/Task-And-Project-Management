@@ -60,6 +60,6 @@ export class UserSchema
   @OneToMany(() => MessageSchema, (message) => message.sender)
   messages: MessageSchema[];
 
-  @DeleteDateColumn({ type: 'timestamp' })
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }

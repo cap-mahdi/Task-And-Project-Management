@@ -14,7 +14,7 @@ import { ProjectSchema } from './project.entity';
 @Entity({
   name: 'user_project',
 })
-@Index(['user', 'project'], { unique: true })
+@Index(['user', 'project'], { unique: true, where: 'deleted_at IS NULL' })
 export class UserProjectSchema
   implements Omit<UserProject, 'user' | 'project'>
 {
@@ -32,6 +32,6 @@ export class UserProjectSchema
   @ManyToOne(() => ProjectSchema, (project) => project.userProjects)
   project: ProjectSchema;
 
-  @DeleteDateColumn({ type: 'timestamp' })
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }

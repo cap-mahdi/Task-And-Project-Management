@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 import { Project } from '../graphql';
 import { WorkspaceSchema } from './workspace.entity';
-import { UserSchema } from './user.entity';
 import { MilestoneSchema } from './milestone.entity';
 import { RoomSchema } from './room.entity';
 import { UserProjectSchema } from './userProject.entity';
@@ -45,6 +44,6 @@ export class ProjectSchema
   @OneToMany(() => MilestoneSchema, (milestone) => milestone.project)
   milestones: MilestoneSchema[];
 
-  @DeleteDateColumn({ type: 'timestamp' })
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }
