@@ -9,7 +9,7 @@ export const useCustomQuery = (request: DocumentNode, renderToast: boolean) => {
     const { data, error, loading } = useQuery(request);
 
 
-    if (!loading && renderToast) {
+    if (!loading) {
         if (!error) {
             toast.success('Welcome back', { position: 'bottom-right', icon: () => null });
         }

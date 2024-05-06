@@ -100,10 +100,10 @@ export class UserProjectResolver {
         return userProjects;
     }
 
-    @Mutation('removeUsersFromProject')
+    @Mutation('deleteUsersFromProject')
     @ProjectRoles(ProjectRole.Project_ADMIN, ProjectRole.Project_EDITOR)
     @UseGuards(GraphQLAuthGaurd)
-    async removeUsersFromProject(
+    async deleteUsersFromProject(
         @Args('projectId') projectId: string,
         @Args('userIds') userIds: string[],
         @GetUserGQL() user: UserSchema
@@ -166,7 +166,7 @@ export class UserProjectResolver {
             throw new Error('User not member of the project');
         }
 
-        const roles = Reflect.getMetadata('roles', this.removeUsersFromProject);
+        const roles = Reflect.getMetadata('roles', this.deleteUsersFromProject);
         if (!roles.includes(userProject.role)) {
             throw new Error('Unauthorized access');
         }

@@ -51,9 +51,9 @@ import {
         return {
           type: 'postgres',
           // url: 'postgresql://postgres:root@localhost:5432/teamflow',
-          url: 'postgresql://postgres:postgres@localhost:5432/teamflow',
+          // url: 'postgresql://postgres:postgres@localhost:5432/teamflow',
           // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
-          // url: configService.get<string>('database_url'),
+          url: configService.get<string>('database_url'),
           synchronize: true,
           // entities: [join(__dirname, '**/*.entity{.ts,.js}')],
           entities: [
