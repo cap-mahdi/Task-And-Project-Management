@@ -11,11 +11,11 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { AuthLayout } from '../../layout';
 import { LinkableCaption } from './common';
 import { LoginRequest } from '../../services/auth';
-import { useMutation } from '@apollo/client';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import Client from '../../services/api';
 import useAppContext from '../../context/useAppContext';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 
 const LoginCard = () => {
   const navigate = useNavigate();

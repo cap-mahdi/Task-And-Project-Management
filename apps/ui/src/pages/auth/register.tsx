@@ -15,9 +15,10 @@ import { LinkableCaption } from './common';
 import { useNavigate } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { useMutation } from '@apollo/client';
 import { SignupRequest } from '../../services/auth';
 import Client from '../../services/api';
+import { useMutation } from '@apollo/client';
+import { useCustomMutation } from '../../hooks/useCustomMutation';
 
 const RegisterCard = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const RegisterCard = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [createLoginRequest] = useMutation(SignupRequest);
+  const [createLoginRequest] = useCustomMutation(SignupRequest);
 
   return (
     <Card

@@ -26,7 +26,7 @@ export class ProjectResolver {
     private workspaceRepository: Repository<WorkspaceSchema>,
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) {}
+  ) { }
 
   @Mutation('createProject')
   @UseGuards(GraphQLAuthGaurd)
@@ -56,6 +56,7 @@ export class ProjectResolver {
     // console.info('userProject', userProject);
     return project;
   }
+
 
   @Query('projects')
   @UseGuards(GraphQLAuthGaurd)

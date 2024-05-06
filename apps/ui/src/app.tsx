@@ -3,6 +3,7 @@ import { router } from './pages';
 import useAppContext from './context/useAppContext';
 import { useEffect } from 'react';
 import { checkAuth, useUser } from './services/auth';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const App = () => {
   const [globalState, setGlobalState] = useAppContext();

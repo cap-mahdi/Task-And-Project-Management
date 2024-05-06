@@ -1,9 +1,9 @@
 import { Login } from '@mui/icons-material';
-import { useRestApi } from './api';
 import RestClient from './api';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
 import useAppContext from '../context/useAppContext';
 import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import { useCustomQuery } from '../hooks/useCustomQuery';
 
 export const LoginRequest = gql`
   mutation LoginRequest($input: LoginInput!) {
@@ -50,7 +50,7 @@ const getConnectedUserRequest = gql`
 
 export const useUser = () => {
   console.log('HEEEEREE');
-  const { data, error, loading } = useQuery(getConnectedUserRequest);
+  const { data, error, loading } = useCustomQuery(getConnectedUserRequest, true);
   console.log('data', data);
   console.log('data', data?.getConnectedUser);
 
