@@ -1,4 +1,10 @@
-import { Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  DeleteDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserSchema } from './user.entity';
 
 import { RoomSchema } from './room.entity';
@@ -17,4 +23,7 @@ export class UserRoomSchema implements Omit<UserRoom, 'user' | 'room'> {
 
   @ManyToOne(() => RoomSchema, (project) => project.userRooms)
   room: RoomSchema;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -43,4 +44,7 @@ export class ProjectSchema
 
   @OneToMany(() => MilestoneSchema, (milestone) => milestone.project)
   milestones: MilestoneSchema[];
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

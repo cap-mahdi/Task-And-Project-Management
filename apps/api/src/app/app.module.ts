@@ -78,6 +78,11 @@ import { UserTaskSchema } from '../entities/userTask.entity';
     UserWorkspaceModule,
     ProjectModule,
     UserProjectModule,
+    TypeOrmModule.forFeature([
+      UserSchema,
+      UserWorkspaceSchema,
+      WorkspaceSchema,
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],

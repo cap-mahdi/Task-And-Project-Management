@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   ManyToOne,
@@ -30,4 +31,7 @@ export class UserProjectSchema
 
   @ManyToOne(() => ProjectSchema, (project) => project.userProjects)
   project: ProjectSchema;
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

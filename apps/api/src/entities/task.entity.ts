@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -42,4 +43,7 @@ export class TaskSchema
 
   @ManyToOne(() => MilestoneSchema, (milestone) => milestone.tasks)
   milestone: MilestoneSchema;
+  
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

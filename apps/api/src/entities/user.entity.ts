@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -58,4 +59,7 @@ export class UserSchema
 
   @OneToMany(() => MessageSchema, (message) => message.sender)
   messages: MessageSchema[];
+
+  @DeleteDateColumn({ type: 'timestamp' })
+  deletedAt: Date;
 }

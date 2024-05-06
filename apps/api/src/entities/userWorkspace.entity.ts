@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   ManyToOne,
@@ -13,7 +14,7 @@ import { WorkspaceSchema } from './workspace.entity';
 @Entity({
   name: 'user_workspace',
 })
-@Index(['user', 'workspace'], { unique: true })
+@Index(['user', 'workspace', 'deletedAt'], { unique: true })
 export class UserWorkspaceSchema
   implements Omit<UserWorkspace, 'workspace' | 'user'>
 {
@@ -29,4 +30,7 @@ export class UserWorkspaceSchema
 
   @ManyToOne(() => WorkspaceSchema, (workspace) => workspace.userWorkspaces)
   workspace: WorkspaceSchema;
+
+  @DeleteDateColumn({ type: 'text', default: '' })
+  deletedAt: Date;
 }
