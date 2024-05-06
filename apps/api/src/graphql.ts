@@ -176,6 +176,7 @@ export interface Project {
     rooms: Room[];
     userProjects: UserProject[];
     milestones: Milestone[];
+    creator: User;
 }
 
 export interface Room {
@@ -208,6 +209,8 @@ export interface User {
     userProjects: UserProject[];
     userRooms: UserRoom[];
     userTasks: UserTask[];
+    createdWorkspaces: Workspace[];
+    createdProjects: Project[];
 }
 
 export interface UserProject {
@@ -245,6 +248,7 @@ export interface Workspace {
     createdAt: Date;
     userWorkspaces: UserWorkspace[];
     projects: Project[];
+    creator: User;
 }
 
 type Nullable<T> = T | null;

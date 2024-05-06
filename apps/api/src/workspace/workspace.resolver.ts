@@ -35,6 +35,7 @@ export class WorkspaceResolver {
   ): Promise<WorkspaceSchema> {
     const workspace = await this.workspaceRepository.save({
       ...createWorkspaceInput,
+      creator: user,
     });
 
     await this.userWorkspaceRepository.save({

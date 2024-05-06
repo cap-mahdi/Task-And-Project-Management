@@ -44,7 +44,7 @@ export class ProjectResolver {
     }
     const project: ProjectSchema = await this.projectRepository.save({
       ...createProjectInput,
-
+      creator: user,
       workspace: workspace,
     });
 

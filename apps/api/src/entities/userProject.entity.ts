@@ -1,18 +1,20 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  Index,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProjectRole, UserProject } from '../graphql';
 import { UserSchema } from './user.entity';
 import { ProjectSchema } from './project.entity';
-import { Project } from 'ts-morph';
 
 @Entity({
   name: 'user_project',
 })
+@Index(['user', 'project'], { unique: true, where: 'deleted_at IS NULL' })
 export class UserProjectSchema
   implements Omit<UserProject, 'user' | 'project'>
 {
@@ -29,4 +31,7 @@ export class UserProjectSchema
 
   @ManyToOne(() => ProjectSchema, (project) => project.userProjects)
   project: ProjectSchema;
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
+  deletedAt: Date;
 }

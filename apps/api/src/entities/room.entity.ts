@@ -1,15 +1,13 @@
 import {
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Room } from '../graphql';
 import { ProjectSchema } from './project.entity';
-import { UserSchema } from './user.entity';
 import { UserRoomSchema } from './userRoom.entity';
 import { MessageSchema } from './message.entity';
 
@@ -33,4 +31,7 @@ export class RoomSchema
 
   @OneToMany(() => MessageSchema, (message) => message.room)
   messages: MessageSchema[];
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
+  deletedAt: Date;
 }

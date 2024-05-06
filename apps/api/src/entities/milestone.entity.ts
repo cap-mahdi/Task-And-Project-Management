@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -36,4 +37,7 @@ export class MilestoneSchema implements Omit<Milestone, 'tasks' | 'project'> {
 
   @OneToMany(() => TaskSchema, (task) => task.milestone)
   tasks: TaskSchema[];
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
+  deletedAt: Date;
 }
