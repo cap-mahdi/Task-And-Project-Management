@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { NavBar, SideBar } from '../components';
+import { FormCreateWorkspace, NavBar, SideBar } from '../components';
 import { Login, Register, ResetPassword } from './auth';
 import { Layout } from '../layout';
 import { Overview } from './overview';
@@ -100,4 +100,8 @@ export const router = createBrowserRouter([
   },
 
   { path: '/sprints', element: <Sprint /> },
+  {
+    path: '/workspace',
+    element: <FormCreateWorkspace />,
+  },
 ]);
