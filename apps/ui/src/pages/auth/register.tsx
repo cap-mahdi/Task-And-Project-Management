@@ -29,6 +29,7 @@ const RegisterCard = () => {
   const [globalState, setGlobalState] = useAppContext();
   const { register, handleSubmit, control } = useForm<RegisterType>({
     resolver: yupResolver(RegisterSchema),
+    mode: 'onBlur',
   });
 
   const onStorageChange = useCallback(
