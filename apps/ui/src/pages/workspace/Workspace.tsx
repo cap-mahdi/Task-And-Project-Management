@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import { MainLayout } from '../../layout/MainLayout';
 import useWorkspaceContext from '../../context/useWorkspaceContext';
 
 export function Workspace(props) {
+  const params = useParams();
+  console.log('params from workspace', params);
   const [workspaceState, setWorkspaceState] = useWorkspaceContext();
   useEffect(() => {
     setWorkspaceState({ data: 'Workspace Data' });

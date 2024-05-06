@@ -5,7 +5,6 @@ import {
   ArrowRightStartOnRectangleIcon,
   UserIcon,
 } from '@heroicons/react/24/outline';
-import { link } from 'fs';
 
 export const menuButtons = [
   { text: 'Home', icon: HomeIcon, link: '' },

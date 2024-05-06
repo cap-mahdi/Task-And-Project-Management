@@ -14,11 +14,14 @@ type User {
   userProjects: [UserProject!]!
   userRooms: [UserRoom!]!
   userTasks: [UserTask!]!
+  createdWorkspaces: [Workspace!]!
+  createdProjects: [Project!]!
 }
 
 type Query {
   users: [User!]
   getUsersByParams(input: GetUserInput!): [User!]
+  getConnectedUser: User!
   getConnectedUser: User!
 }
 

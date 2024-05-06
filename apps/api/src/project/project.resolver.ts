@@ -26,7 +26,7 @@ export class ProjectResolver {
     private workspaceRepository: Repository<WorkspaceSchema>,
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) {}
+  ) { }
 
   @Mutation('createProject')
   @UseGuards(GraphQLAuthGaurd)
@@ -44,7 +44,7 @@ export class ProjectResolver {
     }
     const project: ProjectSchema = await this.projectRepository.save({
       ...createProjectInput,
-
+      creator: user,
       workspace: workspace,
     });
 

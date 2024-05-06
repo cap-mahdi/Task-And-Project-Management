@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -27,4 +28,7 @@ export class CommentSchema implements Omit<Comment, 'task' | 'user'> {
 
   @ManyToOne(() => TaskSchema, (task) => task.comments)
   task: TaskSchema;
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
+  deletedAt: Date;
 }
