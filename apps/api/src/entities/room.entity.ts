@@ -2,8 +2,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -34,7 +32,7 @@ export class RoomSchema
 
   @OneToMany(() => MessageSchema, (message) => message.room)
   messages: MessageSchema[];
-  
-  @DeleteDateColumn({ type: 'timestamp' })
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }

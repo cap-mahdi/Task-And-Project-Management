@@ -1,5 +1,13 @@
 import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+interface SectionType {
+  title: string;
+  link: string;
+  enableLink: boolean;
+  onSelected: () => void;
+}
 
 const styles = {
   wrapper: {
@@ -29,13 +37,13 @@ const styles = {
 };
 
 interface PropsType {
-  sections: string[];
+  sections: SectionType[];
   uppercase: boolean;
   sx: object;
 }
 
 export function Sections({
-  sections = ['Home', 'Categories', 'About us', 'Contact us'],
+  sections = [],
   uppercase = true,
   sx = {},
 }: PropsType) {
@@ -49,27 +57,45 @@ export function Sections({
         setHover(selected);
       }}
     >
-      {sections.map((section, i) => (
-        <Typography
-          sx={{
-            ...styles.sectionStyle,
-            fontSize: 13,
-            'text-underline-offset': '17px',
-            ...(selected === i && hover === selected
-              ? styles.selectedStyle
-              : {}),
-            ':hover': { ...styles.selectedStyle },
-          }}
-          onClick={() => {
-            setSelected(i);
-          }}
-          onMouseEnter={() => {
-            setHover(i);
-          }}
-        >
-          {uppercase ? section : section}
-        </Typography>
-      ))}
+      {sections.map((section, i) => {
+        const render = (
+          <Typography
+            sx={{
+              ...styles.sectionStyle,
+              fontSize: 13,
+              'text-underline-offset': '17px',
+              ...(selected === i && hover === selected
+                ? styles.selectedStyle
+                : {}),
+              ':hover': { ...styles.selectedStyle },
+            }}
+            onClick={() => {
+              setSelected(i);
+              section.onSelected();
+            }}
+            onMouseEnter={() => {
+              setHover(i);
+            }}
+          >
+            {uppercase ? section.title : section.title}
+          </Typography>
+        );
+
+        if (section.enableLink) {
+          return (
+            <Link
+              to={section.link}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+              }}
+            >
+              {render}
+            </Link>
+          );
+        }
+        return render;
+      })}
     </Box>
   );
 }
