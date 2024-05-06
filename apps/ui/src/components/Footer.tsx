@@ -95,23 +95,23 @@ const titles = [
       },
     ],
   },
-  {
-    title: 'Contact Us',
-    links: [
-      {
-        title: 'Privacy Policy',
-        link: '#',
-      },
-      {
-        title: 'Terms & Conditions',
-        link: '#',
-      },
-      {
-        title: 'Return Policy',
-        link: '#',
-      },
-    ],
-  },
+  // {
+  //   title: 'Contact Us',
+  //   links: [
+  //     {
+  //       title: 'Privacy Policy',
+  //       link: '#',
+  //     },
+  //     {
+  //       title: 'Terms & Conditions',
+  //       link: '#',
+  //     },
+  //     {
+  //       title: 'Return Policy',
+  //       link: '#',
+  //     },
+  //   ],
+  // },
   {
     title: 'Contact Us',
     links: [

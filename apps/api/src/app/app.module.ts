@@ -8,24 +8,25 @@ import { join } from 'path';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommentSchema } from '../entities/comment.entity';
-import { MessageSchema } from '../entities/message.entity';
-import { MilestoneSchema } from '../entities/milestone.entity';
-import { ProjectSchema } from '../entities/project.entity';
-import { RoomSchema } from '../entities/room.entity';
-import { UserSchema } from '../entities/user.entity';
-import { TaskSchema } from '../entities/task.entity';
-import { UserProjectSchema } from '../entities/userProject.entity';
-import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
-import { WorkspaceSchema } from '../entities/workspace.entity';
 import { configuration } from '../config';
 import { WorkspaceModule } from '../workspace/workspace.module';
 import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
-import { Project } from 'ts-morph';
 import { ProjectModule } from '../project/project.module';
 import { UserProjectModule } from '../user-project/user-project.module';
-import { UserRoomSchema } from '../entities/userRoom.entity';
-import { UserTaskSchema } from '../entities/userTask.entity';
+import {
+  CommentSchema,
+  WorkspaceSchema,
+  UserProjectSchema,
+  UserWorkspaceSchema,
+  UserRoomSchema,
+  UserTaskSchema,
+  RoomSchema,
+  UserSchema,
+  TaskSchema,
+  ProjectSchema,
+  MilestoneSchema,
+  MessageSchema,
+} from '../entities';
 
 @Module({
   imports: [
@@ -49,8 +50,8 @@ import { UserTaskSchema } from '../entities/userTask.entity';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          // url: 'postgresql://postgres:root@localhost:5432/teamflow',
-          url: 'postgresql://task_management_app_owner:dxtPpCbf72UL@ep-blue-hat-a5nwbuja.us-east-2.aws.neon.tech/task_management_app?sslmode=require',
+          url: 'postgres://postgres:22870166@localhost:5432/teamflow',
+          // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           // url: configService.get<string>('database_url'),
           synchronize: true,
           // entities: [join(__dirname, '**/*.entity{.ts,.js}')],

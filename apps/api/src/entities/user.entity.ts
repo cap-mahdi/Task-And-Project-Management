@@ -23,9 +23,11 @@ import { WorkspaceSchema } from './workspace.entity';
 })
 export class UserSchema
   implements
-  Omit<User, 'userWorkspaces' | 'userProjects' | 'userRooms' | 'userTasks'> {
+    Omit<User, 'userWorkspaces' | 'userProjects' | 'userRooms' | 'userTasks'>
+{
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
   @Column()
   name: string;
 
@@ -66,6 +68,6 @@ export class UserSchema
   @OneToMany(() => WorkspaceSchema, (workspace) => workspace.creator)
   createdWorkspaces: Workspace[];
 
-  @DeleteDateColumn({ type: 'timestamp' })
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }
