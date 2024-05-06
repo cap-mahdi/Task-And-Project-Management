@@ -1,8 +1,6 @@
 import {
-  Box,
   Button,
   Card,
-  CardHeader,
   Checkbox,
   InputLabel,
   Stack,
@@ -15,17 +13,35 @@ import { LinkableCaption } from './common';
 import { useNavigate } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
+<<<<<<< HEAD
 import { SignupRequest } from '../../services/auth';
 import Client from '../../services/api';
 import { useMutation } from '@apollo/client';
 import { useCustomMutation } from '../../hooks/useCustomMutation';
+=======
+import { useMutation } from '@apollo/client';
+import {
+  RegisterSchema,
+  RegisterType,
+  SignupRequest,
+} from '../../services/auth';
+import Client from '../../services/api';
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+>>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
 
 const RegisterCard = () => {
   const navigate = useNavigate();
+
   const [globalState, setGlobalState] = useAppContext();
+  const { register, handleSubmit, control } = useForm<RegisterType>({
+    resolver: yupResolver(RegisterSchema),
+    mode: 'onBlur',
+  });
+
   const onStorageChange = useCallback(
-    (newValue) => {
-      setGlobalState((prevState) => ({
+    (newValue: any) => {
+      setGlobalState((prevState: RegisterType) => ({
         ...prevState,
         token: newValue,
       }));
@@ -41,11 +57,27 @@ const RegisterCard = () => {
     onStorageChange,
   });
 
+<<<<<<< HEAD
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [createLoginRequest] = useCustomMutation(SignupRequest);
+=======
+  const onSubmitForm = (data: RegisterType) => {
+    // const { email, password, name, confirmPassword } = data;
+    console.log('register data ', data);
+    Client.post({
+      request: createLoginRequest,
+      data: data,
+    }).then((res) => {
+      console.log('from Signup', res);
+      setToken(res.data.createPost.accessToken);
+    });
+  };
+
+  const [createLoginRequest] = useMutation(SignupRequest);
+>>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
 
   return (
     <Card
@@ -59,6 +91,8 @@ const RegisterCard = () => {
         boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
         width: 300,
       }}
+      component={'form'}
+      onSubmit={handleSubmit(onSubmitForm)}
     >
       <Stack spacing={1}>
         <InputLabel
@@ -71,12 +105,19 @@ const RegisterCard = () => {
         >
           First & Last Name
         </InputLabel>
-        <TextField
-          id="name"
-          placeholder="i.e john doe"
-          size="small"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+        <Controller
+          control={control}
+          name="name"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="name"
+              placeholder="i.e john doe"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
       <Stack spacing={1}>
@@ -90,15 +131,23 @@ const RegisterCard = () => {
         >
           Email
         </InputLabel>
-        <TextField
-          id="email"
-          type="email"
-          placeholder="i.e john@mail.com"
-          size="small"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+        <Controller
+          control={control}
+          name="email"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="email"
+              type="email"
+              placeholder="gdoura@gmail.com"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
+
       <Stack spacing={1}>
         <InputLabel
           htmlFor="password"
@@ -110,12 +159,19 @@ const RegisterCard = () => {
         >
           Password
         </InputLabel>
-        <TextField
-          id="password"
-          type="password"
-          size="small"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <Controller
+          control={control}
+          name="password"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="password"
+              type="password"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
       <Stack spacing={1}>
@@ -129,12 +185,19 @@ const RegisterCard = () => {
         >
           Confirm Password
         </InputLabel>
-        <TextField
-          id="confirmPassword"
-          type="password"
-          size="small"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+        <Controller
+          control={control}
+          name="confirmPassword"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="confirmPassword"
+              type="password"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
       <Stack spacing={1} direction={'row'} alignItems={'center'}>
@@ -153,26 +216,7 @@ const RegisterCard = () => {
           padding: '10px 0',
           borderRadius: 2,
         }}
-        disabled={
-          email === '' ||
-          password === '' ||
-          name === '' ||
-          confirmPassword === ''
-        }
-        onClick={() => {
-          setEmail('');
-          setName('');
-          setPassword('');
-          setConfirmPassword('');
-
-          Client.post({
-            request: createLoginRequest,
-            data: { email, password, name, confirmPassword },
-          }).then((res) => {
-            console.log('from Signup', res);
-            setToken(res.data.createPost.accessToken);
-          });
-        }}
+        type="submit"
       >
         Create an account
       </Button>

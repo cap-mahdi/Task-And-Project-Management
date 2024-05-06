@@ -22,6 +22,7 @@ type Query {
   users: [User!]
   getUsersByParams(input: GetUserInput!): [User!]
   getConnectedUser: User!
+  getConnectedUser: User!
 }
 
 type Mutation {

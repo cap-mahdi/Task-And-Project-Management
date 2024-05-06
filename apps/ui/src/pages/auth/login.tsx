@@ -7,22 +7,37 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback } from 'react';
 import { AuthLayout } from '../../layout';
 import { LinkableCaption } from './common';
+<<<<<<< HEAD
 import { LoginRequest } from '../../services/auth';
+=======
+import { useMutation } from '@apollo/client';
+>>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import Client from '../../services/api';
 import useAppContext from '../../context/useAppContext';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useMutation } from '@apollo/client';
+=======
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { LoginRequest, LoginSchema, LoginType } from '../../services';
+>>>>>>> a079959f1fe70304aa9cc9b241858076680735e8
 
 const LoginCard = () => {
   const navigate = useNavigate();
   const [globalState, setGlobalState] = useAppContext();
+  const { handleSubmit, control } = useForm<LoginType>({
+    resolver: yupResolver(LoginSchema),
+    mode: 'onBlur',
+  });
+
   const onStorageChange = useCallback(
-    (newValue) => {
-      setGlobalState((prevState) => ({
+    (newValue: any) => {
+      setGlobalState((prevState: any) => ({
         ...prevState,
         token: newValue,
       }));
@@ -39,9 +54,18 @@ const LoginCard = () => {
   });
 
   const [createLoginRequest] = useMutation(LoginRequest);
+  const onSubmitForm = (data: LoginType) => {
+    console.log('data login ', data);
+    // return;
+    Client.post({
+      request: createLoginRequest,
+      data,
+    }).then((res) => {
+      console.log('from login', res);
+      setToken(res.data.createPost.accessToken);
+    });
+  };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   return (
     <Card
       sx={{
@@ -54,6 +78,8 @@ const LoginCard = () => {
         boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
         width: 300,
       }}
+      component={'form'}
+      onSubmit={handleSubmit(onSubmitForm)}
     >
       <Stack spacing={1}>
         <InputLabel
@@ -66,48 +92,63 @@ const LoginCard = () => {
         >
           Email
         </InputLabel>
-        <TextField
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          id="email"
-          type="email"
-          placeholder="i.e john@mail.com"
-          size="small"
+        <Controller
+          control={control}
+          name="email"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="email"
+              type="email"
+              placeholder="gdoura@gmail.com"
+              size="small"
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
         />
       </Stack>
-      <Stack spacing={1}>
-        <Stack
-          direction={'row'}
-          justifyContent="space-between"
-          alignItems={'center'}
+
+      <Stack
+        direction={'row'}
+        justifyContent="space-between"
+        alignItems={'center'}
+      >
+        <InputLabel
+          htmlFor="password"
+          sx={{
+            fontWeight: 'bold',
+            color: 'black',
+            fontSize: 12,
+          }}
         >
-          <InputLabel
-            htmlFor="password"
-            sx={{
-              fontWeight: 'bold',
-              color: 'black',
-              fontSize: 12,
-            }}
-          >
-            Password
-          </InputLabel>
-          <Typography
-            sx={{
-              color: 'primary.main',
-              cursor: 'pointer',
-            }}
-          >
-            Forgot password?
-          </Typography>
-        </Stack>
-        <TextField
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          id="password"
-          type="password"
-          size="small"
-        />
+          Password
+        </InputLabel>
+        <Typography
+          sx={{
+            color: 'primary.main',
+            cursor: 'pointer',
+          }}
+        >
+          Forgot password?
+        </Typography>
       </Stack>
+      <Controller
+        control={control}
+        name="password"
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            id="password"
+            type="password"
+            size="small"
+            placeholder="********"
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+
       <Stack spacing={1} direction={'row'} alignItems={'center'}>
         <Checkbox />
         <Typography
@@ -119,19 +160,7 @@ const LoginCard = () => {
         </Typography>
       </Stack>
       <Button
-        disabled={email === '' || password === ''}
-        onClick={() => {
-          setEmail('');
-          setPassword('');
-
-          Client.post({
-            request: createLoginRequest,
-            data: { email, password },
-          }).then((res) => {
-            console.log('from login', res);
-            setToken(res.data.createPost.accessToken);
-          });
-        }}
+        type="submit"
         variant="contained"
         sx={{
           padding: '10px 0',
