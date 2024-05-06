@@ -7,4 +7,4 @@ export * from './AvatarGroupDisplay';
 export * from './Comment';
 export * from './StyledButton';
 export * from './Tag';
-
+export * from "./AddProject"

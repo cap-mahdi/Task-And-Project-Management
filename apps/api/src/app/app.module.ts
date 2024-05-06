@@ -50,7 +50,7 @@ import { UserTaskSchema } from '../entities/userTask.entity';
         return {
           type: 'postgres',
           // url: 'postgresql://postgres:root@localhost:5432/teamflow',
-          url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
+          url: 'postgresql://task_management_app_owner:dxtPpCbf72UL@ep-blue-hat-a5nwbuja.us-east-2.aws.neon.tech/task_management_app?sslmode=require',
           // url: configService.get<string>('database_url'),
           synchronize: true,
           // entities: [join(__dirname, '**/*.entity{.ts,.js}')],
@@ -82,4 +82,4 @@ import { UserTaskSchema } from '../entities/userTask.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
