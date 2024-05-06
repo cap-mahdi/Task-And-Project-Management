@@ -43,7 +43,7 @@ export class TaskSchema
 
   @ManyToOne(() => MilestoneSchema, (milestone) => milestone.tasks)
   milestone: MilestoneSchema;
-  
-  @DeleteDateColumn({ type: 'timestamp' })
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
 }
