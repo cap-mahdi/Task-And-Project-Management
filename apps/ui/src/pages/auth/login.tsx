@@ -29,10 +29,6 @@ const LoginCard = () => {
 
   const onStorageChange = useCallback(
     (newValue: any) => {
-      setGlobalState((prevState: any) => ({
-        ...prevState,
-        token: newValue,
-      }));
       if (newValue) navigate('/app');
     },
 
@@ -41,7 +37,6 @@ const LoginCard = () => {
 
   const [token, setToken] = useLocalStorageState({
     key: 'token',
-    // initialState: '',
     onStorageChange,
   });
 
@@ -55,6 +50,10 @@ const LoginCard = () => {
     }).then((res) => {
       console.log('from login', res);
       setToken(res.data.createPost.accessToken);
+      setGlobalState((prevState) => ({
+        ...prevState,
+        token: res.data.createPost.accessToken,
+      }));
     });
   };
 

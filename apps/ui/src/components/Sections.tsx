@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 interface SectionType {
   title: string;
@@ -76,6 +77,7 @@ export function Sections({
             onMouseEnter={() => {
               setHover(i);
             }}
+            key={uuidv4()}
           >
             {uppercase ? section.title : section.title}
           </Typography>
@@ -89,6 +91,7 @@ export function Sections({
                 textDecoration: 'none',
                 color: 'inherit',
               }}
+              key={uuidv4()}
             >
               {render}
             </Link>
