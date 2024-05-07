@@ -23,12 +23,6 @@ export function BasicDetails() {
       type: 'tel' as const,
       onChange: (value: string) => handleFieldChange('Phone Number', value),
     },
-    {
-      title: 'Role',
-      value: '',
-      type: 'role' as const,
-      onChange: (value: string) => handleFieldChange('Role', value),
-    },
   ]);
 
   const handleFieldChange = (fieldName: string, value: string) => {

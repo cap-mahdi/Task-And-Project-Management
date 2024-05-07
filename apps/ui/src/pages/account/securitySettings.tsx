@@ -1,11 +1,21 @@
-import { Card, Box, Typography } from '@mui/material';
-import { CustomInputField } from './components/customInputField';
+import { Card, Box, Typography, TextField, Button } from '@mui/material';
 import { useState } from 'react';
 
 export function SecuritySettings() {
+  const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const onChange = (password: string) => setPassword(password);
+
+  const handleChangePassword = () => {
+    const changePasswordInput = {
+      oldPassword,
+      newPassword: password,
+      confirmPassword,
+    };
+    console.log(changePasswordInput);
+  };
 
   return (
     <Card
@@ -19,6 +29,7 @@ export function SecuritySettings() {
         mt: 2,
         mx: 2,
         borderRadius: 2,
+        pb: 2,
       }}
     >
       <Box
@@ -33,15 +44,56 @@ export function SecuritySettings() {
           <Typography fontWeight={'bold'}>Change password</Typography>
         </Box>
         <Box sx={{ width: '70%' }}>
-          <Box sx={{ mb: 2 }}>
-            <CustomInputField
-              title={'Password'}
-              value={password}
-              type={'password'}
-              onChange={onChange}
-            />
-          </Box>
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="oldPassword"
+            name="oldPassword"
+            label="Old Password"
+            fullWidth
+            variant="standard"
+            type="password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+          />
+          <TextField
+            required
+            margin="dense"
+            id="password"
+            name="password"
+            label="New Password"
+            fullWidth
+            variant="standard"
+            type="password"
+            value={password}
+            onChange={(e) => onChange(e.target.value)}
+          />
+          <TextField
+            required
+            margin="dense"
+            id="confirmPassword"
+            name="confirmPassword"
+            label="Confirm Password"
+            fullWidth
+            variant="standard"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
         </Box>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          onClick={handleChangePassword}
+          variant="contained"
+          sx={{
+            padding: '10px 0',
+            borderRadius: 2,
+          }}
+        >
+          Sign in
+        </Button>
       </Box>
     </Card>
   );
