@@ -25,5 +25,5 @@ type Query {
 
 type Mutation {
   createWorkspace(input: CreateWorkspaceInput!): Workspace! #done
-  updateWorkspace(id: ID!, input: UpdateWorkspaceInput!): Workspace!
+  updateWorkspace(id: ID!, input: UpdateWorkspaceInput!): Workspace! #done
 }

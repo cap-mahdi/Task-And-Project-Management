@@ -11,6 +11,7 @@ export const ChatHeader: FC = () => {
         alignItems: 'center',
         // paddingTop: 1,
         px: 2,
+        marginTop: 2,
       }}
     >
       <Typography

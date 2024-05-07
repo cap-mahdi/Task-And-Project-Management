@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkspaceSchema } from '../entities/workspace.entity';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { UserSchema } from '../entities/user.entity';
+import { ProjectSchema, UserProjectSchema } from '../entities';
+import { UserWorkspaceService } from './user-workspace.service';
 
 @Module({
   imports: [
@@ -11,8 +13,11 @@ import { UserSchema } from '../entities/user.entity';
       WorkspaceSchema,
       UserWorkspaceSchema,
       UserSchema,
+      ProjectSchema,
+      UserProjectSchema,
     ]),
   ],
-  providers: [UserWorkspaceResolver],
+  providers: [UserWorkspaceResolver, UserWorkspaceService],
+  exports: [UserWorkspaceService],
 })
-export class UserWorkspaceModule {}
+export class UserWorkspaceModule { }

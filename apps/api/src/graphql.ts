@@ -85,6 +85,18 @@ export interface GetUserInput {
     name?: Nullable<string>;
 }
 
+export interface UpdateUserInput {
+    name?: Nullable<string>;
+    email?: Nullable<string>;
+    phone?: Nullable<string>;
+}
+
+export interface ChangePasswordInput {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
 export interface CreateUserProject {
     userId: string;
     projectId: string;
@@ -141,8 +153,8 @@ export interface IQuery {
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
     tasks(): Task[] | Promise<Task[]>;
     task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
-    users(): Nullable<User[]> | Promise<Nullable<User[]>>;
-    getUsersByParams(input: GetUserInput): Nullable<User[]> | Promise<Nullable<User[]>>;
+    users(): User[] | Promise<User[]>;
+    getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
     getConnectedUser(): User | Promise<User>;
     getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
     userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
@@ -160,6 +172,9 @@ export interface IMutation {
     updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
     assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
     createUser(createUserInput: CreateUserInput): User | Promise<User>;
+    updateUser(input: UpdateUserInput): User | Promise<User>;
+    deleteUser(): User | Promise<User>;
+    changePassword(input: ChangePasswordInput): User | Promise<User>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
@@ -202,6 +217,7 @@ export interface User {
     id: string;
     name: string;
     email: string;
+    phone?: Nullable<string>;
     password: string;
     createdAt: Date;
     role: UserRole;

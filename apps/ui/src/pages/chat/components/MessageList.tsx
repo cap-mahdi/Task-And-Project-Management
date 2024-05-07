@@ -1,11 +1,9 @@
 import {
   Avatar,
   List,
+  ListItem,
   ListItemAvatar,
-  ListItemButton,
   ListItemText,
-  ListSubheader,
-  Typography,
 } from '@mui/material';
 import React, { FC } from 'react';
 import { SxPropsObject } from '../../../utils/sxPropsObject';
@@ -91,14 +89,19 @@ export const MessageList: FC = () => {
   return (
     <List
       sx={{
-        mb: 2,
-        height: '65vh',
         overflow: 'auto',
       }}
     >
       {messages.map(({ id, primary, secondary, person }) => (
         <React.Fragment key={id}>
-          <ListItemButton>
+          <ListItem
+            sx={{
+              ':hover': {
+                backgroundColor: 'transparent',
+                cursor: 'default',
+              },
+            }}
+          >
             {id % 2 === 0 && (
               <>
                 <ListItemAvatar>
@@ -117,7 +120,6 @@ export const MessageList: FC = () => {
                     ...styles.cnvBox,
                     color: 'white',
                     maxWidth: '40%',
-
                     border: '1px solid #f0f0f0',
                     borderRadius: 4,
                     padding: 2,
@@ -134,7 +136,7 @@ export const MessageList: FC = () => {
                 </ListItemAvatar>
               </>
             )}
-          </ListItemButton>
+          </ListItem>
         </React.Fragment>
       ))}
     </List>

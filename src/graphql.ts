@@ -85,6 +85,18 @@ export class GetUserInput {
     name?: Nullable<string>;
 }
 
+export class UpdateUserInput {
+    name?: Nullable<string>;
+    email?: Nullable<string>;
+    phone?: Nullable<string>;
+}
+
+export class ChangePasswordInput {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
 export class CreateUserProject {
     userId: string;
     projectId: string;
@@ -146,9 +158,9 @@ export abstract class IQuery {
 
     abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
-    abstract users(): Nullable<User[]> | Promise<Nullable<User[]>>;
+    abstract users(): User[] | Promise<User[]>;
 
-    abstract getUsersByParams(input: GetUserInput): Nullable<User[]> | Promise<Nullable<User[]>>;
+    abstract getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
 
     abstract getConnectedUser(): User | Promise<User>;
 
@@ -179,6 +191,12 @@ export abstract class IMutation {
     abstract assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
+
+    abstract updateUser(input: UpdateUserInput): User | Promise<User>;
+
+    abstract deleteUser(): User | Promise<User>;
+
+    abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
 
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
@@ -226,6 +244,7 @@ export class User {
     id: string;
     name: string;
     email: string;
+    phone?: Nullable<string>;
     password: string;
     createdAt: Date;
     role: UserRole;

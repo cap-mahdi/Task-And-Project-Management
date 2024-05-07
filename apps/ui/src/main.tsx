@@ -6,6 +6,9 @@ import { AppProvider } from './context/useAppContext';
 import Client from './services/api';
 import { theme } from './theme';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -15,6 +18,8 @@ root.render(
   <ApolloProvider client={Client}>
     <ThemeProvider theme={theme}>
       <AppProvider>
+        <ToastContainer />
+
         <App />
       </AppProvider>
     </ThemeProvider>

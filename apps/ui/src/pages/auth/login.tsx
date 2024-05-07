@@ -17,7 +17,12 @@ import useAppContext from '../../context/useAppContext';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoginRequest, LoginSchema, LoginType } from '../../services';
+import { useCustomMutation } from '../../hooks/useCustomMutation';
+import {
+  LoginSchema,
+  LoginType,
+  LoginRequest,
+} from '../../services/auth/login';
 
 const LoginCard = () => {
   const navigate = useNavigate();
@@ -40,7 +45,7 @@ const LoginCard = () => {
     onStorageChange,
   });
 
-  const [createLoginRequest] = useMutation(LoginRequest);
+  const [createLoginRequest] = useCustomMutation(LoginRequest, true);
   const onSubmitForm = (data: LoginType) => {
     console.log('data login ', data);
     // return;
