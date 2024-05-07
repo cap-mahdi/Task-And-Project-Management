@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,7 +8,12 @@ import { join } from 'path';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { configuration } from '../config';
+import {
+  EnvVariables,
+  authConfiguration,
+  databaseConfiguration,
+  validate,
+} from '../config';
 import { WorkspaceModule } from '../workspace/workspace.module';
 import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
 import { ProjectModule } from '../project/project.module';
@@ -27,13 +32,15 @@ import {
   MilestoneSchema,
   MessageSchema,
 } from '../entities';
-
+import { AppLoggerMiddleware } from '../middlewares';
+import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration],
-      // validate,
+      cache: true,
+      load: [databaseConfiguration, authConfiguration],
+      validate: validate,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -50,11 +57,8 @@ import {
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
-          url: 'postgresql://postgres:root@localhost:5432/teamflow',
-          // url: configService.get<string>('database_url'),
+          url: configService.get<string>(EnvVariables.DATABASE_URL),
           synchronize: true,
-          // entities: [join(__dirname, '**/*.entity{.ts,.js}')],
           entities: [
             CommentSchema,
             MessageSchema,
@@ -81,6 +85,10 @@ import {
     UserProjectModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LoggingPlugin],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}
