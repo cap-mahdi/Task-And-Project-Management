@@ -1,32 +1,37 @@
 import {
   Resolver,
   Query,
-  Mutation,
   Args,
   ResolveField,
   Parent,
+  Mutation,
 } from '@nestjs/graphql';
 import { UserSchema } from '../entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
-import { GetUserInput } from '../graphql';
+import { ChangePasswordInput, GetUserInput, UpdateUserInput } from '../graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { UseGuards } from '@nestjs/common';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
+import { UserService } from './user.service';
+import { UserWorkspaceService } from '../user-workspace/user-workspace.service';
+import { ProjectSchema, UserProjectSchema, WorkspaceSchema } from '../entities';
+import { UserProjectService } from '../user-project/user-project.service';
+import { WorkspaceService } from '../workspace/workspace.service';
+import { ProjectService } from '../project/project.service';
 
 @Resolver('User')
 export class UserResolver {
   constructor(
-    @InjectRepository(UserSchema)
-    private userRepository: Repository<UserSchema>,
-    @InjectRepository(UserWorkspaceSchema)
-    private userWorkspaceRepository: Repository<UserWorkspaceSchema>
-  ) {}
+    private readonly userService: UserService,
+    private readonly userWorkspaceService: UserWorkspaceService,
+    private readonly userProjectService: UserProjectService,
+    private readonly workspaceService: WorkspaceService,
+    private readonly projectService: ProjectService,
+  ) { }
 
   @Query()
   async users() {
-    const users = await this.userRepository.find();
+    const users = await this.userService.findAll();
     console.info('users', users);
     return users;
   }
@@ -35,36 +40,58 @@ export class UserResolver {
   async getUsersByParams(
     @Args('input') input: GetUserInput
   ): Promise<UserSchema[]> {
-    return await this.userRepository.find({
-      where: {
-        ...input,
-      },
-    });
+    return this.userService.findAllByParams(input);
   }
+
   @Query()
   @UseGuards(GraphQLAuthGaurd)
   async getConnectedUser(@GetUserGQL() user: UserSchema): Promise<UserSchema> {
-    const connectedUser = await this.userRepository.findOne({
-      where: {
-        id: user.id,
-      },
-    });
-    delete connectedUser.password;
-    console.log(connectedUser);
+    return this.userService.getUserById(user.id);
+  }
 
-    return connectedUser;
+  @Mutation()
+  @UseGuards(GraphQLAuthGaurd)
+  async updateUser(
+    @Args('input') input: UpdateUserInput,
+    @GetUserGQL() user: UserSchema
+  ): Promise<UserSchema> {
+    return this.userService.updateUser(user.id, input);
+  }
+
+  @Mutation()
+  @UseGuards(GraphQLAuthGaurd)
+  async deleteUser(@GetUserGQL() user: UserSchema): Promise<UserSchema> {
+    return this.userService.deleteUser(user.id);
+  }
+
+  @Mutation()
+  @UseGuards(GraphQLAuthGaurd)
+  async changePassword(
+    @Args() input: ChangePasswordInput,
+    @GetUserGQL() user: UserSchema
+  ) {
+    return this.userService.changePassword(user.id, input);
   }
 
   @ResolveField('userWorkspaces')
   async workspaces(@Parent() user: UserSchema): Promise<UserWorkspaceSchema[]> {
     console.info('user', user);
-    const userWorkspaces = await this.userWorkspaceRepository.find({
-      where: {
-        user: { id: user.id },
-      },
-      relations: ['user'],
-    });
-    console.info('userWorkspaces', userWorkspaces);
-    return userWorkspaces;
+    return this.userWorkspaceService.findUserWorkspacesByUserId(user.id);
   }
+
+  @ResolveField('userProjects')
+  async projects(@Parent() user: UserSchema): Promise<UserProjectSchema[]> {
+    return this.userProjectService.findUserProjectsByUserId(user.id);
+  }
+
+  @ResolveField('createdWorkspaces')
+  async createdWorkspaces(@Parent() user: UserSchema): Promise<WorkspaceSchema[]> {
+    return this.workspaceService.findCreatedWorkspacesByUserId(user.id);
+  }
+
+  @ResolveField('createdProjects')
+  async createdProjects(@Parent() user: UserSchema): Promise<ProjectSchema[]> {
+    return this.projectService.findCreatedProjectsByUserId(user.id);
+  }
+
 }
