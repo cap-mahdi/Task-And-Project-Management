@@ -1,14 +1,10 @@
 import { createContext, useContext, useState } from 'react';
-import { useLocalStorageState } from '../hooks/useLocalStorageState';
-import { useUser } from '../services/auth';
 
 interface WorkspaceState {
   data: string;
- 
 }
 const initialState: WorkspaceState = {
   data: '',
-  
 };
 
 const WorkspaceContext = createContext({});

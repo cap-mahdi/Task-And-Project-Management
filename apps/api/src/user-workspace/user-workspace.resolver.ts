@@ -10,6 +10,7 @@ import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 
 @Resolver('UserWorkspace')
+@UseGuards(GraphQLAuthGaurd)
 export class UserWorkspaceResolver {
   constructor(
     @InjectRepository(UserWorkspaceSchema)
@@ -21,7 +22,6 @@ export class UserWorkspaceResolver {
   ) {}
 
   @Query()
-  @UseGuards(GraphQLAuthGaurd)
   async userWorkspaces(
     @GetUserGQL() user: UserSchema
   ): Promise<UserWorkspaceSchema[]> {

@@ -28,6 +28,6 @@ type Query {
 }
 
 type Mutation {
-  addUsersToProject(projectId: ID!, userIds: [ID!]!): [UserProject!]!
-  deleteUsersFromProject(projectId: ID!, userIds: [ID!]!): [UserProject!]!
+  addUsersToProject(projectId: ID!, userIds: [ID!]!): [UserProject!]! #done
+  deleteUsersFromProject(projectId: ID!, userIds: [ID!]!): [UserProject!]! #done
 }

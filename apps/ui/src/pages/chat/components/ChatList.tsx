@@ -11,7 +11,6 @@ export const ChatList: FC = () => {
         display: 'flex',
         flexDirection: 'column',
         width: '30%',
-
         gap: 2,
       }}
     >

@@ -16,6 +16,7 @@ export const Search: FC = () => {
       placeholder="Search Contact"
       sx={{
         margin: '0 auto',
+        width: '90%',
       }}
     ></TextField>
   );
