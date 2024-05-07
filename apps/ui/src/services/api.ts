@@ -14,9 +14,7 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
   let token = localStorage.getItem('token');
   token = token?.slice(1, -1);
-  console.log('token', token);
 
-  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,

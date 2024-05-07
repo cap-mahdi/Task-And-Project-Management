@@ -50,7 +50,7 @@ import {
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          url: 'postgres://postgres:22870166@localhost:5432/teamflow',
+          url: 'postgres://postgres:root@localhost:5432/teamflow',
           // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           // url: configService.get<string>('database_url'),
           synchronize: true,
@@ -83,4 +83,4 @@ import {
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
