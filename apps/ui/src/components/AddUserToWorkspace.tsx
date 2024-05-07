@@ -1,116 +1,43 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import SearchIcon from '@mui/icons-material/Search';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import {
-  Avatar,
-  Checkbox,
+  Box,
+  Button,
+  Chip,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
   InputBase,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
+  MenuItem,
   Paper,
+  Select,
 } from '@mui/material';
+import { WorkspaceRole } from '../__generated__/graphql';
 
-const persons = [
-  {
-    id: 1,
-    name: 'Mahdi Chaabane',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 2,
-    name: 'Mouhamed Amine Gdoura',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 3,
-    name: 'Mehdi Fkih',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 4,
-    name: 'Houssem Sahnoun',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 6,
-    name: 'Mouhamed Mehdi Khlil',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 7,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 8,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 9,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 10,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 11,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 12,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 13,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 14,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 15,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-  {
-    id: 16,
-    name: 'Mehdi',
-    avatar:
-      'https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9',
-  },
-];
+const workspaceRoleMapper: Record<WorkspaceRole, string> = {
+  [WorkspaceRole.WorkspaceAdmin]: 'Admin',
+  [WorkspaceRole.WorkspaceEditor]: 'Editor',
+  [WorkspaceRole.WorkspaceMember]: 'Member',
+};
 
 export const AddUserToWorkspace: FC = () => {
   const [open, setOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<WorkspaceRole>(
+    WorkspaceRole.WorkspaceMember
+  );
+  const [selectedUser, setSelectedUser] = useState<string>('');
+  const [emails, setEmails] = useState<string[]>([]);
+  const emailsRef = useRef<{ email: string; role: WorkspaceRole }[]>([]);
+
+  function handleAddUser() {
+    const newdata = { email: selectedUser, role: selectedRole };
+    setEmails([...emails, selectedUser]);
+    emailsRef.current.push(newdata);
+    setSelectedUser('');
+  }
 
   return (
     <>
@@ -128,6 +55,12 @@ export const AddUserToWorkspace: FC = () => {
             maxWidth: 600,
           },
         }}
+        component={'form'}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(emailsRef.current);
+          setOpen(false);
+        }}
       >
         <DialogTitle>Add user to workspace</DialogTitle>
         <DialogContent>
@@ -140,61 +73,71 @@ export const AddUserToWorkspace: FC = () => {
             }}
           >
             <InputBase
+              value={selectedUser}
               sx={{
                 flex: 1,
                 ml: 1,
               }}
-              placeholder="Search user"
+              placeholder="Add user email"
+              onChange={(e) => setSelectedUser(e.target.value)}
             />
             <IconButton
               type="button"
               sx={{
-                p: '10px',
+                padding: 2,
               }}
+              onClick={handleAddUser}
             >
-              <SearchIcon />
+              <AddOutlinedIcon />
             </IconButton>
-          </Paper>
-          <List>
-            {persons.map((person) => (
-              <ListItem
-                key={person.id}
-                secondaryAction={
-                  <Checkbox
-                    edge="end"
-                    onChange={() => {
-                      console.log('click');
-                    }}
-                    // checked={false}
-                  />
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src={person.avatar} />
-                </ListItemAvatar>
-                <ListItemText primary={person.name} />
-              </ListItem>
-            ))}
-            {/* <ListItem
-              secondaryAction={
-                <Checkbox
-                  edge="end"
-                  onChange={() => {
-                    console.log('click');
-                  }}
-                  // checked={false}
-                />
-              }
+            <Select
+              sx={{
+                minWidth: 120,
+              }}
+              onChange={(e) => setSelectedRole(e.target.value as WorkspaceRole)}
+              value={selectedRole}
             >
-              <ListItemAvatar>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9"
-                />
-              </ListItemAvatar>
-              <ListItemText primary="Mehdi" />
-            </ListItem> */}
-          </List>
+              {Object.entries(workspaceRoleMapper).map(([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </Paper>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1,
+              flexWrap: 'wrap',
+              mt: 2,
+            }}
+          >
+            {emails.map((email) => (
+              <Chip
+                key={email}
+                label={email}
+                onDelete={() => {
+                  setEmails(emails.filter((e) => e !== email));
+                  emailsRef.current = emailsRef.current.filter(
+                    (e) => e.email !== email
+                  );
+                }}
+              />
+            ))}
+          </Box>
+          <DialogActions>
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: (theme) => theme.palette.primary.main,
+                borderRadius: 3,
+              }}
+              type="submit"
+            >
+              Add
+            </Button>
+          </DialogActions>
         </DialogContent>
       </Dialog>
     </>
