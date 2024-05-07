@@ -18,7 +18,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import Client from '../../services/api';
-
+import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useCustomMutation } from '../../hooks/useCustomMutation';
 
 const RegisterCard = () => {
   const navigate = useNavigate();
@@ -63,7 +65,7 @@ const RegisterCard = () => {
     });
   };
 
-  const [createLoginRequest] = useMutation(SignupRequest);
+  const [createLoginRequest] = useCustomMutation(SignupRequest, true);
 
   return (
     <Card

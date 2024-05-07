@@ -8,7 +8,7 @@ export function ProtectedRoute({ children }) {
   const navigate = useNavigate();
   const [globalState, setGlobalState] = useAppContext();
 
-  const { isLoading, user } = useUser();
+  const { user, error, getUser, isLoading } = useUser();
   useEffect(
     function () {
       if (!user && !isLoading) {
@@ -16,15 +16,18 @@ export function ProtectedRoute({ children }) {
 
         navigate('/login');
       }
-      console.log('user from protectetd', user);
-
-      setGlobalState((prevState) => ({
-        ...prevState,
-        user,
-      }));
     },
     [user, isLoading, navigate, setGlobalState]
   );
+
+  useEffect(() => {
+    if (user && !error) {
+      setGlobalState((prevState) => ({
+        ...prevState,
+        user: user.getConnectedUser,
+      }));
+    }
+  }, [user, setGlobalState, error]);
   if (isLoading)
     return (
       <Box

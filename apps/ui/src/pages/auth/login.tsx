@@ -17,8 +17,8 @@ import useAppContext from '../../context/useAppContext';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoginRequest } from '../../services';
-import { LoginSchema, LoginType } from '../../services/auth/login';
+import { LoginRequest, LoginSchema, LoginType } from '../../services';
+import { useCustomMutation } from '../../hooks/useCustomMutation';
 
 const LoginCard = () => {
   const navigate = useNavigate();
@@ -30,10 +30,6 @@ const LoginCard = () => {
 
   const onStorageChange = useCallback(
     (newValue: any) => {
-      setGlobalState((prevState: any) => ({
-        ...prevState,
-        token: newValue,
-      }));
       if (newValue) navigate('/app');
     },
 
@@ -42,11 +38,10 @@ const LoginCard = () => {
 
   const [token, setToken] = useLocalStorageState({
     key: 'token',
-    // initialState: '',
     onStorageChange,
   });
 
-  const [createLoginRequest] = useMutation(LoginRequest);
+  const [createLoginRequest] = useCustomMutation(LoginRequest, true);
   const onSubmitForm = (data: LoginType) => {
     console.log('data login ', data);
     // return;
@@ -56,6 +51,10 @@ const LoginCard = () => {
     }).then((res) => {
       console.log('from login', res);
       setToken(res.data.createPost.accessToken);
+      setGlobalState((prevState) => ({
+        ...prevState,
+        token: res.data.createPost.accessToken,
+      }));
     });
   };
 

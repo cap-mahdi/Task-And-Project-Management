@@ -1,13 +1,10 @@
 import { createContext, useContext, useState } from 'react';
-import { useLocalStorageState } from '../hooks/useLocalStorageState';
-import { useUser } from '../services/auth';
 
 interface AppState {
-  token: string;
+  token?: any;
   user: any;
 }
 const initialState: AppState = {
-  token: '',
   user: null,
 };
 
@@ -18,6 +15,7 @@ interface AppProviderProps {
 }
 
 const AppProvider = ({ children }: AppProviderProps) => {
+  initialState.token = localStorage.getItem('token')?.slice(1, -1);
   const [state, setState] = useState(initialState);
   return (
     <AppContext.Provider value={{ state, setState }}>
