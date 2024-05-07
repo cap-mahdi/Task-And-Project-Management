@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
 import { UserProjectModule } from '../user-project/user-project.module';
 import { WorkspaceModule } from '../workspace/workspace.module';
+import { ProjectModule } from '../project/project.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { WorkspaceModule } from '../workspace/workspace.module';
     UserWorkspaceModule,
     UserProjectModule,
     WorkspaceModule,
+    ProjectModule,
   ],
   providers: [UserResolver, UserService],
   exports: [UserService],
