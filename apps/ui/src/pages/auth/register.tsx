@@ -13,15 +13,11 @@ import { LinkableCaption } from './common';
 import { useNavigate } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { useMutation } from '@apollo/client';
-import {
-  RegisterSchema,
-  RegisterType,
-  SignupRequest,
-} from '../../services/auth';
-import Client from '../../services/api';
-import { Controller, useForm } from 'react-hook-form';
+import { RegisterSchema, RegisterType, SignupRequest } from '../../services/auth/signup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
+import { useMutation } from '@apollo/client';
+import Client from '../../services/api';
 import { useCustomMutation } from '../../hooks/useCustomMutation';
 
 const RegisterCard = () => {
@@ -51,6 +47,10 @@ const RegisterCard = () => {
     onStorageChange,
   });
 
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const onSubmitForm = (data: RegisterType) => {
     // const { email, password, name, confirmPassword } = data;
     console.log('register data ', data);
