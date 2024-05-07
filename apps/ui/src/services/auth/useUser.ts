@@ -1,4 +1,8 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import useAppContext from '../../context/useAppContext';
+
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
+
 
 const getConnectedUserRequest = gql`
   query getConnectedUser {
@@ -12,10 +16,17 @@ const getConnectedUserRequest = gql`
 `;
 
 export const useUser = () => {
-  console.log('HEEEEREE');
-  const { data, error, loading } = useQuery(getConnectedUserRequest);
-  console.log('data', data);
-  console.log('data', data?.getConnectedUser);
+  const [getUser, { data, error, loading }] = useCustomLazyQuery(
+    getConnectedUserRequest,
+    true
 
-  return { user: data?.getConnectedUser, error, isLoading: loading };
+  );
+  const [globalState, setGlobalState] = useAppContext();
+
+  if (globalState.token && !globalState.user && !loading && !data) {
+    console.log('fetching user');
+
+    getUser();
+  }
+  return { user: data, error, isLoading: loading, getUser };
 };

@@ -3,21 +3,9 @@ import useAppContext from './context/useAppContext';
 import { useEffect } from 'react';
 import { useUser } from './services/auth';
 import { router } from './routers';
+import { CookieSharp } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const App = () => {
-  const [globalState, setGlobalState] = useAppContext();
-  const { user, error } = useUser();
-
-  useEffect(() => {
-    if (user && !error) {
-      console.log('user from app', user);
-
-      setGlobalState((prevState) => ({
-        ...prevState,
-        user,
-      }));
-    }
-  }, [user, setGlobalState]);
-
   return <RouterProvider router={router} />;
 };
