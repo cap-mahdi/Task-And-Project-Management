@@ -7,6 +7,7 @@ import { ProtectedRoute } from '../components/ProtectedRoute';
 import { workspaceRoutes } from './workspaceRoutes';
 import { accountRoutes } from './accountRoutes';
 import { SideBar } from './../components/sideBar';
+import { Chat } from '../pages/chat/chat';
 
 export const router = createBrowserRouter([
   {
@@ -36,7 +37,8 @@ export const router = createBrowserRouter([
       },
       {
         path: 'notification',
-        element: <div>Notifs Goes Here</div>,
+        // element: <div>Notifs Goes Here</div>,
+        element: <Chat />,
       },
       {
         path: 'task',
