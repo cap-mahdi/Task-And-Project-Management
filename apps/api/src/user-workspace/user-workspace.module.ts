@@ -5,6 +5,7 @@ import { WorkspaceSchema } from '../entities/workspace.entity';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { UserSchema } from '../entities/user.entity';
 import { ProjectSchema, UserProjectSchema } from '../entities';
+import { UserWorkspaceService } from './user-workspace.service';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProjectSchema, UserProjectSchema } from '../entities';
       UserProjectSchema,
     ]),
   ],
-  providers: [UserWorkspaceResolver],
+  providers: [UserWorkspaceResolver, UserWorkspaceService],
+  exports: [UserWorkspaceService],
 })
 export class UserWorkspaceModule { }

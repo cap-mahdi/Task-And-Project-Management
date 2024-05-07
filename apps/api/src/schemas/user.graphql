@@ -7,26 +7,29 @@ type User {
   id: ID! #done
   name: String! #done
   email: String! #done
+  phone: String #done
   password: String! #done
   createdAt: Date! #done
   role: UserRole! #done
-  userWorkspaces: [UserWorkspace!]! #done
-  userProjects: [UserProject!]!
+  userWorkspaces: [UserWorkspace!]! #doning -- only get the userWorkspaces
+  userProjects: [UserProject!]! #doning -- only get the userProjects
   userRooms: [UserRoom!]!
   userTasks: [UserTask!]!
-  createdWorkspaces: [Workspace!]!
+  createdWorkspaces: [Workspace!]! #done
   createdProjects: [Project!]!
 }
 
 type Query {
-  users: [User!]
-  getUsersByParams(input: GetUserInput!): [User!]
-  getConnectedUser: User!
+  users: [User!]!
+  getUsersByParams(input: GetUserInput!): [User!]!
   getConnectedUser: User!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  deleteUser: User!
+  changePassword(input: ChangePasswordInput!): User!
 }
 
 input CreateUserInput {
@@ -39,4 +42,16 @@ input GetUserInput {
   id: ID
   email: String
   name: String
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  phone: String
+}
+
+input ChangePasswordInput {
+  oldPassword: String!
+  newPassword: String!
+  confirmPassword: String!
 }
