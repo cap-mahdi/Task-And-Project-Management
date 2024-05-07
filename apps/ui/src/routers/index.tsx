@@ -8,6 +8,7 @@ import { workspaceRoutes } from './workspaceRoutes';
 import { accountRoutes } from './accountRoutes';
 import { SideBar } from './../components/sideBar';
 import { Chat } from '../pages/chat/chat';
+import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
           </div>
         ),
         children: [accountRoutes, workspaceRoutes],
+      },
+      {
+        path: 'testWorkspace',
+        element: <AddUserToWorkspace />,
       },
     ],
   },
