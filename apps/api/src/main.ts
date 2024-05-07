@@ -46,6 +46,7 @@ async function bootstrap() {
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
+  Logger.log(`🚀 GraphQl endpoint is on :  http://localhost:${port}/graphql`);
 }
 
 bootstrap();

@@ -12,7 +12,7 @@ import { Repository } from 'typeorm';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { GetUserInput } from '../graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
-import { UseGuards } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 
 @Resolver('User')
@@ -27,7 +27,8 @@ export class UserResolver {
   @Query()
   async users() {
     const users = await this.userRepository.find();
-    console.info('users', users);
+    throw new ForbiddenException();
+    // console.info('users', users);
     return users;
   }
 
