@@ -66,6 +66,7 @@ export function SideBar({ toolbarSize }) {
                 textDecoration: 'none',
                 color: 'inherit',
               }}
+              key={details.text}
             >
               <ListItem
                 key={details.text}

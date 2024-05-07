@@ -1,14 +1,20 @@
-import { DocumentNode, useMutation } from '@apollo/client';
+import {
+  DocumentNode,
+  LazyQueryResultTuple,
+  useLazyQuery,
+} from '@apollo/client';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
-export function useCustomMutation(request: DocumentNode, renderToast: boolean) {
-  const [postRequest, obj] = useMutation(request);
+export function useCustomLazyQuery(
+  request: DocumentNode,
+  renderToast: boolean
+) {
+  const [loadData, obj] = useLazyQuery(request);
   const { data, error, loading } = obj;
-  console.log('data', data);
   useEffect(() => {
-    if (!loading && (data || error)) {
+    if (!loading) {
       if (!error) {
-        toast.success('Mutation Success', {
+        toast.success('Welcome back', {
           position: 'bottom-right',
           icon: () => null,
         });
@@ -21,5 +27,5 @@ export function useCustomMutation(request: DocumentNode, renderToast: boolean) {
     }
   }, [loading, data, error]);
 
-  return [postRequest, obj];
+  return [loadData, obj];
 }
