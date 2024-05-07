@@ -16,10 +16,11 @@ import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import { RegisterSchema, RegisterType, SignupRequest } from '../../services/auth/signup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
+import { RegisterSchema, RegisterType, SignupRequest } from '../../services/auth/signup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import Client from '../../services/api';
-import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useCustomMutation } from '../../hooks/useCustomMutation';
 
 const RegisterCard = () => {

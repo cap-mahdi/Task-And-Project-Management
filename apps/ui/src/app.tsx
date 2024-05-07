@@ -5,6 +5,7 @@ import { useUser } from './services/auth';
 import { router } from './routers';
 import { ToastContainer, toast } from 'react-toastify';
 import { CookieSharp } from '@mui/icons-material';
+import { ToastContainer, toast } from 'react-toastify';
 
 export const App = () => {
   return <RouterProvider router={router} />;
