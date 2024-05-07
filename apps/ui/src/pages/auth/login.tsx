@@ -17,9 +17,12 @@ import useAppContext from '../../context/useAppContext';
 import { useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoginRequest } from '../../services';
 import { useCustomMutation } from '../../hooks/useCustomMutation';
-import { LoginSchema, LoginType } from '../../services/auth/login';
+import {
+  LoginSchema,
+  LoginType,
+  LoginRequest,
+} from '../../services/auth/login';
 
 const LoginCard = () => {
   const navigate = useNavigate();
