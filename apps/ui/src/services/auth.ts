@@ -51,7 +51,7 @@ const getConnectedUserRequest = gql`
 
 export const useUser = () => {
   console.log('HEEEEREE');
-  const { data, error, loading } = useCustomLazyQuery(getConnectedUserRequest);
+  const { data, error, loading } = useCustomLazyQuery(getConnectedUserRequest, true);
   console.log('data', data);
   console.log('data', data?.getConnectedUser);
 
