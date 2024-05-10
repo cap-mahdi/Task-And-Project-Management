@@ -13,7 +13,11 @@ import { LinkableCaption } from './common';
 import { useNavigate } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
-import { RegisterSchema, RegisterType, SignupRequest } from '../../services/auth/signup';
+import {
+  RegisterSchema,
+  RegisterType,
+  SignupRequest,
+} from '../../services/auth/signup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation } from '@apollo/client';

@@ -1,9 +1,10 @@
-// import { Login } from '@mui/icons-material';
-// import RestClient from './api';
-// import { gql, useQuery } from '@apollo/client';
-// import useAppContext from '../context/useAppContext';
-// import { useLocalStorageState } from '../hooks/useLocalStorageState';
-// import { useCustomQuery } from '../hooks/useCustomQuery';
+import { Login } from '@mui/icons-material';
+import RestClient from './api';
+import { gql, useQuery } from '@apollo/client';
+import useAppContext from '../context/useAppContext';
+import { useLocalStorageState } from '../hooks/useLocalStorageState';
+import { useCustomQuery } from '../hooks/useCustomQuery';
+import { useCustomLazyQuery } from '../hooks/useCustomLazyQuery';
 
 // export const LoginRequest = gql`
 //   mutation LoginRequest($input: LoginInput!) {
@@ -48,11 +49,11 @@
 //   }
 // `;
 
-// export const useUser = () => {
-//   console.log('HEEEEREE');
-//   const { data, error, loading } = useQuery(getConnectedUserRequest);
-//   console.log('data', data);
-//   console.log('data', data?.getConnectedUser);
+export const useUser = () => {
+  console.log('HEEEEREE');
+  const { data, error, loading } = useCustomLazyQuery(getConnectedUserRequest, true);
+  console.log('data', data);
+  console.log('data', data?.getConnectedUser);
 
 //   return { user: data?.getConnectedUser, error, isLoading: loading };
 // };

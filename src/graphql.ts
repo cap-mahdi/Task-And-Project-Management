@@ -107,6 +107,11 @@ export class UpdateUserProject {
     role?: Nullable<ProjectRole>;
 }
 
+export class EmailRoleInput {
+    email: string;
+    role: WorkspaceRole;
+}
+
 export class UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
 }
@@ -203,6 +208,8 @@ export abstract class IMutation {
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
     abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
+
+    abstract addUsersToWorkspace(workspaceId: string, emailRoles: EmailRoleInput[]): UserWorkspace[] | Promise<UserWorkspace[]>;
 
     abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 

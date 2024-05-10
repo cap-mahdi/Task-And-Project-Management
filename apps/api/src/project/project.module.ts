@@ -5,6 +5,7 @@ import { ProjectSchema } from '../entities/project.entity';
 import { UserProjectSchema } from '../entities/userProject.entity';
 import { WorkspaceSchema } from '../entities/workspace.entity';
 import { ProjectService } from './project.service';
+import { UserWorkspaceSchema } from '../entities';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ProjectService } from './project.service';
       ProjectSchema,
       UserProjectSchema,
       WorkspaceSchema,
+      UserWorkspaceSchema
     ]),
   ],
   providers: [ProjectResolver, ProjectService],

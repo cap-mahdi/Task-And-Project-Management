@@ -12,6 +12,11 @@ type UserWorkspace {
   role: WorkspaceRole! #done
 }
 
+input EmailRoleInput {
+  email: String!
+  role: WorkspaceRole!
+}
+
 input UpdateUserWorkspace {
   role: WorkspaceRole
 }
@@ -26,5 +31,9 @@ type Mutation {
     userId: ID!
     workspaceId: ID!
     input: UpdateUserWorkspace!
-  ): UserWorkspace!
+  ): UserWorkspace! #done
+  addUsersToWorkspace(
+    workspaceId: ID!
+    emailRoles: [EmailRoleInput!]!
+  ): [UserWorkspace!]! #done
 }
