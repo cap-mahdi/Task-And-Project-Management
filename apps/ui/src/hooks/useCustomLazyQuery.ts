@@ -13,12 +13,12 @@ export function useCustomLazyQuery(
   const { data, error, loading } = obj;
   useEffect(() => {
     if (!loading) {
-      if (!error) {
+      if (!error && data) {
         toast.success('Welcome back', {
           position: 'bottom-right',
           icon: () => null,
         });
-      } else {
+      } else if (error) {
         toast.error('An error occurred', {
           position: 'bottom-right',
           icon: () => null,
