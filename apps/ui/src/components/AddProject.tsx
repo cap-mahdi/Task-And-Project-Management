@@ -10,9 +10,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useCustomMutation } from '../hooks/useCustomMutation';
+import { CREATE_PROJECT } from '../services/project/projectMutations';
+import useWorkspaceContext from '../context/useWorkspaceContext';
 
 const AddProject = () => {
   const [open, setOpen] = React.useState(false);
+  const [workspaceState] = useWorkspaceContext();
+
+  const [createProject] = useCustomMutation(CREATE_PROJECT, true);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,7 +42,13 @@ const AddProject = () => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
+            formJson.workspaceId = workspaceState.data.id;
             console.log(formJson);
+            createProject({
+              variables: {
+                input: formJson,
+              },
+            });
             handleClose();
           },
         }}
@@ -65,26 +77,6 @@ const AddProject = () => {
             fullWidth
             variant="standard"
           />
-          <FormControl variant="standard" margin="dense" fullWidth>
-            <InputLabel id="demo-simple-select-standard-label">
-              Workspace *
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              defaultValue={20}
-              required
-              margin="dense"
-              name="workspaceId"
-              label="Age"
-              fullWidth
-              variant="standard"
-            >
-              <MenuItem value={10}>Workspace1</MenuItem>
-              <MenuItem value={20}>Workspace2</MenuItem>
-              <MenuItem value={30}>Workspace3</MenuItem>
-            </Select>
-          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

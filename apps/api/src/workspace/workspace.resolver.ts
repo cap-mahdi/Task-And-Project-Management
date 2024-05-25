@@ -10,12 +10,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { Repository } from 'typeorm';
 import { WorkspaceSchema } from '../entities/workspace.entity';
-import { CreateWorkspaceInput, UpdateWorkspaceInput, WorkspaceRole } from '../graphql';
+import {
+  CreateWorkspaceInput,
+  UpdateWorkspaceInput,
+  WorkspaceRole,
+} from '../graphql';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { UserSchema } from '../entities/user.entity';
-import { UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { WorkspaceRoles } from '../auth/decorators/workspace-roles.decorator';
+import { ProjectSchema } from '../entities';
 
 @Resolver('Workspace')
 @UseGuards(GraphQLAuthGaurd)
@@ -25,8 +30,10 @@ export class WorkspaceResolver {
     private userWorkspaceRepository: Repository<UserWorkspaceSchema>,
 
     @InjectRepository(WorkspaceSchema)
-    private workspaceRepository: Repository<WorkspaceSchema>
-  ) { }
+    private workspaceRepository: Repository<WorkspaceSchema>,
+    @InjectRepository(ProjectSchema)
+    private projectRepository: Repository<ProjectSchema>
+  ) {}
 
   @Mutation('createWorkspace')
   async createWorkspace(
@@ -54,14 +61,11 @@ export class WorkspaceResolver {
     @Args('input') updateWorkspaceInput: UpdateWorkspaceInput,
     @GetUserGQL() user: UserSchema
   ): Promise<WorkspaceSchema> {
-
-
     const workspace = await this.workspaceRepository.findOne({
       where: {
-        id: id
-      }
+        id: id,
+      },
     });
-
 
     if (!workspace) {
       throw new Error('Workspace not found');
@@ -78,21 +82,54 @@ export class WorkspaceResolver {
       },
     });
 
-
     if (!userWorkspace) {
       throw new Error('User not member of the workspace');
     }
 
-    const roles = Reflect.getMetadata('roles', this.updateWorkspace) as WorkspaceRole[];
+    const roles = Reflect.getMetadata(
+      'roles',
+      this.updateWorkspace
+    ) as WorkspaceRole[];
     if (!roles.includes(userWorkspace.role)) {
       throw new Error('Unauthorized access');
     }
-
 
     return this.workspaceRepository.save({
       ...workspace,
       ...updateWorkspaceInput,
     });
+  }
+  @Query('workspace')
+  async workspace(
+    @Args('id') id: string,
+    @GetUserGQL() user: UserSchema
+  ): Promise<WorkspaceSchema> {
+    const workspace = await this.workspaceRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!workspace) {
+      throw new Error('Workspace not found');
+    }
+
+    const userWorkspace = await this.userWorkspaceRepository.findOne({
+      where: {
+        workspace: {
+          id: id,
+        },
+        user: {
+          id: user.id,
+        },
+      },
+    });
+
+    if (!userWorkspace) {
+      throw new Error('User not member of the workspace');
+    }
+
+    return workspace;
   }
 
   @Query('workspaces')
@@ -127,5 +164,18 @@ export class WorkspaceResolver {
     });
 
     return ws;
+  }
+
+  @ResolveField('projects')
+  async projects(
+    @Parent() workspace: WorkspaceSchema
+  ): Promise<ProjectSchema[]> {
+    return this.projectRepository.find({
+      where: {
+        workspace: {
+          id: workspace.id,
+        },
+      },
+    });
   }
 }

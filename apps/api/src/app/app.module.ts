@@ -59,7 +59,7 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
           type: 'postgres',
           // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           // url: configService.get<string>('database_url'),
-          url: "postgres://postgres:admin@localhost:5432/teamflow",
+          url: 'postgres://postgres:root@localhost:5432/teamflow',
           synchronize: true,
           entities: [
             CommentSchema,

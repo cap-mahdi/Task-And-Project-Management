@@ -6,20 +6,22 @@ interface ListItemMenuButtonProps {
   selected?: boolean;
   onClick?: () => void;
   sx?: object;
+  onDoubleClick?: () => void;
 }
 
 export const ListItemMenuButton: FC<ListItemMenuButtonProps> = ({
   children,
   selected,
   onClick,
+  onDoubleClick,
   sx,
-  key,
 }) => {
   const theme = useTheme();
   const { palette } = theme;
   return (
     <ListItemButton
       onClick={onClick}
+      onDoubleClick={onDoubleClick}
       sx={{
         px: 1,
         borderRadius: 2,

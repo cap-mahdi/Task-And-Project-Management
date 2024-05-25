@@ -8,6 +8,7 @@ import { ProjectSprints } from '../pages/project/ProjectSprints';
 import { Tasks } from '../pages/tasks';
 import { Chat } from '../pages/chat/chat';
 import { Sprint } from '../pages/sprint';
+import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 
 export const workspaceRoutes = {
   path: 'workspace/:workspaceId',
@@ -27,7 +28,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'team',
-          element: <div>Team in here</div>,
+          element: <AddUserToWorkspace />,
         },
         {
           path: 'settings',
