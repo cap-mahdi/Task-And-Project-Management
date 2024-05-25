@@ -35,6 +35,8 @@ import {
 import { AppLoggerMiddleware } from '../middlewares';
 import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
 import { EventsModule } from '../events/events.module';
+import { RoomModule } from '../room/room.module';
+import { UserRoomModule } from '../user-room/user-room.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -87,6 +89,8 @@ import { EventsModule } from '../events/events.module';
     UserWorkspaceModule,
     ProjectModule,
     UserProjectModule,
+    RoomModule,
+    UserRoomModule,
   ],
   controllers: [AppController],
   providers: [AppService, LoggingPlugin],

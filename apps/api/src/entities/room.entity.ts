@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Room } from '../graphql';
 import { ProjectSchema } from './project.entity';
-import { UserSchema } from './user.entity';
+// import { UserSchema } from './user.entity';
 import { UserRoomSchema } from './userRoom.entity';
 import { MessageSchema } from './message.entity';
 

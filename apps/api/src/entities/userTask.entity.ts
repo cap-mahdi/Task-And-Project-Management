@@ -11,7 +11,7 @@ import { UserSchema } from './user.entity';
 import { TaskSchema } from './task.entity';
 
 @Entity({
-  name: 'user_room',
+  name: 'user_task',
 })
 @Index(['user', 'task'], { unique: true, where: 'deleted_at IS NULL' })
 export class UserTaskSchema implements Omit<UserTask, 'user' | 'task'> {
