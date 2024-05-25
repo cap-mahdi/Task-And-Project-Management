@@ -5,3 +5,7 @@ type Room {
   userRooms: [UserRoom!]!
   messages: [Message!]!
 }
+
+type Mutation {
+  createRoom(projectId: ID!): Room!
+}

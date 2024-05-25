@@ -3,3 +3,7 @@ type UserRoom {
   user: User!
   room: Room!
 }
+
+type Mutation {
+  addUserToRoom(userId: [ID!]!, roomId: ID!): [UserRoom!]
+}
