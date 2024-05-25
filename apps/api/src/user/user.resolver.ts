@@ -10,7 +10,7 @@ import { UserSchema } from '../entities/user.entity';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { ChangePasswordInput, GetUserInput, UpdateUserInput } from '../graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
-import { UseGuards } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { UserService } from './user.service';
 import { UserWorkspaceService } from '../user-workspace/user-workspace.service';
@@ -26,8 +26,8 @@ export class UserResolver {
     private readonly userWorkspaceService: UserWorkspaceService,
     private readonly userProjectService: UserProjectService,
     private readonly workspaceService: WorkspaceService,
-    private readonly projectService: ProjectService,
-  ) { }
+    private readonly projectService: ProjectService
+  ) {}
 
   @Query()
   async users() {
@@ -85,7 +85,9 @@ export class UserResolver {
   }
 
   @ResolveField('createdWorkspaces')
-  async createdWorkspaces(@Parent() user: UserSchema): Promise<WorkspaceSchema[]> {
+  async createdWorkspaces(
+    @Parent() user: UserSchema
+  ): Promise<WorkspaceSchema[]> {
     return this.workspaceService.findCreatedWorkspacesByUserId(user.id);
   }
 
@@ -93,5 +95,4 @@ export class UserResolver {
   async createdProjects(@Parent() user: UserSchema): Promise<ProjectSchema[]> {
     return this.projectService.findCreatedProjectsByUserId(user.id);
   }
-
 }

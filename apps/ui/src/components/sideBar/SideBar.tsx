@@ -14,8 +14,10 @@ import Search from './Search';
 import { ListItemMenuButton } from './ListItemMenuButton';
 import { menuButtons } from './menuButtonsData';
 import { NestedList } from './NestedList';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
+import { FetchWorkspaceRequest } from '../../services/workspace/workspaceQueries';
 
 const drawerWidth = 270;
 
@@ -24,6 +26,17 @@ export function SideBar({ toolbarSize }) {
   const { palette, typography } = theme;
 
   const [selectedMenu, setSelectedMenu] = useState('Home');
+  const [loadWorkspace, workspaceItems] = useCustomLazyQuery(
+    FetchWorkspaceRequest(['id', 'name', 'description']),
+    true
+  );
+
+  useEffect(() => {
+    loadWorkspace();
+  }, []);
+
+  console.log('workspaceItems', workspaceItems.data);
+
   const handleMenuClick = (e: MouseEvent, details: any) => {
     setSelectedMenu(details.text);
   };

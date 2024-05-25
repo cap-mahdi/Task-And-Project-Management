@@ -18,7 +18,6 @@ type Mutation {
   createProject(input: CreateProjectInput!): Project! #done
 }
 
-# TODO: update in the resolver so only workspace admin can create project
 input CreateProjectInput {
   name: String!
   description: String!
