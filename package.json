@@ -108,6 +108,7 @@
     "react-toastify": "^10.0.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8",
     "ts-morph": "^21.0.1",
     "tslib": "^2.6.2",
