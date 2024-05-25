@@ -22,4 +22,22 @@ export class ProjectService {
     return projects;
   }
 
+  async findProjectById(projectId: string): Promise<ProjectSchema> {
+    const project = await this.projectRepository.findOne({
+      where: {
+        id: projectId,
+      },
+    });
+
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    return project;
+  }
+
+  async createProject(createdProject: any): Promise<ProjectSchema> {
+    return this.projectRepository.save(createdProject);
+  }
+
 }

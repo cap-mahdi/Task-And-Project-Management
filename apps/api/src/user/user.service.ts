@@ -73,6 +73,30 @@ export class UserService {
     return foundUser;
   }
 
+  async getUserByEmail(email: string): Promise<UserSchema> {
+    const foundUser = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!foundUser) {
+      throw new NotFoundException('User not found');
+    }
+    return foundUser;
+  }
+
+  async getUserByUserWorkspaceId(userWorkspaceId: string): Promise<UserSchema> {
+    const foundUser = await this.userRepository.findOne({
+      where: {
+        userWorkspaces: { id: userWorkspaceId },
+      }, relations: ['userWorkspaces'],
+    });
+    if (!foundUser) {
+      throw new NotFoundException('User not found');
+    }
+    return foundUser;
+  }
+
   async updateUser(userId: string, user: UpdateUserInput): Promise<UserSchema> {
     const userToUpdate = await this.userRepository.findOne({ where: { id: userId } })
     if (!userToUpdate) {
