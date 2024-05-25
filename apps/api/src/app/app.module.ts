@@ -57,6 +57,7 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
+
           // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           // url: configService.get<string>('database_url'),
           url: "postgres://postgres:admin@localhost:5432/teamflow",
@@ -89,6 +90,7 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
   controllers: [AppController],
   providers: [AppService, LoggingPlugin],
 })
+
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AppLoggerMiddleware).forRoutes('*');
