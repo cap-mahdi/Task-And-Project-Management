@@ -12,6 +12,7 @@ const getConnectedUserRequest = gql`
       phone
       email
       role
+      avatar
     }
   }
 `;

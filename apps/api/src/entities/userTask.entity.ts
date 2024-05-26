@@ -21,7 +21,9 @@ export class UserTaskSchema implements Omit<UserTask, 'user' | 'task'> {
   @ManyToOne(() => UserSchema, (user) => user.userTasks)
   user: UserSchema;
 
-  @ManyToOne(() => TaskSchema, (task) => task.userTasks)
+  @ManyToOne(() => TaskSchema, (task) => task.userTasks, {
+    onDelete: 'CASCADE',
+  })
   task: TaskSchema;
 
   @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })

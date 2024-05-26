@@ -79,9 +79,11 @@ export class UserResolver {
   @Mutation()
   @UseGuards(GraphQLAuthGaurd)
   async changeUserAvatar(
-    @Args("file") file: any,
+    @Args("file") file,
     @GetUserGQL() user: UserSchema
   ) {
+    console.log("******");
+
     return this.userService.changeUserAvatar(user.id, file);
   }
 

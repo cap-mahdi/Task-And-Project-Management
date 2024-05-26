@@ -54,10 +54,9 @@ export class CreateProjectInput {
 
 export class CreateTask {
     name: string;
-    description?: Nullable<string>;
-    status: Status;
-    tags?: Nullable<string[]>;
-    milestoneId: string;
+    description: string;
+    tags: string[];
+    assignees: string[];
 }
 
 export class UpdateTask {
@@ -65,10 +64,12 @@ export class UpdateTask {
     description?: Nullable<string>;
     status?: Nullable<Status>;
     tags?: Nullable<string[]>;
+    assignees?: Nullable<string[]>;
 }
 
-export class AssignUsersToTask {
-    userIds: string[];
+export class UserFilter {
+    projectId?: Nullable<string>;
+    mileStoneId?: Nullable<string>;
 }
 
 export class CreateUserInput {
@@ -156,7 +157,7 @@ export class Milestone {
 }
 
 export abstract class IQuery {
-    abstract milestones(): Milestone[] | Promise<Milestone[]>;
+    abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
 
@@ -164,9 +165,9 @@ export abstract class IQuery {
 
     abstract project(id: string): Project | Promise<Project>;
 
-    abstract tasks(): Task[] | Promise<Task[]>;
+    abstract tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
 
-    abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    abstract task(id: string): Task | Promise<Task>;
 
     abstract users(): User[] | Promise<User[]>;
 
@@ -198,11 +199,11 @@ export abstract class IMutation {
 
     abstract createRoom(projectId: string): Room | Promise<Room>;
 
-    abstract createTask(input: CreateTask): Task | Promise<Task>;
+    abstract createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
 
     abstract updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
 
-    abstract assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
+    abstract deleteTask(id: string): boolean | Promise<boolean>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
@@ -212,7 +213,7 @@ export abstract class IMutation {
 
     abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
 
-    abstract changeUserAvatar(file: Upload): File | Promise<File>;
+    abstract changeUserAvatar(file: Upload): User | Promise<User>;
 
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
@@ -258,6 +259,7 @@ export class Task {
     milestone: Milestone;
     comments: Comment[];
     userTasks: UserTask[];
+    creator: User;
 }
 
 export class User {

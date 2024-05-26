@@ -31,7 +31,7 @@ type Mutation {
   updateUser(input: UpdateUserInput!): User!
   deleteUser: User!
   changePassword(input: ChangePasswordInput!): User!
-  changeUserAvatar(file: Upload!): File!
+  changeUserAvatar(file: Upload!): User!
 }
 
 input CreateUserInput {
