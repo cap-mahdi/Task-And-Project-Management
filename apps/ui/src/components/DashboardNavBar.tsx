@@ -2,20 +2,15 @@ import {
   AppBar,
   Avatar,
   Box,
-  Button,
   Divider,
   Toolbar,
   Typography,
 } from '@mui/material';
 import { SxPropsObject } from '../utils/sxPropsObject';
-import { title } from 'process';
 import logo from '/public/logo.png';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import useAppContext from '../context/useAppContext';
-
-const sections = ['Demos', 'Pages', 'Support', 'Contact'];
-const name = 'TeamFlow.io';
-const mainButton = 'Start Now';
+import PersonIcon from '@mui/icons-material/Person';
 
 export function DashboardNavBar(props) {
   const [globalState] = useAppContext();
@@ -95,9 +90,9 @@ export function DashboardNavBar(props) {
               height: '2.5rem',
               fontSize: '140%',
             }}
-            src={globalState.user.avatar}
+            src={globalState.user?.avatar || <PersonIcon />}
           >
-            N
+            DDDZJKDNJZ
           </Avatar>
         </Toolbar>
       </AppBar>

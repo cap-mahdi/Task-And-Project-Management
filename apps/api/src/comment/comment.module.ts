@@ -6,20 +6,21 @@ import { TaskModule } from "../task/task.module";
 import { MilestoneModule } from "../milestone/milestone.module";
 import { UserProjectModule } from "../user-project/user-project.module";
 import { CommentSchema } from "../entities";
-import { CommentController } from "./comment.controller";
+import { EventEmitterModule } from "@nestjs/event-emitter";
 
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            CommentSchema
-        ]),
-        TaskModule,
-        MilestoneModule,
-        UserProjectModule
-    ],
-    controllers: [CommentController],
-    providers: [CommentResolver, CommentService],
-    exports: [CommentService],
+  imports: [
+    TypeOrmModule.forFeature([
+      CommentSchema
+    ]),
+    TaskModule,
+    MilestoneModule,
+    UserProjectModule,
+    EventEmitterModule.forRoot(),
+  ],
+  controllers: [],
+  providers: [CommentResolver, CommentService],
+  exports: [CommentService],
 })
 export class CommentModule { }
