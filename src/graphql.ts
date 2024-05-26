@@ -156,7 +156,7 @@ export class Milestone {
 }
 
 export abstract class IQuery {
-    abstract milestones(): Milestone[] | Promise<Milestone[]>;
+    abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
 

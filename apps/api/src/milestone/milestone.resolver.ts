@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { MilestoneService } from './milestone.service';
@@ -8,7 +8,7 @@ import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { UserSchema } from '../entities';
 import { ProjectRoles } from '../auth/decorators/project-roles.decorator';
 
-@Resolver('Workspace')
+@Resolver('Milestone')
 @UseGuards(GraphQLAuthGaurd)
 export class MilestoneResolver {
   constructor(private milestoneService: MilestoneService) {}
@@ -53,6 +53,39 @@ export class MilestoneResolver {
       milestoneId,
       user,
       Reflect.getMetadata('roles', this.deleteMilestone)
+    );
+  }
+
+  @Query('milestones')
+  @ProjectRoles(
+    ProjectRole.Project_ADMIN,
+    ProjectRole.Project_EDITOR,
+    ProjectRole.Project_MEMBER
+  )
+  async milestones(
+    @Args('projectId') projectId: string,
+    @GetUserGQL() user: UserSchema
+  ): Promise<Milestone[]> {
+    return this.milestoneService.findMilestonesByProjectId(
+      projectId,
+      user,
+      Reflect.getMetadata('roles', this.milestones)
+    );
+  }
+  @Query('milestone')
+  @ProjectRoles(
+    ProjectRole.Project_ADMIN,
+    ProjectRole.Project_EDITOR,
+    ProjectRole.Project_MEMBER
+  )
+  async milestone(
+    @Args('id') id: string,
+    @GetUserGQL() user: UserSchema
+  ): Promise<Milestone> {
+    return this.milestoneService.findMilestonesById(
+      id,
+      user,
+      Reflect.getMetadata('roles', this.milestones)
     );
   }
 }

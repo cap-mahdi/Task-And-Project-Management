@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   MilestoneSchema,
@@ -40,6 +44,8 @@ export class MilestoneService {
         user: { id: user.id },
       },
     });
+
+    console.info('userProject #######################', userProject);
 
     if (!userProject || !allowedRoles.includes(userProject.role)) {
       throw new Error('User not allowed to create milestone');
@@ -117,5 +123,53 @@ export class MilestoneService {
     await this.milestoneRepository.softDelete(existingMilestone.id);
 
     return existingMilestone;
+  }
+
+  async isAuthorized(
+    userId: string,
+    projectId: string,
+    allowedRoles: ProjectRole[]
+  ) {
+    const userProject = await this.userProjectRepository.findOne({
+      where: {
+        project: { id: projectId },
+        user: { id: userId },
+      },
+    });
+
+    if (!userProject || !allowedRoles.includes(userProject.role)) {
+      throw new UnauthorizedException();
+    }
+  }
+  async findMilestonesByProjectId(
+    projectId: string,
+    user: UserSchema,
+    allowedRoles: ProjectRole[]
+  ): Promise<Milestone[]> {
+    this.isAuthorized(user.id, projectId, allowedRoles);
+    return this.milestoneRepository.find({
+      where: {
+        project: { id: projectId },
+      },
+    });
+  }
+  async findMilestonesById(
+    id: string,
+    user: UserSchema,
+    allowedRoles: ProjectRole[]
+  ): Promise<Milestone> {
+    const milestone = await this.milestoneRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['project'],
+    });
+
+    if (!milestone) {
+      throw new NotFoundException('Milestone not found');
+    }
+
+    this.isAuthorized(user.id, milestone.project.id, allowedRoles);
+    return milestone;
   }
 }

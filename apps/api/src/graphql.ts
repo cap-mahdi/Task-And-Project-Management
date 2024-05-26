@@ -156,7 +156,7 @@ export interface Milestone {
 }
 
 export interface IQuery {
-    milestones(): Milestone[] | Promise<Milestone[]>;
+    milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
     project(id: string): Project | Promise<Project>;
