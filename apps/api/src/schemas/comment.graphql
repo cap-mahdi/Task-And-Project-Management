@@ -1,6 +1,26 @@
 type Comment {
-    id: ID!
-    content: String!
-    createdAt: Date!
-    user: User!
+  id: ID!
+  content: String!
+  createdAt: Date!
+  user: User!
+  task: Task!
+}
+
+type Query {
+  comments(taskId: ID!): [Comment!]!
+}
+
+input CreateCommentInput {
+  content: String!
+  taskId: ID!
+}
+
+input EditCommentInput {
+  content: String
+}
+
+type Mutation {
+  createComment(input: CreateCommentInput!): Comment!
+  deleteComment(id: ID!): Comment!
+  editComment(id: ID!, input: EditCommentInput!): Comment!
 }

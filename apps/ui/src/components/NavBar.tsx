@@ -3,7 +3,6 @@ import { SxPropsObject } from '../utils/sxPropsObject';
 import { title } from 'process';
 import { Link } from 'react-router-dom';
 
-const sections = ['Demos', 'Pages', 'Support', 'Contact'];
 const name = 'TeamFlow.io';
 const mainButton = 'Start Now';
 
@@ -45,10 +44,6 @@ export function NavBar(props) {
           <Typography variant="h6" component="div" sx={styles.title}>
             {name}
           </Typography>
-
-          {sections.map((el) => (
-            <Button sx={styles.sectionButton}>{el}</Button>
-          ))}
 
           <Button color="inherit" sx={styles.mainButton}>
             <Link
