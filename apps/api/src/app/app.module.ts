@@ -32,11 +32,10 @@ import {
   MilestoneSchema,
   MessageSchema,
 } from '../entities';
-import { AppLoggerMiddleware } from '../middlewares';
-import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
 import { EventsModule } from '../events/events.module';
 import { RoomModule } from '../room/room.module';
 import { UserRoomModule } from '../user-room/user-room.module';
+import { MilestoneModule } from '../milestone/milestone.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -60,10 +59,7 @@ import { UserRoomModule } from '../user-room/user-room.module';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-
-          // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
-          url: configService.get<string>('database_url'),
-          // url: "postgres://postgres:admin@localhost:5432/teamflow",
+          url: configService.get<string>(EnvVariables.DATABASE_URL),
           synchronize: true,
           entities: [
             CommentSchema,
@@ -90,16 +86,15 @@ import { UserRoomModule } from '../user-room/user-room.module';
     UserWorkspaceModule,
     ProjectModule,
     UserProjectModule,
+    MilestoneModule,
     RoomModule,
     UserRoomModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     // consumer.apply(AppLoggerMiddleware).forRoutes('*');
   }
 }
-
