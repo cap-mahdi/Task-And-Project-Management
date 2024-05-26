@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Comment } from '../graphql';
 import { UserSchema } from './user.entity';
@@ -14,7 +15,7 @@ import { TaskSchema } from './task.entity';
   name: 'comment',
 })
 export class CommentSchema implements Omit<Comment, 'task' | 'user'> {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -22,6 +23,9 @@ export class CommentSchema implements Omit<Comment, 'task' | 'user'> {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt: Date;
 
   @ManyToOne(() => UserSchema, (user) => user.comments)
   user: UserSchema;

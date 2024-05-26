@@ -2,10 +2,12 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserSchema } from './user.entity';
@@ -20,7 +22,7 @@ import { UserTaskSchema } from './userTask.entity';
 export class TaskSchema
   implements Omit<Task, 'userTasks' | 'comments' | 'milestone'>
 {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -34,6 +36,9 @@ export class TaskSchema
 
   @Column('simple-array')
   tags: string[];
+
+  @ManyToOne(() => UserSchema)
+  creator: UserSchema;
 
   @OneToMany(() => UserTaskSchema, (userTask) => userTask.task)
   userTasks: UserTaskSchema[];

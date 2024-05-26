@@ -8,9 +8,12 @@ import {
   Typography,
 } from '@mui/material';
 import red from '@mui/material/colors/red';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CustomInputField } from '../components/customInputField';
 import useAppContext from '../../../context/useAppContext';
+import { ImageUpload } from '../../../components';
+import { CHANGE_USER_AVATAR } from '../../../services/user';
+import { useCustomMutation } from '../../../hooks/useCustomMutation';
 
 interface IField {
   name: 'name' | 'email' | 'phone';
@@ -18,6 +21,13 @@ interface IField {
   value: string;
   type?: 'text' | 'email' | 'tel' | 'role' | 'password';
   onChange: (value: string) => void;
+}
+
+interface ISelectedFile {
+  mainState: string;
+  imageUploaded: number;
+  selectedFile: File | null;
+  preview: string | null;
 }
 
 export function BasicDetails() {
@@ -48,6 +58,8 @@ export function BasicDetails() {
       onChange: (value: string) => handleFieldChange('Phone Number', value),
     },
   ]);
+
+  const [avatar, setAvatar] = useState<string>('' || currentUser?.avatar);
 
   const handleFieldChange = (fieldName: string, value: string) => {
     setFields((prevFields) =>

@@ -1,5 +1,5 @@
 type Task {
-  id: ID!
+  id: String!
   name: String!
   description: String!
   status: Status!
@@ -7,14 +7,14 @@ type Task {
   milestone: Milestone!
   comments: [Comment!]!
   userTasks: [UserTask!]!
+  creator: User!
 }
 
 input CreateTask {
   name: String!
-  description: String
-  status: Status!
-  tags: [String!]
-  milestoneId: ID!
+  description: String!
+  tags: [String!]!
+  assignees: [String!]!
 }
 
 input UpdateTask {
@@ -22,19 +22,23 @@ input UpdateTask {
   description: String
   status: Status
   tags: [String!]
+  assignees: [String!]
 }
 
-input AssignUsersToTask {
-  userIds: [ID!]!
+input UserFilter {
+  projectId: String
+  mileStoneId: String
 }
+
+
 
 type Query {
-  tasks: [Task!]!
-  task(id: ID!): Task
+  tasks(filter: UserFilter): [Task!]!
+  task(id: ID!): Task!
 }
 
 type Mutation {
-  createTask(input: CreateTask!): Task!
-  updateTask(id: ID!, input: UpdateTask!): Task!
-  assignUsersToTask(taskId: ID!, input: AssignUsersToTask!): Task!
+  createTask(input: CreateTask!,milestoneId: String!): Task!
+  updateTask(id: String!, input: UpdateTask!): Task!
+  deleteTask(id: String!): Boolean!
 }

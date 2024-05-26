@@ -116,7 +116,7 @@ const titles = [
     title: 'Contact Us',
     links: [
       {
-        title: 'support@braininwave.ip',
+        title: 'support@teamflow.ip',
         link: '#',
       },
       {
@@ -220,7 +220,7 @@ export const Footer: FC = () => {
               justifyContent: 'right',
             }}
           >
-            © 2024 Copyright, All Right Reserved, Made by Sejal_ui_ux with
+            © 2024 Copyright, All Right Reserved, Made by TeamFlow with
             <span
               style={{
                 color: 'blue',

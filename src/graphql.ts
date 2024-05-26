@@ -31,6 +31,15 @@ export enum WorkspaceRole {
     WORKSPACE_MEMBER = "WORKSPACE_MEMBER"
 }
 
+export class CreateCommentInput {
+    content: string;
+    taskId: string;
+}
+
+export class EditCommentInput {
+    content?: Nullable<string>;
+}
+
 export class CreateMilestone {
     name: string;
     description: string;
@@ -54,10 +63,9 @@ export class CreateProjectInput {
 
 export class CreateTask {
     name: string;
-    description?: Nullable<string>;
-    status: Status;
-    tags?: Nullable<string[]>;
-    milestoneId: string;
+    description: string;
+    tags: string[];
+    assignees: string[];
 }
 
 export class UpdateTask {
@@ -65,10 +73,12 @@ export class UpdateTask {
     description?: Nullable<string>;
     status?: Nullable<Status>;
     tags?: Nullable<string[]>;
+    assignees?: Nullable<string[]>;
 }
 
-export class AssignUsersToTask {
-    userIds: string[];
+export class UserFilter {
+    projectId?: Nullable<string>;
+    mileStoneId?: Nullable<string>;
 }
 
 export class CreateUserInput {
@@ -134,29 +144,13 @@ export class Comment {
     content: string;
     createdAt: Date;
     user: User;
-}
-
-export class Message {
-    id: string;
-    content: string;
-    createdAt: Date;
-    sender: User;
-    room: Room;
-}
-
-export class Milestone {
-    id: string;
-    name: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    status: Status;
-    project: Project;
-    tasks: Task[];
+    task: Task;
 }
 
 export abstract class IQuery {
-    abstract milestones(): Milestone[] | Promise<Milestone[]>;
+    abstract comments(taskId: string): Comment[] | Promise<Comment[]>;
+
+    abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
 
@@ -164,9 +158,9 @@ export abstract class IQuery {
 
     abstract project(id: string): Project | Promise<Project>;
 
-    abstract tasks(): Task[] | Promise<Task[]>;
+    abstract tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
 
-    abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    abstract task(id: string): Task | Promise<Task>;
 
     abstract users(): User[] | Promise<User[]>;
 
@@ -188,6 +182,12 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
+    abstract createComment(input: CreateCommentInput): Comment | Promise<Comment>;
+
+    abstract deleteComment(id: string): Comment | Promise<Comment>;
+
+    abstract editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
+
     abstract createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
 
     abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
@@ -198,11 +198,11 @@ export abstract class IMutation {
 
     abstract createRoom(projectId: string): Room | Promise<Room>;
 
-    abstract createTask(input: CreateTask): Task | Promise<Task>;
+    abstract createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
 
     abstract updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
 
-    abstract assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
+    abstract deleteTask(id: string): boolean | Promise<boolean>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
@@ -227,6 +227,25 @@ export abstract class IMutation {
     abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 
     abstract updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+}
+
+export class Message {
+    id: string;
+    content: string;
+    createdAt: Date;
+    sender: User;
+    room: Room;
+}
+
+export class Milestone {
+    id: string;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    status: Status;
+    project: Project;
+    tasks: Task[];
 }
 
 export class Project {
@@ -258,6 +277,7 @@ export class Task {
     milestone: Milestone;
     comments: Comment[];
     userTasks: UserTask[];
+    creator: User;
 }
 
 export class User {

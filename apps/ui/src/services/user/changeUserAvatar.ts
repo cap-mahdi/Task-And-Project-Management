@@ -6,7 +6,8 @@ export const CHANGE_USER_AVATAR = gql`
       id
       name
       email
-      phone
+      phone,
+    avatar
       avatar
     }
   }
