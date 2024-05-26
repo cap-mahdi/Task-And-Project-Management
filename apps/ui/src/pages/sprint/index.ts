@@ -1,1 +1,1 @@
-export * from "./Sprint"
+export * from './Sprints';

@@ -1,14 +1,28 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserWorkspaceSchema } from '../entities/userWorkspace.entity';
 import { Repository } from 'typeorm';
 import { WorkspaceSchema } from '../entities/workspace.entity';
 import { UserSchema } from '../entities/user.entity';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
-import { EmailRoleInput, UpdateUserWorkspace, UserWorkspace, WorkspaceRole } from '../graphql';
+import {
+  EmailRoleInput,
+  UpdateUserWorkspace,
+  UserWorkspace,
+  AddUserWorkspaceInput,
+  WorkspaceRole,
+} from '../graphql';
 import { UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { WorkspaceRoles } from '../auth/decorators/workspace-roles.decorator';
+import mapStringToEnum from '../utils/mapStringToEnum';
 
 @Resolver('UserWorkspace')
 @UseGuards(GraphQLAuthGaurd)
@@ -20,15 +34,14 @@ export class UserWorkspaceResolver {
     private workspaceRepository: Repository<WorkspaceSchema>,
     @InjectRepository(UserSchema)
     private userRepository: Repository<UserSchema>
-  ) { }
-
+  ) {}
 
   @Mutation('updateUserWorkspace')
   @WorkspaceRoles(WorkspaceRole.WORKSPACE_ADMIN, WorkspaceRole.WORKSPACE_EDITOR)
   async updateUserWorkspace(
     @Args('userId') memberId: string,
     @Args('workspaceId') workspaceId: string,
-    @Args('input') {role}: UpdateUserWorkspace,
+    @Args('input') { role }: UpdateUserWorkspace,
     @GetUserGQL() user: UserSchema
   ): Promise<UserWorkspaceSchema> {
     // check if worskpace exists
@@ -40,7 +53,7 @@ export class UserWorkspaceResolver {
     });
 
     if (!workspace) {
-      throw new Error('Workspace not found')
+      throw new Error('Workspace not found');
     }
     // check authorization
     const editorWorkspace = await this.userWorkspaceRepository.findOne({
@@ -51,12 +64,12 @@ export class UserWorkspaceResolver {
     });
 
     if (!editorWorkspace) {
-      throw new Error('Editor user not member of the workspace')
+      throw new Error('Editor user not member of the workspace');
     }
 
     const roles = Reflect.getMetadata('roles', this.updateUserWorkspace);
     if (!roles.includes(editorWorkspace.role)) {
-      throw new Error('Unauthorizd access')
+      throw new Error('Unauthorizd access');
     }
 
     // check if user exists
@@ -68,21 +81,20 @@ export class UserWorkspaceResolver {
     });
 
     if (!editedUser) {
-      throw new Error('User not found')
+      throw new Error('User not found');
     }
-
-
 
     // check if user is within the workspace
     const editedUserWorkspace = await this.userWorkspaceRepository.findOne({
       where: {
         user: { id: memberId },
         workspace: { id: workspaceId },
-      }, relations: ['user', 'workspace']
+      },
+      relations: ['user', 'workspace'],
     });
 
     if (!editedUserWorkspace) {
-      throw new Error('User to be edited is not member of the workspace')
+      throw new Error('User to be edited is not member of the workspace');
     }
 
     // make changes
@@ -95,12 +107,14 @@ export class UserWorkspaceResolver {
   @Mutation('addUsersToWorkspace')
   @WorkspaceRoles(WorkspaceRole.WORKSPACE_ADMIN, WorkspaceRole.WORKSPACE_EDITOR)
   async addUsersToWorkspace(
-    @Args('workspaceId') workspaceId: string,
-    @Args('emailRoles') emailRoles: EmailRoleInput[],
+    @Args('input') input: AddUserWorkspaceInput,
     @GetUserGQL() user: UserSchema
   ): Promise<UserWorkspaceSchema[]> {
+    const { workspaceId, emailRoles } = input;
     // check if worskpace exists
 
+    console.info('workspaceId', workspaceId);
+    console.info('emailRoles', emailRoles);
     const workspaceToFind = await this.workspaceRepository.findOne({
       where: {
         id: workspaceId,
@@ -108,7 +122,7 @@ export class UserWorkspaceResolver {
     });
 
     if (!workspaceToFind) {
-      throw new Error('Workspace not found')
+      throw new Error('Workspace not found');
     }
 
     // check authorization
@@ -120,12 +134,12 @@ export class UserWorkspaceResolver {
     });
 
     if (!editorWorkspace) {
-      throw new Error('Editor user not member of the workspace')
+      throw new Error('Editor user not member of the workspace');
     }
 
     const roles = Reflect.getMetadata('roles', this.addUsersToWorkspace);
     if (!roles.includes(editorWorkspace.role)) {
-      throw new Error('Unauthorizd access')
+      throw new Error('Unauthorizd access');
     }
 
     // check if workspace exists
@@ -136,13 +150,15 @@ export class UserWorkspaceResolver {
     });
 
     if (!workspace) {
-      throw new Error('Workspace not found')
+      throw new Error('Workspace not found');
     }
 
     // check if users exist and are not already in the workspace
-    // make the changes 
+    // make the changes
     return await Promise.all(
-      emailRoles.map(async ({ email, role }) => {
+      emailRoles.map(async ({ email, role: roleString }) => {
+        const role = mapStringToEnum(roleString, WorkspaceRole);
+
         const userToAdd = await this.userRepository.findOne({
           where: {
             email: email,
@@ -150,7 +166,7 @@ export class UserWorkspaceResolver {
         });
 
         if (!userToAdd) {
-          throw new Error('User not found')
+          throw new Error('User not found');
         }
 
         const userToAddWorkspace = await this.userWorkspaceRepository.findOne({
@@ -161,7 +177,7 @@ export class UserWorkspaceResolver {
         });
 
         if (userToAddWorkspace) {
-          throw new Error('User already in the workspace')
+          throw new Error('User already in the workspace');
         }
 
         return this.userWorkspaceRepository.save({
@@ -169,10 +185,9 @@ export class UserWorkspaceResolver {
           user: userToAdd,
           workspace: workspace,
         });
-
-      }))
+      })
+    );
   }
-
 
   @Query()
   async userWorkspaces(

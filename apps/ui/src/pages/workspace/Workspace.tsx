@@ -15,7 +15,7 @@ export function Workspace(props: any) {
       'id',
       'name',
       'description',
-      'projects{ id, name }',
+      'projects{ id, name ,description , createdAt }',
     ]),
     true
   );

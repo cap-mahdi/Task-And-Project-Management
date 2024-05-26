@@ -88,9 +88,11 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
     UserProjectModule,
   ],
   controllers: [AppController],
-  providers: [AppService, LoggingPlugin],
+  providers: [
+    AppService,
+    // LoggingPlugin
+  ],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AppLoggerMiddleware).forRoutes('*');

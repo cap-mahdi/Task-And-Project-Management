@@ -1,6 +1,8 @@
 enum WorkspaceRole {
   WORKSPACE_ADMIN
+
   WORKSPACE_EDITOR
+
   WORKSPACE_MEMBER
 }
 
@@ -14,11 +16,15 @@ type UserWorkspace {
 
 input EmailRoleInput {
   email: String!
-  role: WorkspaceRole!
+  role: String!
 }
 
 input UpdateUserWorkspace {
   role: WorkspaceRole
+}
+input AddUserWorkspaceInput {
+  workspaceId: ID!
+  emailRoles: [EmailRoleInput!]!
 }
 
 type Query {
@@ -32,8 +38,5 @@ type Mutation {
     workspaceId: ID!
     input: UpdateUserWorkspace!
   ): UserWorkspace! #done
-  addUsersToWorkspace(
-    workspaceId: ID!
-    emailRoles: [EmailRoleInput!]!
-  ): [UserWorkspace!]! #done
+  addUsersToWorkspace(input: AddUserWorkspaceInput!): [UserWorkspace!]! #done
 }

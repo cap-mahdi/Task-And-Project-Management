@@ -9,3 +9,21 @@ export const CREATE_WORKSPACE = gql`
     }
   }
 `;
+
+export const ADD_USERS_TO_WORKSPACE = gql`
+  mutation AddUsersToWorkspace($input: AddUserWorkspaceInput!) {
+    addUsersToWorkspace(input: $input) {
+      id
+      user {
+        id
+        email
+      }
+      addedAt
+      workspace {
+        id
+        name
+      }
+      role
+    }
+  }
+`;
