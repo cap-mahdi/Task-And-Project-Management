@@ -143,6 +143,13 @@ export class UserService {
     }
     const cloudinaryResponse = await this.cloudinaryService.uploadFile(file)
     const updatedUser = await this.userRepository.save({ ...userToUpdate, avatar: cloudinaryResponse.secure_url })
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log({ updatedUser });
+
+
     return updatedUser
   }
 

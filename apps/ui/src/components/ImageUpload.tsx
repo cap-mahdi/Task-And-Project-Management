@@ -1,5 +1,6 @@
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { useState } from 'react';
+import { Toast } from 'react-toastify/dist/components';
 
 interface ISelectedFile {
   mainState: string;
@@ -8,17 +9,11 @@ interface ISelectedFile {
 }
 
 interface IImageUploadProps {
-  initialImage: string;
-  setImage: (image: string) => void;
+  selectedFile: ISelectedFile;
+  setSelectedFile: (value: ISelectedFile) => void;
 }
 
-const ImageUpload = ({ initialImage, setImage }: IImageUploadProps) => {
-  const [selectedFile, setSelectedFile] = useState<ISelectedFile>({
-    mainState: 'initial', // initial
-    imageUploaded: 0,
-    selectedFile: 'avatar.jpg',
-  });
-
+const ImageUpload = ({ selectedFile, setSelectedFile }: IImageUploadProps) => {
   const handleUploadClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -33,12 +28,17 @@ const ImageUpload = ({ initialImage, setImage }: IImageUploadProps) => {
       selectedFile: event.target.files[0],
       imageUploaded: 1,
     });
-    setImage(event.target.files[0]);
   };
 
   return (
-    <div>
-      <img width="200px" src={selectedFile.selectedFile} alt="upload-preview" />
+    <Stack spacing={2}>
+      {selectedFile.selectedFile && (
+        <img
+          width="200px"
+          src={selectedFile.selectedFile}
+          alt="upload-preview"
+        />
+      )}
       <input
         accept="image/*"
         id="contained-button-file"
@@ -52,7 +52,7 @@ const ImageUpload = ({ initialImage, setImage }: IImageUploadProps) => {
           Upload
         </Button>
       </label>
-    </div>
+    </Stack>
   );
 };
 
