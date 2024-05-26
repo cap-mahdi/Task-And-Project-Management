@@ -157,6 +157,8 @@ export abstract class IQuery {
 
     abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
+    abstract project(id: string): Project | Promise<Project>;
+
     abstract tasks(): Task[] | Promise<Task[]>;
 
     abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
