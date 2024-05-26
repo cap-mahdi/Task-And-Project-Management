@@ -21,7 +21,7 @@ export class ProjectSchema
   implements
     Omit<Project, 'workspace' | 'userProjects' | 'rooms' | 'milestones'>
 {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

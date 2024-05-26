@@ -33,11 +33,9 @@ export enum WorkspaceRole {
 
 export class CreateMilestone {
     name: string;
-    description?: Nullable<string>;
+    description: string;
     startDate: Date;
     endDate: Date;
-    status: Status;
-    projectId: string;
 }
 
 export class UpdateMilestone {
@@ -183,9 +181,11 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createMilestone(input: CreateMilestone): Milestone | Promise<Milestone>;
+    abstract createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
 
     abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
+
+    abstract deleteMilestone(id: string): Milestone | Promise<Milestone>;
 
     abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
 

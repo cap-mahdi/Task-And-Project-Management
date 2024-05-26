@@ -1,5 +1,5 @@
 type Project {
-  id: ID! #done
+  id: String! #done
   name: String! #done
   description: String! #done
   createdAt: Date! #done
