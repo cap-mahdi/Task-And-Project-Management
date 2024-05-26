@@ -7,10 +7,14 @@ import {
   UserSchema,
 } from '../entities';
 import { Repository } from 'typeorm';
-import { UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
-// import { Inject } from '@nestjs/common';
+import { ForbiddenError } from '@nestjs/apollo';
 
 @Resolver()
 export class UserRoomResolver {
@@ -39,7 +43,7 @@ export class UserRoomResolver {
     });
 
     if (!room) {
-      throw new Error('Room not found');
+      throw new NotFoundException('Room not found');
     }
 
     const userRoom = await this.userRoomRepository.findOne({
@@ -50,7 +54,7 @@ export class UserRoomResolver {
     });
 
     if (!userRoom) {
-      throw new Error('User not in the room');
+      throw new ForbiddenError('User not in the room');
     }
 
     const usersRoom: UserRoomSchema[] = [];
@@ -61,7 +65,7 @@ export class UserRoomResolver {
         },
       });
       if (!user) {
-        throw new Error('User not found');
+        throw new NotFoundException('User not found');
       }
 
       const existUser = await this.userRoomRepository.findOne({
@@ -71,7 +75,7 @@ export class UserRoomResolver {
         },
       });
       if (existUser) {
-        throw new Error('User already in the room');
+        throw new BadRequestException('User already in the room');
       }
 
       const userProjectIn = await this.userProjectRepository.findOne({
@@ -82,7 +86,7 @@ export class UserRoomResolver {
       });
 
       if (!userProjectIn) {
-        throw new Error('User not in the project');
+        throw new ForbiddenError('User not in the project');
       }
 
       const userRoom = new UserRoomSchema();
