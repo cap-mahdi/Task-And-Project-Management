@@ -60,6 +60,7 @@ import { UserRoomModule } from '../user-room/user-room.module';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
+
           // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           url: configService.get<string>('database_url'),
           // url: "postgres://postgres:admin@localhost:5432/teamflow",
@@ -93,10 +94,12 @@ import { UserRoomModule } from '../user-room/user-room.module';
     UserRoomModule,
   ],
   controllers: [AppController],
-  providers: [AppService, LoggingPlugin],
+  providers: [AppService],
 })
+
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+    // consumer.apply(AppLoggerMiddleware).forRoutes('*');
   }
 }
+
