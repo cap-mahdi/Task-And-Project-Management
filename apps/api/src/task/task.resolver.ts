@@ -9,7 +9,7 @@ import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { TaskService } from './task.service';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
-import { TaskSchema, UserSchema } from '../entities';
+import { UserSchema } from '../entities';
 import { CreateTaskDto } from './createTask.dto';
 import { UpdateTaskDto } from './updateTask.dto';
 import { Task } from '../graphql';
@@ -17,7 +17,7 @@ import { Task } from '../graphql';
 @Resolver('Task')
 @UseGuards(GraphQLAuthGaurd)
 export class TaskResolver {
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService) { }
 
   @Mutation('createTask')
   async createTask(

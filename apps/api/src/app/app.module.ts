@@ -38,6 +38,7 @@ import { UserRoomModule } from '../user-room/user-room.module';
 import { MilestoneModule } from '../milestone/milestone.module';
 import { TaskModule } from '../task/task.module';
 import { UserTaskModule } from '../user-task/user-task.module';
+import { CommentModule } from '../comment/comment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -93,6 +94,7 @@ import { UserTaskModule } from '../user-task/user-task.module';
     UserRoomModule,
     TaskModule,
     UserTaskModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
