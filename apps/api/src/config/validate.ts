@@ -21,7 +21,6 @@ export function validate(config: Record<string, unknown>) {
 
   if (errors.length > 0) {
     for (const error of errors) {
-      // console.log('Error: ', error);
       for (const key in error.constraints) {
         console.error(error.constraints[key]);
       }

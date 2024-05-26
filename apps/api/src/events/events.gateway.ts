@@ -1,5 +1,6 @@
 import { OnModuleInit } from '@nestjs/common';
 import {
+  ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
@@ -34,5 +35,14 @@ export class EventsGateway implements OnModuleInit {
     console.log('Message is receieved from the client');
     console.log(data);
     return of({ event: 'message', data: 'Returned from the servery' });
+  }
+  @SubscribeMessage('login')
+  login(
+    @MessageBody()
+    data: any,
+    @ConnectedSocket() client: any
+  ): Observable<WsResponse<any>> {
+    console.log(data);
+    return of({ event: 'login', data: 'Returned from the servery' });
   }
 }

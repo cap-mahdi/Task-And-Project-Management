@@ -1,4 +1,4 @@
-import { Inject, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -9,29 +9,26 @@ import {
 } from '@nestjs/graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
-import { CreateProjectInput, ProjectRole, User, WorkspaceRole } from '../graphql';
-import { InjectRepository } from '@nestjs/typeorm';
+import { CreateProjectInput, ProjectRole, WorkspaceRole } from '../graphql';
 import { ProjectSchema } from '../entities/project.entity';
-import { Repository } from 'typeorm';
 import { WorkspaceSchema } from '../entities/workspace.entity';
 import { UserProjectSchema } from '../entities/userProject.entity';
 import { UserSchema } from '../entities/user.entity';
 import { WorkspaceRoles } from '../auth/decorators/workspace-roles.decorator';
-import { UserWorkspaceSchema } from '../entities';
+import { UserProjectService } from '../user-project/user-project.service';
+import { UserWorkspaceService } from '../user-workspace/user-workspace.service';
+import { WorkspaceService } from '../workspace/workspace.service';
+import { ProjectService } from './project.service';
 
 @Resolver('Project')
 @UseGuards(GraphQLAuthGaurd)
 export class ProjectResolver {
   constructor(
-    @InjectRepository(ProjectSchema)
-    private projectRepository: Repository<ProjectSchema>,
-    @InjectRepository(WorkspaceSchema)
-    private workspaceRepository: Repository<WorkspaceSchema>,
-    @InjectRepository(UserProjectSchema)
-    private userProjectRepository: Repository<UserProjectSchema>,
-    @InjectRepository(UserWorkspaceSchema)
-    private userWorkspaceRepository: Repository<UserWorkspaceSchema>
-  ) { }
+    private readonly projectService: ProjectService,
+    private readonly userProjectService: UserProjectService,
+    private readonly workspaceService: WorkspaceService,
+    private readonly userWorkspaceService: UserWorkspaceService
+  ) {}
 
   @Mutation('createProject')
   @WorkspaceRoles(WorkspaceRole.WORKSPACE_ADMIN)
@@ -39,93 +36,75 @@ export class ProjectResolver {
     @Args('input') createProjectInput: CreateProjectInput,
     @GetUserGQL() user: UserSchema
   ): Promise<ProjectSchema> {
-
-    const workspace: WorkspaceSchema = await this.workspaceRepository.findOne({
-      where: {
-        id: createProjectInput.workspaceId,
-      }, relations: ['creator'],
-    });
-    if (!workspace) {
-      throw new Error('Workspace not found');
-    }
-
-
-    console.log('i read workspace', workspace)
+    // check if workspace exists
+    const workspace = await this.workspaceService.findWorkspaceById(
+      createProjectInput.workspaceId
+    );
 
     // check user authorization
-    const userWorkspace = await this.userWorkspaceRepository.findOne({
-      where: {
-        user: { id: user.id },
-        workspace: { id: createProjectInput.workspaceId },
-      },
-    });
-
-    if (!userWorkspace) {
-      throw new Error('User not member of the workspace')
-    }
-
     const roles = Reflect.getMetadata('roles', this.createProject);
-    if (!roles.includes(userWorkspace.role)) {
+    if (
+      !(await this.userWorkspaceService.isAuthorized(
+        user.id,
+        createProjectInput.workspaceId,
+        roles
+      ))
+    ) {
       throw new Error('Unauthorized access');
     }
 
-
-    const project: ProjectSchema = await this.projectRepository.save({
+    // create project
+    const createdProject = {
       ...createProjectInput,
       creator: user,
       workspace: workspace,
-    });
+    };
+    const project: ProjectSchema = await this.projectService.createProject(
+      createdProject
+    );
 
-    console.log('project:', project)
-
-    await this.userProjectRepository.save({
-      role: ProjectRole.Project_ADMIN,
-      project: project,
-      user: user,
-    });
+    await this.userProjectService.addUserToProject(
+      user,
+      project,
+      ProjectRole.Project_ADMIN
+    );
 
     return project;
   }
 
-
   @Query('projects')
   async projects(@GetUserGQL() user: UserSchema): Promise<ProjectSchema[]> {
-    const userProjects: UserProjectSchema[] =
-      await this.userProjectRepository.find({
-        where: {
-          user: {
-            id: user.id,
-          },
-        },
-        relations: ['project'],
-      });
+    const userProjects = await this.userProjectService.findUserProjectsByUserId(
+      user.id
+    );
     return userProjects.map((userProject) => userProject.project);
+  }
+
+  @Query('project')
+  async project(
+    @GetUserGQL() user: UserSchema,
+    @Args('id') projectId: string
+  ): Promise<ProjectSchema> {
+    const userProject =
+      await this.userProjectService.findUserProjectByProjectIdAndUserId(
+        user.id,
+        projectId
+      );
+    return userProject.project;
   }
 
   @ResolveField('userProjects')
   async userProjects(
     @Parent() project: ProjectSchema
   ): Promise<UserProjectSchema[]> {
-    const userProjects: UserProjectSchema[] =
-      await this.userProjectRepository.find({
-        where: {
-          project: {
-            id: project.id,
-          },
-        },
-        // relations: ['user'],
-      });
+    const userProjects = this.userProjectService.findUserProjectsByProjectId(
+      project.id
+    );
     return userProjects;
   }
 
   @ResolveField('workspace')
   async workspace(@Parent() project: ProjectSchema): Promise<WorkspaceSchema> {
-    return this.workspaceRepository.findOne({
-      where: {
-        projects: {
-          id: project.id,
-        },
-      }, relations: ['creator']
-    });
+    return this.workspaceService.findWorkspacebyProjectId(project.id);
   }
 }
