@@ -7,7 +7,7 @@ import {
   UserSchema,
 } from '../entities';
 import { Repository } from 'typeorm';
-import { UseGuards } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 
@@ -34,9 +34,8 @@ export class RoomResolver {
       },
     });
     if (!project) {
-      throw new Error('Project not found');
+      throw new NotFoundException('Project not found');
     }
-    console.log('i read project', project);
 
     const room = new RoomSchema();
     room.project = project;
