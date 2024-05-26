@@ -203,6 +203,8 @@ export abstract class IMutation {
 
     abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
 
+    abstract changeUserAvatar(file: Upload): File | Promise<File>;
+
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
@@ -253,6 +255,7 @@ export class User {
     email: string;
     phone?: Nullable<string>;
     password: string;
+    avatar?: Nullable<string>;
     createdAt: Date;
     role: UserRole;
     userWorkspaces: UserWorkspace[];
@@ -261,6 +264,12 @@ export class User {
     userTasks: UserTask[];
     createdWorkspaces: Workspace[];
     createdProjects: Project[];
+}
+
+export class File {
+    filename: string;
+    mimetype: string;
+    encoding: string;
 }
 
 export class UserProject {
@@ -301,4 +310,5 @@ export class Workspace {
     creator: User;
 }
 
+export type Upload = any;
 type Nullable<T> = T | null;

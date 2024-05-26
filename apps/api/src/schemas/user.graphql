@@ -9,6 +9,7 @@ type User {
   email: String! #done
   phone: String #done
   password: String! #done
+  avatar: String
   createdAt: Date! #done
   role: UserRole! #done
   userWorkspaces: [UserWorkspace!]! #doning -- only get the userWorkspaces
@@ -30,6 +31,7 @@ type Mutation {
   updateUser(input: UpdateUserInput!): User!
   deleteUser: User!
   changePassword(input: ChangePasswordInput!): User!
+  changeUserAvatar(file: Upload!): File!
 }
 
 input CreateUserInput {
@@ -54,4 +56,12 @@ input ChangePasswordInput {
   oldPassword: String!
   newPassword: String!
   confirmPassword: String!
+}
+
+scalar Upload
+
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
 }

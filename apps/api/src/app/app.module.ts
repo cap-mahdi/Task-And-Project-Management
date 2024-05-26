@@ -57,9 +57,7 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
-          // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
-          // url: configService.get<string>('database_url'),
-          url: "postgres://postgres:admin@localhost:5432/teamflow",
+          url: configService.get<string>('database_url'),
           synchronize: true,
           entities: [
             CommentSchema,
