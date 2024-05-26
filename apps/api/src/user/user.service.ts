@@ -138,8 +138,7 @@ export class UserService {
     if (!userToUpdate) {
       throw new BadRequestException('User not found')
     }
-
-    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file[0])
+    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file)
     const updatedUser = await this.userRepository.save({ ...userToUpdate, avatar: cloudinaryResponse.secure_url })
     delete updatedUser.password
     return updatedUser

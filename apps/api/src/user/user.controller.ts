@@ -1,8 +1,6 @@
 import { Controller, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserService } from './user.service';
-import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
-import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { UserSchema } from '../entities';
 import { GetUser } from '../auth/decorators/user.decorator';
 import { AuthGuard } from '@nestjs/passport';
