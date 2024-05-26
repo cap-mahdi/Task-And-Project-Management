@@ -36,18 +36,15 @@ export const AddUserToWorkspace: FC = () => {
   const [emails, setEmails] = useState<string[]>([]);
   const emailsRef = useRef<{ email: string; role: WorkspaceRole }[]>([]);
   const [addUsersToWorkspace] = useCustomMutation(ADD_USERS_TO_WORKSPACE, true);
-  console.log(workspaceId);
 
   function handleAddUser() {
     const newdata = { email: selectedUser, role: selectedRole };
-    console.log(newdata);
     setEmails([...emails, selectedUser]);
     emailsRef.current.push(newdata);
     setSelectedUser('');
   }
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(emailsRef.current);
     addUsersToWorkspace({
       variables: {
         input: {
@@ -112,8 +109,6 @@ export const AddUserToWorkspace: FC = () => {
                 minWidth: 120,
               }}
               onChange={(e) => {
-                console.log(WorkspaceRole[e.target.value]);
-
                 setSelectedRole(
                   WorkspaceRole[e.target.value as keyof typeof WorkspaceRole]
                 );

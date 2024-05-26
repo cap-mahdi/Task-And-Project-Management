@@ -33,11 +33,9 @@ export enum WorkspaceRole {
 
 export class CreateMilestone {
     name: string;
-    description?: Nullable<string>;
+    description: string;
     startDate: Date;
     endDate: Date;
-    status: Status;
-    projectId: string;
 }
 
 export class UpdateMilestone {
@@ -164,6 +162,8 @@ export abstract class IQuery {
 
     abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
+    abstract project(id: string): Project | Promise<Project>;
+
     abstract tasks(): Task[] | Promise<Task[]>;
 
     abstract task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
@@ -188,11 +188,15 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createMilestone(input: CreateMilestone): Milestone | Promise<Milestone>;
+    abstract createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
 
     abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
 
+    abstract deleteMilestone(id: string): Milestone | Promise<Milestone>;
+
     abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
+
+    abstract createRoom(projectId: string): Room | Promise<Room>;
 
     abstract createTask(input: CreateTask): Task | Promise<Task>;
 
@@ -208,9 +212,13 @@ export abstract class IMutation {
 
     abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
 
+    abstract changeUserAvatar(file: Upload): File | Promise<File>;
+
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+
+    abstract addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
 
     abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
 
@@ -258,6 +266,7 @@ export class User {
     email: string;
     phone?: Nullable<string>;
     password: string;
+    avatar?: Nullable<string>;
     createdAt: Date;
     role: UserRole;
     userWorkspaces: UserWorkspace[];
@@ -266,6 +275,12 @@ export class User {
     userTasks: UserTask[];
     createdWorkspaces: Workspace[];
     createdProjects: Project[];
+}
+
+export class File {
+    filename: string;
+    mimetype: string;
+    encoding: string;
 }
 
 export class UserProject {
@@ -306,4 +321,5 @@ export class Workspace {
     creator: User;
 }
 
+export type Upload = any;
 type Nullable<T> = T | null;

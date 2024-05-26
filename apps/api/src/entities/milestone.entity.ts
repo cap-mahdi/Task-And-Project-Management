@@ -14,7 +14,7 @@ import { TaskSchema } from './task.entity';
   name: 'milestone',
 })
 export class MilestoneSchema implements Omit<Milestone, 'tasks' | 'project'> {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

@@ -1,20 +1,30 @@
 import { Card, Box, Typography, TextField, Button } from '@mui/material';
 import { useState } from 'react';
+import { useCustomMutation } from '../../hooks/useCustomMutation';
+import { CHANGE_PASSWORD } from '../../services/user';
 
 export function SecuritySettings() {
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [changePassword, { data, error, loading }] = useCustomMutation(
+    CHANGE_PASSWORD,
+    true
+  );
 
   const onChange = (password: string) => setPassword(password);
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     const changePasswordInput = {
       oldPassword,
       newPassword: password,
       confirmPassword,
     };
-    console.log(changePasswordInput);
+    await changePassword({ variables: { input: changePasswordInput } });
+
+    setOldPassword('');
+    setPassword('');
+    setConfirmPassword('');
   };
 
   return (
@@ -88,11 +98,17 @@ export function SecuritySettings() {
           onClick={handleChangePassword}
           variant="contained"
           sx={{
-            padding: '10px 0',
+            padding: '10px 5px',
             borderRadius: 2,
           }}
+          disabled={
+            !oldPassword ||
+            !password ||
+            !confirmPassword ||
+            password !== confirmPassword
+          }
         >
-          Sign in
+          Change Password
         </Button>
       </Box>
     </Card>

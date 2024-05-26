@@ -1,5 +1,5 @@
 type Project {
-  id: ID! #done
+  id: String! #done
   name: String! #done
   description: String! #done
   createdAt: Date! #done
@@ -12,6 +12,7 @@ type Project {
 
 type Query {
   projects: [Project!]
+  project(id: ID!): Project!
 }
 
 type Mutation {

@@ -1,8 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { UserProjectResolver } from './user-project.resolver';
 import { WorkspaceSchema, UserWorkspaceSchema, UserSchema, ProjectSchema, UserProjectSchema } from '../entities';
 import { UserProjectService } from './user-project.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProjectModule } from '../project/project.module';
+import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
+import { WorkspaceModule } from '../workspace/workspace.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -13,6 +17,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       ProjectSchema,
       UserProjectSchema,
     ]),
+    forwardRef(() => UserWorkspaceModule),
+    forwardRef(() => WorkspaceModule),
+    forwardRef(() => ProjectModule),
+    forwardRef(() => UserModule),
   ],
   providers: [UserProjectResolver, UserProjectService],
   exports: [UserProjectService],

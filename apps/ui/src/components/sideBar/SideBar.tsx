@@ -153,14 +153,14 @@ export function SideBar({ toolbarSize }) {
               flex={'column'}
               justifyItems={'center'}
               onClick={() => {
-                workspaceRef.current.setOpen(true);
+                workspaceRef.current?.setOpen(true);
               }}
             >
               {<PlusIcon color={palette.blackPearl.main} />}
             </Box>
           </Box>
-          {workspaceItems.data
-            ? workspaceItems.data.workspaces?.map((workspace: any) => {
+          {workspaceItems?.data
+            ? workspaceItems?.data?.workspaces?.map((workspace: any) => {
                 return <NestedList data={workspace} key={uuidv4()} />;
               })
             : ''}

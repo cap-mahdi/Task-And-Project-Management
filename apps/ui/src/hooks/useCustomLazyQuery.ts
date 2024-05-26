@@ -29,7 +29,6 @@ export function useCustomLazyQuery(
       }
     }
   }, [loading, data, error]);
-  console.log('obj', obj);
 
   return [loadData, obj];
 }

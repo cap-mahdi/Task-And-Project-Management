@@ -43,7 +43,6 @@ const AddProject = () => {
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
             formJson.workspaceId = workspaceState.data.id;
-            console.log(formJson);
             createProject({
               variables: {
                 input: formJson,

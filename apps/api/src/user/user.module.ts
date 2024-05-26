@@ -8,6 +8,8 @@ import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
 import { UserProjectModule } from '../user-project/user-project.module';
 import { WorkspaceModule } from '../workspace/workspace.module';
 import { ProjectModule } from '../project/project.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [
@@ -16,8 +18,10 @@ import { ProjectModule } from '../project/project.module';
     UserProjectModule,
     WorkspaceModule,
     ProjectModule,
+    CloudinaryModule
   ],
   providers: [UserResolver, UserService],
   exports: [UserService],
+  controllers: [UserController],
 })
 export class UserModule { }

@@ -7,10 +7,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import { AuthLayout } from '../../layout';
 import { LinkableCaption } from './common';
-import { useMutation } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
 import { useLocalStorageState } from '../../hooks/useLocalStorageState';
 import Client from '../../services/api';
 import useAppContext from '../../context/useAppContext';
@@ -23,14 +23,18 @@ import {
   LoginType,
   LoginRequest,
 } from '../../services/auth/login';
+import { SocketContext } from '../../context/useSocketContext';
 
 const LoginCard = () => {
   const navigate = useNavigate();
   const [globalState, setGlobalState] = useAppContext();
+
   const { handleSubmit, control } = useForm<LoginType>({
     resolver: yupResolver(LoginSchema),
     mode: 'onBlur',
   });
+
+  const socket = useContext(SocketContext);
 
   const onStorageChange = useCallback(
     (newValue: any) => {
@@ -59,6 +63,7 @@ const LoginCard = () => {
         ...prevState,
         token: res.data.createPost.accessToken,
       }));
+      socket.emit('login', res.data);
     });
   };
 
