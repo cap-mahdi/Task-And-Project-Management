@@ -154,6 +154,7 @@ export interface IQuery {
     milestones(): Milestone[] | Promise<Milestone[]>;
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+    project(id: string): Project | Promise<Project>;
     tasks(): Task[] | Promise<Task[]>;
     task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
     users(): User[] | Promise<User[]>;
