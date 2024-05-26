@@ -52,7 +52,6 @@ const LoginCard = () => {
   const [createLoginRequest] = useCustomMutation(LoginRequest, true);
   const onSubmitForm = (data: LoginType) => {
     console.log('data login ', data);
-    // return;
     Client.post({
       request: createLoginRequest,
       data,

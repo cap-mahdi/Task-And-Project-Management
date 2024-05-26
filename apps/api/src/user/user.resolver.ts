@@ -82,8 +82,6 @@ export class UserResolver {
     @Args("file") file,
     @GetUserGQL() user: UserSchema
   ) {
-    console.log("******");
-
     return this.userService.changeUserAvatar(user.id, file);
   }
 
