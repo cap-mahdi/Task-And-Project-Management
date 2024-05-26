@@ -90,6 +90,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/react-beautiful-dnd": "^13.1.8",
     "apollo-link-rest": "^0.9.0",
+    "apollo-upload-client": "^18.0.1",
     "bcryptjs": "^2.4.3",
     "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",

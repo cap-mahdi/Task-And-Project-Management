@@ -133,21 +133,17 @@ export class UserService {
     return updatedUser
   }
 
-  async changeUserAvatar(userId: string, file): Promise<UserSchema> {
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  async changeUserAvatar(userId: string, file: Express.Multer.File): Promise<UserSchema> {
     const userToUpdate = await this.userRepository.findOne({ where: { id: userId } })
     if (!userToUpdate) {
       throw new BadRequestException('User not found')
     }
-
-    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file[0])
+    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file)
     const updatedUser = await this.userRepository.save({ ...userToUpdate, avatar: cloudinaryResponse.secure_url })
-    console.log("***********");
-    console.log("***********");
-    console.log("***********");
-    console.log("***********");
-    console.log({ updatedUser });
-
-
+    delete updatedUser.password
     return updatedUser
   }
 

@@ -3,7 +3,7 @@ import { Button, Stack } from '@mui/material';
 interface ISelectedFile {
   mainState: string;
   imageUploaded: number;
-  selectedFile: any;
+  selectedFile: string;
 }
 
 interface IImageUploadProps {

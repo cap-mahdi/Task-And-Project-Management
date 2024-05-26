@@ -1,16 +1,25 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { UserService } from './user.service';
+import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
+import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
+import { UserSchema } from '../entities';
+import { GetUser } from '../auth/decorators/user.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly cloudinaryService: CloudinaryService) { }
+  constructor(private readonly userService: UserService) { }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.cloudinaryService.uploadFile(file);
+  @UseGuards(AuthGuard('jwt'))
+  uploadImage(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    @UploadedFile() file: Express.Multer.File,
+    @GetUser() user: UserSchema
+  ) {
+    return this.userService.changeUserAvatar(user.id, file)
   }
 }

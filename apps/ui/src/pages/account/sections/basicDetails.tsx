@@ -3,16 +3,14 @@ import {
   Box,
   Button,
   CardHeader,
+  CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
 import red from '@mui/material/colors/red';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CustomInputField } from '../components/customInputField';
 import useAppContext from '../../../context/useAppContext';
-import { ImageUpload } from '../../../components';
-import { CHANGE_USER_AVATAR } from '../../../services/user';
-import { useCustomMutation } from '../../../hooks/useCustomMutation';
 
 interface IField {
   name: 'name' | 'email' | 'phone';
@@ -22,22 +20,10 @@ interface IField {
   onChange: (value: string) => void;
 }
 
-interface ISelectedFile {
-  mainState: string;
-  imageUploaded: number;
-  selectedFile: File | null;
-  preview: string | null;
-}
-
 export function BasicDetails() {
-  const [globalState] = useAppContext();
+  const [globalState, setGlobalState] = useAppContext();
   const currentUser = globalState.user;
   const [isOpened, setIsOpened] = useState(false);
-
-  const [changeAvatar, { data, error, loading }] = useCustomMutation(
-    CHANGE_USER_AVATAR,
-    true
-  );
 
   const [fields, setFields] = useState<IField[]>([
     {
@@ -63,13 +49,6 @@ export function BasicDetails() {
     },
   ]);
 
-  const [selectedFile, setSelectedFile] = useState<ISelectedFile>({
-    mainState: 'initial',
-    imageUploaded: 0,
-    selectedFile: null,
-    preview: null,
-  });
-
   const handleFieldChange = (fieldName: string, value: string) => {
     setFields((prevFields) =>
       prevFields.map((field) =>
@@ -78,32 +57,49 @@ export function BasicDetails() {
     );
   };
 
-  const handleSave = async () => {
-    if (selectedFile.selectedFile) {
-      const file = selectedFile.selectedFile;
-      const reader = new FileReader();
+  const [image, setImage] = useState({ preview: '', data: '' });
+  const [isLoading, setIsLoading] = useState(false);
 
-      reader.readAsArrayBuffer(file);
-      reader.onloadend = async () => {
-        const buffer = reader.result;
-        if (buffer instanceof ArrayBuffer) {
-          console.log('Buffer:', buffer);
-          await changeAvatar({ variables: { file: buffer } });
-        } else {
-          console.error('Buffer is not an ArrayBuffer');
-        }
-      };
-
-      reader.onerror = () => {
-        console.error('File reading has failed');
-      };
-
-      reader.onabort = () => {
-        console.log('File reading was aborted');
-      };
-    } else {
-      console.error('No file selected');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const fileBlob = new Blob([image.data], { type: image.data.type });
+    const formData = new FormData();
+    formData.append('file', image.data);
+    console.log('from handle submit', fileBlob);
+    console.log('from handle submit formData', formData);
+    try {
+      setIsLoading(true);
+      const response = await fetch('http://localhost:3000/api/user/upload', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: localStorage.getItem('token')
+            ? `Bearer ${localStorage.getItem('token').slice(1, -1)}`
+            : '',
+        },
+      });
+      const data = await response.json();
+      setGlobalState((prevState) => ({
+        ...prevState,
+        user: {
+          ...prevState.user,
+          avatar: data.avatar,
+        },
+      }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+      setImage({ preview: '', data: '' });
     }
+  };
+
+  const handleFileChange = (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    };
+    setImage(img);
   };
 
   return (
@@ -134,7 +130,7 @@ export function BasicDetails() {
                   bgcolor: red[500],
                 }}
               >
-                {currentUser.name[0]}
+                {currentUser?.name[0]}
               </Avatar>
             )
           }
@@ -151,32 +147,52 @@ export function BasicDetails() {
             p: 0,
           }}
         ></CardHeader>
+        {isLoading && <CircularProgress />}
         {isOpened && (
           <Stack direction="column" spacing={2} sx={{ mb: 2 }}>
-            <ImageUpload
-              selectedFile={selectedFile}
-              setSelectedFile={setSelectedFile}
-            />
-            {selectedFile.selectedFile && (
+            {image.preview && (
+              <img src={image.preview} width="100" height="100" />
+            )}
+            <hr></hr>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="file"
+                name="file"
+                id="contained-button-file"
+                onChange={handleFileChange}
+                hidden
+              />
+              <label htmlFor="contained-button-file">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  disabled={isLoading}
+                >
+                  Upload
+                </Button>
+              </label>
+            </form>
+            {image.preview && (
               <Stack direction="row" spacing={2}>
                 <Button
                   variant="contained"
                   color="secondary"
                   onClick={() =>
-                    setSelectedFile({
-                      mainState: 'initial',
-                      imageUploaded: 0,
-                      selectedFile: null,
-                      preview: null,
+                    setImage({
+                      preview: '',
+                      data: '',
                     })
                   }
+                  disabled={isLoading}
                 >
                   Remove
                 </Button>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={handleSave}
+                  onClick={handleSubmit}
+                  disabled={isLoading}
                 >
                   Save
                 </Button>
