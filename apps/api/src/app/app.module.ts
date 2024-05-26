@@ -94,11 +94,12 @@ import { UserRoomModule } from '../user-room/user-room.module';
     UserRoomModule,
   ],
   controllers: [AppController],
-  providers: [AppService, LoggingPlugin],
+  providers: [AppService],
 })
 
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+    // consumer.apply(AppLoggerMiddleware).forRoutes('*');
   }
 }
+

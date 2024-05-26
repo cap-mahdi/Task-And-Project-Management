@@ -57,3 +57,4 @@ export const useUser = () => {
 
 //   return { user: data?.getConnectedUser, error, isLoading: loading };
 // };
+};
