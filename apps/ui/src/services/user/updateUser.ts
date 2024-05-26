@@ -8,7 +8,8 @@ export const UPDATE_USERS = gql`
     id,
     name,
     email,
-    phone
+    phone,
+    avatar
   }
   }
 

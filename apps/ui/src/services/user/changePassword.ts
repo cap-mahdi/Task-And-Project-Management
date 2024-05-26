@@ -8,7 +8,8 @@ export const CHANGE_PASSWORD = gql`
     id,
     name,
     email,
-    phone
+    phone,
+    avatar
   }
   }
 
