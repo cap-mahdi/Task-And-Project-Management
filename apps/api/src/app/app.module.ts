@@ -34,6 +34,7 @@ import {
 } from '../entities';
 import { AppLoggerMiddleware } from '../middlewares';
 import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
+import { MilestoneModule } from '../milestone/milestone.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -60,7 +61,7 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
 
           // url: 'postgres://postgres.kpapyuzcwbyafarvyvku:teamflowsellaouti@aws-0-eu-central-1.pooler.supabase.com:5432/postgres',
           // url: configService.get<string>('database_url'),
-          url: "postgres://postgres:admin@localhost:5432/teamflow",
+          url: 'postgres://postgres:admin@localhost:5432/teamflow',
           synchronize: true,
           entities: [
             CommentSchema,
@@ -86,11 +87,11 @@ import { LoggingPlugin } from '../plugins/logginAppolo.plugin';
     UserWorkspaceModule,
     ProjectModule,
     UserProjectModule,
+    MilestoneModule,
   ],
   controllers: [AppController],
-  providers: [AppService, LoggingPlugin],
+  providers: [AppService],
 })
-
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AppLoggerMiddleware).forRoutes('*');
