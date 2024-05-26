@@ -189,6 +189,8 @@ export abstract class IMutation {
 
     abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
 
+    abstract createRoom(projectId: string): Room | Promise<Room>;
+
     abstract createTask(input: CreateTask): Task | Promise<Task>;
 
     abstract updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
@@ -206,6 +208,8 @@ export abstract class IMutation {
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+
+    abstract addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
 
     abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
 

@@ -172,6 +172,7 @@ export interface IMutation {
     updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
     deleteMilestone(id: string): Milestone | Promise<Milestone>;
     createProject(input: CreateProjectInput): Project | Promise<Project>;
+    createRoom(projectId: string): Room | Promise<Room>;
     createTask(input: CreateTask): Task | Promise<Task>;
     updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
     assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
@@ -181,6 +182,7 @@ export interface IMutation {
     changePassword(input: ChangePasswordInput): User | Promise<User>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+    addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
     updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
     addUsersToWorkspace(workspaceId: string, emailRoles: EmailRoleInput[]): UserWorkspace[] | Promise<UserWorkspace[]>;
     createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
