@@ -31,6 +31,15 @@ export enum WorkspaceRole {
     WORKSPACE_MEMBER = "WORKSPACE_MEMBER"
 }
 
+export interface CreateCommentInput {
+    content: string;
+    taskId: string;
+}
+
+export interface EditCommentInput {
+    content?: Nullable<string>;
+}
+
 export interface CreateMilestone {
     name: string;
     description: string;
@@ -135,28 +144,11 @@ export interface Comment {
     content: string;
     createdAt: Date;
     user: User;
-}
-
-export interface Message {
-    id: string;
-    content: string;
-    createdAt: Date;
-    sender: User;
-    room: Room;
-}
-
-export interface Milestone {
-    id: string;
-    name: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    status: Status;
-    project: Project;
-    tasks: Task[];
+    task: Task;
 }
 
 export interface IQuery {
+    comments(taskId: string): Comment[] | Promise<Comment[]>;
     milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
@@ -175,6 +167,9 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    createComment(input: CreateCommentInput): Comment | Promise<Comment>;
+    deleteComment(id: string): Comment | Promise<Comment>;
+    editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
     createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
     updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
     deleteMilestone(id: string): Milestone | Promise<Milestone>;
@@ -195,6 +190,25 @@ export interface IMutation {
     addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
     createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
     updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+}
+
+export interface Message {
+    id: string;
+    content: string;
+    createdAt: Date;
+    sender: User;
+    room: Room;
+}
+
+export interface Milestone {
+    id: string;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    status: Status;
+    project: Project;
+    tasks: Task[];
 }
 
 export interface Project {

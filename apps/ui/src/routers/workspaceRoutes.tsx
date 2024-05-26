@@ -11,6 +11,7 @@ import { Sprints } from '../pages/sprint';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { SprintProvider } from '../context/useSprintContext';
 import { Sprint } from '../pages/sprint/Sprint';
+import { SprintOverview } from '../pages/sprint/components/SprintOverview';
 
 export const workspaceRoutes = {
   path: 'workspace/:workspaceId',
@@ -78,7 +79,7 @@ export const workspaceRoutes = {
       children: [
         {
           path: '',
-          element: <div> Sprint here</div>,
+          element: <SprintOverview />,
         },
         {
           path: 'task',

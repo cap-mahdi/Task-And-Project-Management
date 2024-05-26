@@ -13,22 +13,42 @@ export function ThirdSection() {
       color: contrastColor,
     },
     description: {
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      text: "TeamFlow helps team effectively manage their tasks, here's what our clients are saying about us.",
       color: '#979797',
     },
   };
 
-  const testimonial = {
+  const testimonial1 = {
     description: {
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      text: 'TeamFlow has helped my team with the many projects we are given.',
       color: '#979797',
     },
 
-    personName: 'John Doe',
-    job: 'CEO',
+    personName: 'Mehdi',
+    job: 'Fellow Student',
   };
 
-  const testimonials = [testimonial, testimonial, testimonial];
+  const testimonial2 = {
+    description: {
+      text: 'With the user friendly interface, TeamFlow has proven a lot easier to use than other task management websites.',
+      color: '#979797',
+    },
+
+    personName: 'Houssem',
+    job: 'Aspiring Programmer',
+  };
+
+  const testimonial3 = {
+    description: {
+      text: 'A very well made management app. It keeps me organized and on track every day',
+      color: '#979797',
+    },
+
+    personName: 'Amine',
+    job: 'Software Engineer',
+  };
+
+  const testimonials = [testimonial1, testimonial2, testimonial3];
 
   return (
     <Container
