@@ -48,6 +48,7 @@ export class CommentResolver {
 
     @ResolveField('task')
     async task(@Parent() comment: CommentSchema) {
+        // tochange
         return comment.task;
     }
 }

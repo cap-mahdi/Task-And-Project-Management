@@ -64,7 +64,8 @@ export class CommentService {
             throw new Error('Unauthorized to delete comment');
         }
 
-        return this.commentRepository.remove(comment);
+        await this.commentRepository.softDelete(comment);
+        return comment;
     }
 
 
