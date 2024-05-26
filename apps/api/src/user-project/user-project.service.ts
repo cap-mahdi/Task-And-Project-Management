@@ -13,7 +13,7 @@ export class UserProjectService {
   constructor(
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) {}
+  ) { }
 
   async findUserProjectsByUserId(userId: string): Promise<UserProjectSchema[]> {
     const userProjects = await this.userProjectRepository.find({
@@ -48,9 +48,7 @@ export class UserProjectService {
       },
       relations: ['user', 'project'],
     });
-    if (!userProject) {
-      throw new NotFoundException('project not found');
-    }
+
     return userProject;
   }
 
