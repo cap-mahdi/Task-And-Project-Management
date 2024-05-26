@@ -107,11 +107,16 @@ export class UpdateUserProject {
 
 export class EmailRoleInput {
     email: string;
-    role: WorkspaceRole;
+    role: string;
 }
 
 export class UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
+}
+
+export class AddUserWorkspaceInput {
+    workspaceId: string;
+    emailRoles: EmailRoleInput[];
 }
 
 export class CreateWorkspaceInput {
@@ -217,7 +222,7 @@ export abstract class IMutation {
 
     abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
 
-    abstract addUsersToWorkspace(workspaceId: string, emailRoles: EmailRoleInput[]): UserWorkspace[] | Promise<UserWorkspace[]>;
+    abstract addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
 
     abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 

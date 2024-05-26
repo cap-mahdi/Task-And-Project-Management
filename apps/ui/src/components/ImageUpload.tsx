@@ -20,7 +20,6 @@ const ImageUpload = ({ initialImage, setImage }: IImageUploadProps) => {
   });
 
   const handleUploadClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log();
     const file = event.target.files[0];
     const reader = new FileReader();
     const url = reader.readAsDataURL(file);
@@ -28,7 +27,6 @@ const ImageUpload = ({ initialImage, setImage }: IImageUploadProps) => {
     reader.onloadend = function (e) {
       setSelectedFile({ selectedFile: [reader.result] });
     };
-    console.log({ url });
 
     setSelectedFile({
       mainState: 'uploaded',

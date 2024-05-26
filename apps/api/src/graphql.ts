@@ -107,11 +107,16 @@ export interface UpdateUserProject {
 
 export interface EmailRoleInput {
     email: string;
-    role: WorkspaceRole;
+    role: string;
 }
 
 export interface UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
+}
+
+export interface AddUserWorkspaceInput {
+    workspaceId: string;
+    emailRoles: EmailRoleInput[];
 }
 
 export interface CreateWorkspaceInput {
@@ -186,7 +191,7 @@ export interface IMutation {
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
     updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-    addUsersToWorkspace(workspaceId: string, emailRoles: EmailRoleInput[]): UserWorkspace[] | Promise<UserWorkspace[]>;
+    addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
     createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
     updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
 }

@@ -7,7 +7,10 @@ import { Project } from '../pages/project/Project';
 import { ProjectSprints } from '../pages/project/ProjectSprints';
 import { Tasks } from '../pages/tasks';
 import { Chat } from '../pages/chat/chat';
-import { Sprint } from '../pages/sprint';
+import { Sprints } from '../pages/sprint';
+import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
+import { SprintProvider } from '../context/useSprintContext';
+import { Sprint } from '../pages/sprint/Sprint';
 
 export const workspaceRoutes = {
   path: 'workspace/:workspaceId',
@@ -27,7 +30,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'team',
-          element: <div>Team in here</div>,
+          element: <AddUserToWorkspace />,
         },
         {
           path: 'settings',
@@ -45,7 +48,7 @@ export const workspaceRoutes = {
       children: [
         {
           path: '',
-          element: <Sprint />,
+          element: <Sprints />,
         },
         {
           path: 'task',
@@ -62,6 +65,20 @@ export const workspaceRoutes = {
         {
           path: 'room',
           element: <Chat />,
+        },
+      ],
+    },
+    {
+      path: 'project/:projectId/sprint/:sprintId',
+      element: (
+        <SprintProvider>
+          <Sprint />
+        </SprintProvider>
+      ),
+      children: [
+        {
+          path: '',
+          element: <div> Sprint here</div>,
         },
       ],
     },
