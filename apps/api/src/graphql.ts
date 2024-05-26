@@ -54,10 +54,9 @@ export interface CreateProjectInput {
 
 export interface CreateTask {
     name: string;
-    description?: Nullable<string>;
-    status: Status;
-    tags?: Nullable<string[]>;
-    milestoneId: string;
+    description: string;
+    tags: string[];
+    assignees: string[];
 }
 
 export interface UpdateTask {
@@ -65,10 +64,12 @@ export interface UpdateTask {
     description?: Nullable<string>;
     status?: Nullable<Status>;
     tags?: Nullable<string[]>;
+    assignees?: Nullable<string[]>;
 }
 
-export interface AssignUsersToTask {
-    userIds: string[];
+export interface UserFilter {
+    projectId?: Nullable<string>;
+    mileStoneId?: Nullable<string>;
 }
 
 export interface CreateUserInput {
@@ -155,8 +156,8 @@ export interface IQuery {
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
     project(id: string): Project | Promise<Project>;
-    tasks(): Task[] | Promise<Task[]>;
-    task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
+    task(id: string): Task | Promise<Task>;
     users(): User[] | Promise<User[]>;
     getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
     getConnectedUser(): User | Promise<User>;
@@ -174,9 +175,9 @@ export interface IMutation {
     deleteMilestone(id: string): Milestone | Promise<Milestone>;
     createProject(input: CreateProjectInput): Project | Promise<Project>;
     createRoom(projectId: string): Room | Promise<Room>;
-    createTask(input: CreateTask): Task | Promise<Task>;
+    createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
     updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
-    assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
+    deleteTask(id: string): boolean | Promise<boolean>;
     createUser(createUserInput: CreateUserInput): User | Promise<User>;
     updateUser(input: UpdateUserInput): User | Promise<User>;
     deleteUser(): User | Promise<User>;
@@ -219,6 +220,7 @@ export interface Task {
     milestone: Milestone;
     comments: Comment[];
     userTasks: UserTask[];
+    creator: User;
 }
 
 export interface User {
