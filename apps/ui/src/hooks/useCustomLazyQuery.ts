@@ -9,8 +9,11 @@ export function useCustomLazyQuery(
   request: DocumentNode,
   renderToast: boolean
 ) {
-  const [loadData, obj] = useLazyQuery(request);
+  const [loadData, obj] = useLazyQuery(request, {
+    fetchPolicy: 'network-only',
+  });
   const { data, error, loading } = obj;
+
   useEffect(() => {
     if (!loading) {
       if (!error && data) {

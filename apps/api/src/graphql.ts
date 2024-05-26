@@ -107,11 +107,16 @@ export interface UpdateUserProject {
 
 export interface EmailRoleInput {
     email: string;
-    role: WorkspaceRole;
+    role: string;
 }
 
 export interface UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
+}
+
+export interface AddUserWorkspaceInput {
+    workspaceId: string;
+    emailRoles: EmailRoleInput[];
 }
 
 export interface CreateWorkspaceInput {
@@ -154,6 +159,7 @@ export interface IQuery {
     milestones(): Milestone[] | Promise<Milestone[]>;
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+    project(id: string): Project | Promise<Project>;
     tasks(): Task[] | Promise<Task[]>;
     task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
     users(): User[] | Promise<User[]>;
@@ -180,11 +186,12 @@ export interface IMutation {
     updateUser(input: UpdateUserInput): User | Promise<User>;
     deleteUser(): User | Promise<User>;
     changePassword(input: ChangePasswordInput): User | Promise<User>;
+    changeUserAvatar(file: Upload): File | Promise<File>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
     updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-    addUsersToWorkspace(workspaceId: string, emailRoles: EmailRoleInput[]): UserWorkspace[] | Promise<UserWorkspace[]>;
+    addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
     createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
     updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
 }
@@ -226,6 +233,7 @@ export interface User {
     email: string;
     phone?: Nullable<string>;
     password: string;
+    avatar?: Nullable<string>;
     createdAt: Date;
     role: UserRole;
     userWorkspaces: UserWorkspace[];
@@ -234,6 +242,12 @@ export interface User {
     userTasks: UserTask[];
     createdWorkspaces: Workspace[];
     createdProjects: Project[];
+}
+
+export interface File {
+    filename: string;
+    mimetype: string;
+    encoding: string;
 }
 
 export interface UserProject {
@@ -274,4 +288,5 @@ export interface Workspace {
     creator: User;
 }
 
+export type Upload = any;
 type Nullable<T> = T | null;

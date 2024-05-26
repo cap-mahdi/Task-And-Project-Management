@@ -1,29 +1,47 @@
-import { Avatar, Box, Card, CardHeader, Grid, Typography } from '@mui/material';
+import { Avatar, Box, CardHeader, Typography } from '@mui/material';
 import red from '@mui/material/colors/red';
 import { useState } from 'react';
 import { CustomInputField } from '../components/customInputField';
+import useAppContext from '../../../context/useAppContext';
+import { ImageUpload } from '../../../components';
+
+interface IField {
+  name: 'name' | 'email' | 'phone';
+  title: string;
+  value: string;
+  type?: 'text' | 'email' | 'tel' | 'role' | 'password';
+  onChange: (value: string) => void;
+}
 
 export function BasicDetails() {
-  const [fields, setFields] = useState([
+  const [globalState] = useAppContext();
+  const currentUser = globalState.user;
+
+  const [fields, setFields] = useState<IField[]>([
     {
+      name: 'name',
       title: 'Full Name',
-      value: '',
+      value: currentUser?.name || '',
       type: 'text' as const,
       onChange: (value: string) => handleFieldChange('Full Name', value),
     },
     {
+      name: 'email',
       title: 'Email Address',
-      value: '',
+      value: currentUser?.email || '',
       type: 'email' as const,
       onChange: (value: string) => handleFieldChange('Email Address', value),
     },
     {
+      name: 'phone',
       title: 'Phone Number',
-      value: '',
+      value: currentUser?.phone || '',
       type: 'tel' as const,
       onChange: (value: string) => handleFieldChange('Phone Number', value),
     },
   ]);
+
+  const [avatar, setAvatar] = useState<string>('' || currentUser?.avatar);
 
   const handleFieldChange = (fieldName: string, value: string) => {
     setFields((prevFields) =>
@@ -48,7 +66,9 @@ export function BasicDetails() {
       <Box sx={{ width: '70%' }}>
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: red[500], width: 70, height: 70 }}>R</Avatar>
+            <Avatar sx={{ width: 70, height: 70 }} src={avatar}>
+              {!avatar && currentUser?.name.charAt(0).toUpperCase()}
+            </Avatar>
           }
           title={
             <a
@@ -63,9 +83,11 @@ export function BasicDetails() {
             p: 0,
           }}
         ></CardHeader>
+        <ImageUpload initialImage={avatar} setImage={setAvatar} />
         {fields.map((field, index) => (
           <Box key={index} sx={{ mb: 1 }}>
             <CustomInputField
+              name={field.name}
               title={field.title}
               value={field.value}
               type={field.type}

@@ -24,8 +24,13 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({ typePolicies: {} }),
   link: ApolloLink.from([restLink, authLink.concat(httpLink)]),
+  defaultOptions: {
+    watchQuery: {
+      nextFetchPolicy: 'no-cache',
+    },
+  },
 });
 
 interface PostRequestProps {

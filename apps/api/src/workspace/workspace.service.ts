@@ -1,17 +1,21 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { UserSchema, WorkspaceSchema } from "../entities";
-import { Repository } from "typeorm";
-import { CreateWorkspaceInput, UpdateWorkspaceInput } from "../graphql";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserSchema, UserWorkspaceSchema, WorkspaceSchema } from '../entities';
+import { Repository } from 'typeorm';
+import { CreateWorkspaceInput, WorkspaceRole } from '../graphql';
 
 @Injectable()
 export class WorkspaceService {
   constructor(
     @InjectRepository(WorkspaceSchema)
-    private workspaceRepository: Repository<WorkspaceSchema>
-  ) { }
+    private workspaceRepository: Repository<WorkspaceSchema>,
+    @InjectRepository(UserWorkspaceSchema)
+    private userWorkspaceRepository: Repository<UserWorkspaceSchema>
+  ) {}
 
-  async findCreatedWorkspacesByUserId(userId: string): Promise<WorkspaceSchema[]> {
+  async findCreatedWorkspacesByUserId(
+    userId: string
+  ): Promise<WorkspaceSchema[]> {
     const workspaces = await this.workspaceRepository.find({
       where: {
         creator: { id: userId },
@@ -26,23 +30,24 @@ export class WorkspaceService {
   async findWorkspaceById(workspaceId: string): Promise<WorkspaceSchema> {
     const workspace = await this.workspaceRepository.findOne({
       where: {
-        id: workspaceId
+        id: workspaceId,
       },
-      relations: ['userWorkspaces'],
     });
 
     if (!workspace) {
-      throw new Error('Workspace not found')
+      throw new Error('Workspace not found');
     }
     return workspace;
   }
 
-  async findWorkspaceByUserWorkspaceId(userWorkspaceId: string): Promise<WorkspaceSchema> {
+  async findWorkspaceByUserWorkspaceId(
+    userWorkspaceId: string
+  ): Promise<WorkspaceSchema> {
     const workspaces = await this.workspaceRepository.findOne({
       where: {
         userWorkspaces: { id: userWorkspaceId },
       },
-      relations: ['userWorkspaces, workspace'],
+      relations: ['userWorkspaces'],
     });
     console.info('workspaces', workspaces);
     return workspaces;
@@ -59,12 +64,25 @@ export class WorkspaceService {
     return workspace;
   }
 
-  async createWorkspace(input: CreateWorkspaceInput, creator: UserSchema): Promise<WorkspaceSchema> {
-    return await this.workspaceRepository.save({ ...input, creator });
+  async createWorkspace(
+    input: CreateWorkspaceInput,
+    creator: UserSchema
+  ): Promise<WorkspaceSchema> {
+    const workspace = await this.workspaceRepository.save({
+      ...input,
+      creator,
+    });
+    await this.userWorkspaceRepository.save({
+      role: WorkspaceRole.WORKSPACE_ADMIN,
+      user: creator,
+      workspace: workspace,
+    });
+    return workspace;
   }
 
-  async updateWorkspace(updatedWorkspace: WorkspaceSchema): Promise<WorkspaceSchema> {
+  async updateWorkspace(
+    updatedWorkspace: WorkspaceSchema
+  ): Promise<WorkspaceSchema> {
     return await this.workspaceRepository.save(updatedWorkspace);
   }
-
 }

@@ -17,7 +17,6 @@ export default function BasicModal({ children, setOpen, open }) {
   // const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    console.log('close');
     setOpen(false);
     // setOpenDetails(false);
   };

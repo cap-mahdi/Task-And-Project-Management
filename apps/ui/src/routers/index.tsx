@@ -9,6 +9,7 @@ import { accountRoutes } from './accountRoutes';
 import { SideBar } from './../components/sideBar';
 import { Chat } from '../pages/chat/chat';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
+import { Overview } from '../pages/overview';
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <div>Workpaces Goes Here</div>,
+        element: <Overview />,
       },
       {
         path: 'notification',

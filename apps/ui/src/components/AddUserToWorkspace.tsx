@@ -16,27 +16,45 @@ import {
   Select,
 } from '@mui/material';
 import { WorkspaceRole } from '../__generated__/graphql';
+import { useCustomMutation } from '../hooks/useCustomMutation';
+import { ADD_USERS_TO_WORKSPACE } from '../services/workspace/workspaceMutations';
+import { useParams } from 'react-router-dom';
 
 const workspaceRoleMapper: Record<WorkspaceRole, string> = {
-  [WorkspaceRole.WorkspaceAdmin]: 'Admin',
-  [WorkspaceRole.WorkspaceEditor]: 'Editor',
-  [WorkspaceRole.WorkspaceMember]: 'Member',
+  [WorkspaceRole.WORKSPACE_ADMIN]: 'Admin',
+  [WorkspaceRole.WORKSPACE_EDITOR]: 'Editor',
+  [WorkspaceRole.WORKSPACE_MEMBER]: 'Member',
 };
 
 export const AddUserToWorkspace: FC = () => {
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<WorkspaceRole>(
-    WorkspaceRole.WorkspaceMember
+    WorkspaceRole.WORKSPACE_MEMBER
   );
+  const { workspaceId } = useParams();
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [emails, setEmails] = useState<string[]>([]);
   const emailsRef = useRef<{ email: string; role: WorkspaceRole }[]>([]);
+  const [addUsersToWorkspace] = useCustomMutation(ADD_USERS_TO_WORKSPACE, true);
 
   function handleAddUser() {
     const newdata = { email: selectedUser, role: selectedRole };
     setEmails([...emails, selectedUser]);
     emailsRef.current.push(newdata);
     setSelectedUser('');
+  }
+  function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    addUsersToWorkspace({
+      variables: {
+        input: {
+          workspaceId,
+          emailRoles: emailsRef.current,
+        },
+      },
+    });
+
+    setOpen(false);
   }
 
   return (
@@ -56,11 +74,7 @@ export const AddUserToWorkspace: FC = () => {
           },
         }}
         component={'form'}
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log(emailsRef.current);
-          setOpen(false);
-        }}
+        onSubmit={handleFormSubmit}
       >
         <DialogTitle>Add user to workspace</DialogTitle>
         <DialogContent>
@@ -94,7 +108,11 @@ export const AddUserToWorkspace: FC = () => {
               sx={{
                 minWidth: 120,
               }}
-              onChange={(e) => setSelectedRole(e.target.value as WorkspaceRole)}
+              onChange={(e) => {
+                setSelectedRole(
+                  WorkspaceRole[e.target.value as keyof typeof WorkspaceRole]
+                );
+              }}
               value={selectedRole}
             >
               {Object.entries(workspaceRoleMapper).map(([key, value]) => (
@@ -134,6 +152,7 @@ export const AddUserToWorkspace: FC = () => {
                 borderRadius: 3,
               }}
               type="submit"
+              onClick={handleFormSubmit}
             >
               Add
             </Button>

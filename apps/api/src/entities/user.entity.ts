@@ -23,8 +23,7 @@ import { WorkspaceSchema } from './workspace.entity';
 })
 export class UserSchema
   implements
-    Omit<User, 'userWorkspaces' | 'userProjects' | 'userRooms' | 'userTasks'>
-{
+  Omit<User, 'userWorkspaces' | 'userProjects' | 'userRooms' | 'userTasks'> {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -37,6 +36,12 @@ export class UserSchema
   @Column()
   @Exclude()
   password: string;
+
+  @Column({ nullable: true })
+  phone?: string;
+
+  @Column({ nullable: true })
+  avatar?: string;
 
   @Column({ type: 'enum', enum: UserRole })
   role: UserRole;

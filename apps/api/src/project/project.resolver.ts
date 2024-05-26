@@ -27,8 +27,8 @@ export class ProjectResolver {
     private readonly projectService: ProjectService,
     private readonly userProjectService: UserProjectService,
     private readonly workspaceService: WorkspaceService,
-    private readonly userWorkspaceService: UserWorkspaceService,
-  ) { }
+    private readonly userWorkspaceService: UserWorkspaceService
+  ) {}
 
   @Mutation('createProject')
   @WorkspaceRoles(WorkspaceRole.WORKSPACE_ADMIN)
@@ -36,13 +36,20 @@ export class ProjectResolver {
     @Args('input') createProjectInput: CreateProjectInput,
     @GetUserGQL() user: UserSchema
   ): Promise<ProjectSchema> {
-
     // check if workspace exists
-    const workspace = await this.workspaceService.findWorkspaceById(createProjectInput.workspaceId);
+    const workspace = await this.workspaceService.findWorkspaceById(
+      createProjectInput.workspaceId
+    );
 
     // check user authorization
     const roles = Reflect.getMetadata('roles', this.createProject);
-    if (!(await this.userWorkspaceService.isAuthorized(user.id, createProjectInput.workspaceId, roles))) {
+    if (
+      !(await this.userWorkspaceService.isAuthorized(
+        user.id,
+        createProjectInput.workspaceId,
+        roles
+      ))
+    ) {
       throw new Error('Unauthorized access');
     }
 
@@ -51,26 +58,48 @@ export class ProjectResolver {
       ...createProjectInput,
       creator: user,
       workspace: workspace,
-    }
-    const project: ProjectSchema = await this.projectService.createProject(createdProject);
+    };
+    const project: ProjectSchema = await this.projectService.createProject(
+      createdProject
+    );
 
-    await this.userProjectService.addUserToProject(user, project, ProjectRole.Project_ADMIN);
+    await this.userProjectService.addUserToProject(
+      user,
+      project,
+      ProjectRole.Project_ADMIN
+    );
 
     return project;
   }
 
-
   @Query('projects')
   async projects(@GetUserGQL() user: UserSchema): Promise<ProjectSchema[]> {
-    const userProjects = await this.userProjectService.findUserProjectsByUserId(user.id);
+    const userProjects = await this.userProjectService.findUserProjectsByUserId(
+      user.id
+    );
     return userProjects.map((userProject) => userProject.project);
+  }
+
+  @Query('project')
+  async project(
+    @GetUserGQL() user: UserSchema,
+    @Args('id') projectId: string
+  ): Promise<ProjectSchema> {
+    const userProject =
+      await this.userProjectService.findUserProjectByProjectIdAndUserId(
+        user.id,
+        projectId
+      );
+    return userProject.project;
   }
 
   @ResolveField('userProjects')
   async userProjects(
     @Parent() project: ProjectSchema
   ): Promise<UserProjectSchema[]> {
-    const userProjects = this.userProjectService.findUserProjectsByProjectId(project.id);
+    const userProjects = this.userProjectService.findUserProjectsByProjectId(
+      project.id
+    );
     return userProjects;
   }
 
