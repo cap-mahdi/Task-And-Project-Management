@@ -212,7 +212,7 @@ export abstract class IMutation {
 
     abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
 
-    abstract changeUserAvatar(file: Upload): File | Promise<File>;
+    abstract changeUserAvatar(file: Upload): User | Promise<User>;
 
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 

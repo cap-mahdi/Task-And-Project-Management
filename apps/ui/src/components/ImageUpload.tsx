@@ -1,11 +1,9 @@
 import { Button, Stack } from '@mui/material';
-import { useState } from 'react';
-import { Toast } from 'react-toastify/dist/components';
 
 interface ISelectedFile {
   mainState: string;
   imageUploaded: number;
-  selectedFile: string;
+  selectedFile: any;
 }
 
 interface IImageUploadProps {

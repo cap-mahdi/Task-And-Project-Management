@@ -186,7 +186,7 @@ export interface IMutation {
     updateUser(input: UpdateUserInput): User | Promise<User>;
     deleteUser(): User | Promise<User>;
     changePassword(input: ChangePasswordInput): User | Promise<User>;
-    changeUserAvatar(file: Upload): File | Promise<File>;
+    changeUserAvatar(file: Upload): User | Promise<User>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;

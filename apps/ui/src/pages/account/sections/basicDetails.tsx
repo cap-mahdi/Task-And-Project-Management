@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import red from '@mui/material/colors/red';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CustomInputField } from '../components/customInputField';
 import useAppContext from '../../../context/useAppContext';
 import { ImageUpload } from '../../../components';
@@ -25,7 +25,8 @@ interface IField {
 interface ISelectedFile {
   mainState: string;
   imageUploaded: number;
-  selectedFile: string;
+  selectedFile: File | null;
+  preview: string | null;
 }
 
 export function BasicDetails() {
@@ -63,9 +64,10 @@ export function BasicDetails() {
   ]);
 
   const [selectedFile, setSelectedFile] = useState<ISelectedFile>({
-    mainState: 'initial', // initial
+    mainState: 'initial',
     imageUploaded: 0,
-    selectedFile: '',
+    selectedFile: null,
+    preview: null,
   });
 
   const handleFieldChange = (fieldName: string, value: string) => {
@@ -77,10 +79,31 @@ export function BasicDetails() {
   };
 
   const handleSave = async () => {
-    console.log('selectedFile', selectedFile);
+    if (selectedFile.selectedFile) {
+      const file = selectedFile.selectedFile;
+      const reader = new FileReader();
 
-    await changeAvatar({ variables: { file: selectedFile.selectedFile } });
-    console.log({ data, error, loading });
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = async () => {
+        const buffer = reader.result;
+        if (buffer instanceof ArrayBuffer) {
+          console.log('Buffer:', buffer);
+          await changeAvatar({ variables: { file: buffer } });
+        } else {
+          console.error('Buffer is not an ArrayBuffer');
+        }
+      };
+
+      reader.onerror = () => {
+        console.error('File reading has failed');
+      };
+
+      reader.onabort = () => {
+        console.log('File reading was aborted');
+      };
+    } else {
+      console.error('No file selected');
+    }
   };
 
   return (
@@ -98,7 +121,7 @@ export function BasicDetails() {
       <Box sx={{ width: '70%' }}>
         <CardHeader
           avatar={
-            currentUser.avatar ? (
+            currentUser?.avatar ? (
               <Avatar
                 src={currentUser.avatar}
                 sx={{ width: 56, height: 56, bgcolor: 'transparent' }}
@@ -143,7 +166,8 @@ export function BasicDetails() {
                     setSelectedFile({
                       mainState: 'initial',
                       imageUploaded: 0,
-                      selectedFile: '',
+                      selectedFile: null,
+                      preview: null,
                     })
                   }
                 >
