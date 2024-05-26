@@ -10,6 +10,8 @@ import { useState } from 'react';
 import { useCustomMutation } from '../../../hooks/useCustomMutation';
 import { UPDATE_USERS } from '../../../services/user/updateUser';
 import { useUser } from '../../../services';
+import useAppContext from '../../../context/useAppContext';
+import { set } from 'react-hook-form';
 
 interface CustomInputFieldProps {
   name: 'name' | 'email' | 'phone';
@@ -38,6 +40,7 @@ export function CustomInputField({
     UPDATE_USERS,
     true
   );
+  const [globalState, setGlobalState] = useAppContext();
 
   const handleEditClick = async () => {
     if (isEditing) {
@@ -60,6 +63,10 @@ export function CustomInputField({
       const updateUserData: UpdateUserInput = {};
       updateUserData[name] = value;
       await updateUser({ variables: { input: updateUserData } });
+      setGlobalState({
+        ...globalState,
+        user: { ...globalState.user, [name]: value },
+      });
     }
 
     setIsEditing(!isEditing);
