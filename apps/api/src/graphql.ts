@@ -181,6 +181,7 @@ export interface IMutation {
     updateUser(input: UpdateUserInput): User | Promise<User>;
     deleteUser(): User | Promise<User>;
     changePassword(input: ChangePasswordInput): User | Promise<User>;
+    changeUserAvatar(file: Upload): File | Promise<File>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
@@ -227,6 +228,7 @@ export interface User {
     email: string;
     phone?: Nullable<string>;
     password: string;
+    avatar?: Nullable<string>;
     createdAt: Date;
     role: UserRole;
     userWorkspaces: UserWorkspace[];
@@ -235,6 +237,12 @@ export interface User {
     userTasks: UserTask[];
     createdWorkspaces: Workspace[];
     createdProjects: Project[];
+}
+
+export interface File {
+    filename: string;
+    mimetype: string;
+    encoding: string;
 }
 
 export interface UserProject {
@@ -275,4 +283,5 @@ export interface Workspace {
     creator: User;
 }
 
+export type Upload = any;
 type Nullable<T> = T | null;
