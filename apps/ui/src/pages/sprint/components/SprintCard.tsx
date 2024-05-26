@@ -7,7 +7,7 @@ import { IoIosArrowRoundForward } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { MdAlarmOn } from 'react-icons/md';
 
-export default function SprintCard(props) {
+export default function SprintCard({ sprint }) {
   const styles: SxPropsObject = {
     title: {
       fontWeight: 'bold',
@@ -29,7 +29,8 @@ export default function SprintCard(props) {
         borderRadius: 2,
         boxShadow: ' 0px 2px 3px rgba(0, 0, 0, 0.4)',
         gap: 1,
-        width: '30%',
+
+        width: '32%',
       }}
     >
       <Box
@@ -39,15 +40,14 @@ export default function SprintCard(props) {
           px: 3,
         }}
       >
-        <Typography sx={styles.title}>Sprint Name</Typography>
-        <Typography sx={styles.subTitle}>
-          This is a description for the sprint{' '}
-        </Typography>
+        <Typography sx={styles.title}>{sprint.name}</Typography>
+        <Typography sx={styles.subTitle}>{sprint.description}</Typography>
         <Box
           sx={{
             display: 'flex',
             gap: '0.5rem',
             alignItems: 'center',
+            marginTop: '0.5rem',
           }}
         >
           <WiTime4
@@ -57,7 +57,7 @@ export default function SprintCard(props) {
             }}
           />
           <Typography sx={styles.subTitle}>
-            {new Date().toLocaleDateString('en-US', {
+            {new Date(sprint.startDate).toLocaleDateString({
               year: 'numeric',
               month: 'short',
               day: 'numeric',
@@ -72,7 +72,7 @@ export default function SprintCard(props) {
             }}
           />
           <Typography sx={styles.subTitle}>
-            {new Date().toLocaleDateString('en-US', {
+            {new Date(sprint.endDate).toLocaleDateString({
               year: 'numeric',
               month: 'short',
               day: 'numeric',
@@ -82,7 +82,7 @@ export default function SprintCard(props) {
       </Box>
       <HorizontalProgressBar value={20} />
       <Link
-        to={'sprint/5'}
+        to={`sprint/${sprint.id}`}
         style={{
           textDecoration: 'none',
           color: 'black',

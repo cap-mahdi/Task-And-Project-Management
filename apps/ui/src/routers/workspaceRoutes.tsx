@@ -80,6 +80,14 @@ export const workspaceRoutes = {
           path: '',
           element: <div> Sprint here</div>,
         },
+        {
+          path: 'task',
+          element: <div>All tasks in sprint</div>,
+        },
+        {
+          path: 'settings',
+          element: <div>Settings in sprint</div>,
+        },
       ],
     },
   ],

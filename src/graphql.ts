@@ -157,18 +157,13 @@ export class Milestone {
 }
 
 export abstract class IQuery {
-    abstract milestones(): Milestone[] | Promise<Milestone[]>;
+    abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
 
     abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
     abstract project(id: string): Project | Promise<Project>;
-<<<<<<< HEAD
-=======
-
-    abstract tasks(): Task[] | Promise<Task[]>;
->>>>>>> 84454db00f832369126702ba6d90e6162eced862
 
     abstract tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
 

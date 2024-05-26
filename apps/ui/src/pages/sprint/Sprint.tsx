@@ -2,20 +2,39 @@ import React, { useEffect } from 'react';
 import { MainLayout } from '../../layout/MainLayout';
 import { Outlet, useParams } from 'react-router-dom';
 import useSprintContext from '../../context/useSprintContext';
+import { GET_MILESTONE_BY_ID } from '../../services/milestone/milestoneQueries';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
 export function Sprint(props) {
-  const params = useParams();
+  const { sprintId } = useParams();
   const [sprintState, setSprintState] = useSprintContext();
-  console.log('params', params);
 
+  const [loadSprint, sprintItem] = useCustomLazyQuery(
+    GET_MILESTONE_BY_ID,
+    true
+  );
   useEffect(() => {
-    setSprintState({ data: 'Sprint Data' });
-  }, []);
+    if (sprintItem?.data) {
+      console.log('sprintItem', sprintItem?.data?.milestone);
+
+      setSprintState({ data: sprintItem?.data?.milestone });
+    }
+  }, [sprintItem.data]);
+  useEffect(() => {
+    if (sprintId)
+      loadSprint({
+        variables: {
+          id: sprintId,
+        },
+      });
+  }, [sprintId, loadSprint]);
 
   return (
     <MainLayout
       sectionsData={{
-        sectionTitle: 'Sprint',
+        sectionTitle: `${
+          sprintState.data?.name ? sprintState.data?.name : 'Sprint'
+        }`,
         sections: [
           {
             title: 'Overview',
@@ -29,18 +48,7 @@ export function Sprint(props) {
             enableLink: true,
             onSelected: () => {},
           },
-          {
-            title: 'Team',
-            link: 'team',
-            enableLink: true,
-            onSelected: () => {},
-          },
-          {
-            title: 'Chat',
-            link: 'room',
-            enableLink: true,
-            onSelected: () => {},
-          },
+
           {
             title: 'Settings',
             link: 'settings',
