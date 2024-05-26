@@ -17,8 +17,9 @@ import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
     forwardRef(() => UserProjectModule),
     forwardRef(() => UserModule),
     forwardRef(() => ProjectModule),
-    forwardRef(() => UserModule),],
+    forwardRef(() => UserModule),
+  ],
   providers: [WorkspaceResolver, WorkspaceService],
   exports: [WorkspaceService],
 })
-export class WorkspaceModule { }
+export class WorkspaceModule {}

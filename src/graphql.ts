@@ -108,11 +108,16 @@ export class UpdateUserProject {
 
 export class EmailRoleInput {
     email: string;
-    role: WorkspaceRole;
+    role: string;
 }
 
 export class UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
+}
+
+export class AddUserWorkspaceInput {
+    workspaceId: string;
+    emailRoles: EmailRoleInput[];
 }
 
 export class CreateWorkspaceInput {
@@ -159,6 +164,11 @@ export abstract class IQuery {
     abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
     abstract project(id: string): Project | Promise<Project>;
+<<<<<<< HEAD
+=======
+
+    abstract tasks(): Task[] | Promise<Task[]>;
+>>>>>>> 84454db00f832369126702ba6d90e6162eced862
 
     abstract tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
 
@@ -208,6 +218,8 @@ export abstract class IMutation {
 
     abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
 
+    abstract changeUserAvatar(file: Upload): User | Promise<User>;
+
     abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
@@ -216,7 +228,7 @@ export abstract class IMutation {
 
     abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
 
-    abstract addUsersToWorkspace(workspaceId: string, emailRoles: EmailRoleInput[]): UserWorkspace[] | Promise<UserWorkspace[]>;
+    abstract addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
 
     abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 
@@ -261,6 +273,7 @@ export class User {
     email: string;
     phone?: Nullable<string>;
     password: string;
+    avatar?: Nullable<string>;
     createdAt: Date;
     role: UserRole;
     userWorkspaces: UserWorkspace[];
@@ -269,6 +282,12 @@ export class User {
     userTasks: UserTask[];
     createdWorkspaces: Workspace[];
     createdProjects: Project[];
+}
+
+export class File {
+    filename: string;
+    mimetype: string;
+    encoding: string;
 }
 
 export class UserProject {
@@ -309,4 +328,5 @@ export class Workspace {
     creator: User;
 }
 
+export type Upload = any;
 type Nullable<T> = T | null;

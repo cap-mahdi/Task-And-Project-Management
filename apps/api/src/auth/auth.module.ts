@@ -15,7 +15,7 @@ import { EnvVariables } from '../config';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>(EnvVariables.ACCESS_TOKEN_SECRET),
-        signOptions: { expiresIn: '60m' },
+        signOptions: { expiresIn: '2d' },
         global: true,
       }),
       inject: [ConfigService],

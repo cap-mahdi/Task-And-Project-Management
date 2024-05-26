@@ -1,138 +1,56 @@
-import { styled } from '@mui/material/styles';
-import { Box, Button, Card, Divider, Paper, Typography } from '@mui/material';
-import { SprintSettings, SprintsList, TimeLeft } from './components';
-import { StyledButton } from '../../components';
-import { SxPropsObject } from '../../utils/sxPropsObject';
-import {
-  HalfCircleProgress,
-  SemiCircleProgress,
-} from '../../components/SemiCircleProgress/SemiCircleProgress';
+import React, { useEffect } from 'react';
+import { MainLayout } from '../../layout/MainLayout';
+import { Outlet, useParams } from 'react-router-dom';
+import useSprintContext from '../../context/useSprintContext';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+export function Sprint(props) {
+  const params = useParams();
+  const [sprintState, setSprintState] = useSprintContext();
+  console.log('params', params);
 
-const Sprint = () => {
-  const styles: SxPropsObject = {
-    title: {
-      fontWeight: 'bold',
-      fontSize: '0.8rem',
-    },
+  useEffect(() => {
+    setSprintState({ data: 'Sprint Data' });
+  }, []);
 
-    subTitle: {
-      fontSize: '0.7rem',
-      color: (theme) => theme.palette.text.secondary,
-    },
-  };
   return (
-    <Box
-      sx={{
-        px: 2,
-        py: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1.5rem',
+    <MainLayout
+      sectionsData={{
+        sectionTitle: 'Sprint',
+        sections: [
+          {
+            title: 'Overview',
+            link: '',
+            enableLink: true,
+            onSelected: () => {},
+          },
+          {
+            title: 'Tasks',
+            link: 'task',
+            enableLink: true,
+            onSelected: () => {},
+          },
+          {
+            title: 'Team',
+            link: 'team',
+            enableLink: true,
+            onSelected: () => {},
+          },
+          {
+            title: 'Chat',
+            link: 'room',
+            enableLink: true,
+            onSelected: () => {},
+          },
+          {
+            title: 'Settings',
+            link: 'settings',
+            enableLink: true,
+            onSelected: () => {},
+          },
+        ],
       }}
     >
-      <Box>
-        <Typography sx={styles.title}>Welcome back, Anika</Typography>
-        <Typography sx={styles.subTitle}>
-          Nice progress so far, keep it up!
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '1rem',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Card
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            py: 1,
-            px: 3,
-            borderRadius: 2,
-            boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
-            gap: 1,
-            width: '100%',
-          }}
-        >
-          <SemiCircleProgress
-            percentage={20}
-            size={{
-              width: 200,
-              height: 100,
-            }}
-            strokeWidth={10}
-            strokeColor="#468189"
-            hasBackground={true}
-            bgStrokeColor="#EBEEFE"
-          />
-          <Typography sx={styles.title}>
-            Not so much time left on this sprint. Keep Going
-          </Typography>
-          <Typography sx={styles.subTitle}>
-            You have used 80% of your available spots. Upgrade plan to create
-            more projects.{' '}
-          </Typography>
-          <StyledButton
-            sx={{
-              width: '15rem',
-              borderRadius: '0.5rem',
-            }}
-          >
-            Continue: Sprint Name
-          </StyledButton>
-        </Card>
-        <Card
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            py: 2,
-            px: 2,
-            borderRadius: 2.5,
-            border: 'solid 2px #6C737F22',
-
-            boxShadow: ' none',
-            gap: 1,
-            // width: '100%',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              height: '50%',
-              // bgcolor: 'red',
-            }}
-          >
-            <Typography sx={styles.title}>Sprint Settings</Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              Manage your sprint settings
-              <StyledButton>Add Sprint </StyledButton>
-            </Box>
-          </Box>
-          <Divider />
-          <Typography>Hi</Typography>
-        </Card>
-      </Box>
-    </Box>
+      <Outlet />
+    </MainLayout>
   );
-};
-
-export { Sprint };
+}

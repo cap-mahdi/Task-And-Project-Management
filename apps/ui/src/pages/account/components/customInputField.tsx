@@ -7,15 +7,28 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { useCustomMutation } from '../../../hooks/useCustomMutation';
+import { UPDATE_USERS } from '../../../services/user/updateUser';
+import { useUser } from '../../../services';
+import useAppContext from '../../../context/useAppContext';
+import { set } from 'react-hook-form';
 
 interface CustomInputFieldProps {
+  name: 'name' | 'email' | 'phone';
   title: string;
   value: string;
   type?: 'text' | 'email' | 'tel' | 'role' | 'password';
   onChange: (value: string) => void;
 }
 
+interface UpdateUserInput {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
+
 export function CustomInputField({
+  name,
   title,
   value,
   type,
@@ -23,8 +36,13 @@ export function CustomInputField({
 }: CustomInputFieldProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [updateUser, { data, error, loading }] = useCustomMutation(
+    UPDATE_USERS,
+    true
+  );
+  const [globalState, setGlobalState] = useAppContext();
 
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     if (isEditing) {
       if (type === 'email') {
         const validEmail = /\S+@\S+\.\S+/.test(value);
@@ -41,6 +59,16 @@ export function CustomInputField({
       }
       setErrorMessage('');
     }
+    if (isEditing) {
+      const updateUserData: UpdateUserInput = {};
+      updateUserData[name] = value;
+      await updateUser({ variables: { input: updateUserData } });
+      setGlobalState({
+        ...globalState,
+        user: { ...globalState.user, [name]: value },
+      });
+    }
+
     setIsEditing(!isEditing);
   };
 

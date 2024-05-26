@@ -10,12 +10,14 @@ import { Repository } from 'typeorm';
 import { CreateUserInputDto } from './createUser.dto';
 import * as bcrypt from 'bcryptjs';
 import { ChangePasswordInput, GetUserInput, UpdateUserInput, UserRole } from '../graphql';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserSchema)
-    private userRepository: Repository<UserSchema>
+    private userRepository: Repository<UserSchema>,
+    private readonly cloudinaryService: CloudinaryService
   ) { }
   async create(userDTO: CreateUserInputDto): Promise<UserSchema> {
     if (userDTO.password != userDTO.confirmPassword) {
@@ -128,6 +130,24 @@ export class UserService {
     }
     const salt = await bcrypt.genSalt();
     const updatedUser = await this.userRepository.save({ ...userToUpdate, password: await bcrypt.hash(changePasswordInput.newPassword, salt) })
+    return updatedUser
+  }
+
+  async changeUserAvatar(userId: string, file): Promise<UserSchema> {
+    const userToUpdate = await this.userRepository.findOne({ where: { id: userId } })
+    if (!userToUpdate) {
+      throw new BadRequestException('User not found')
+    }
+
+    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file[0])
+    const updatedUser = await this.userRepository.save({ ...userToUpdate, avatar: cloudinaryResponse.secure_url })
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log("***********");
+    console.log({ updatedUser });
+
+
     return updatedUser
   }
 

@@ -8,27 +8,28 @@ import {
 } from '@heroicons/react/24/outline';
 import { ListItemMenuButton } from './ListItemMenuButton';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 ////Exemple of data object to be passed in props after that when fetching data
 
-const data = {
-  workspace: {
-    name: 'My personal workspace',
-  },
-  projects: [
-    {
-      name: 'Project web ',
-    },
-    {
-      name: 'PPP ',
-    },
-    {
-      name: 'Project RO ',
-    },
-  ],
-};
+// const data = {
+//   name: 'My personal workspace',
 
-export function NestedList() {
+//   projects: [
+//     {
+//       name: 'Project web ',
+//     },
+//     {
+//       name: 'PPP ',
+//     },
+//     {
+//       name: 'Project RO ',
+//     },
+//   ],
+// };
+
+export function NestedList({ data }) {
   const theme = useTheme();
   const { palette } = theme;
   const [open, setOpen] = useState(false);
@@ -36,10 +37,17 @@ export function NestedList() {
   const handleClick = () => {
     setOpen(!open);
   };
+  const navigate = useNavigate();
 
   return (
     <>
-      <ListItemMenuButton onClick={handleClick} selected={false}>
+      <ListItemMenuButton
+        onClick={handleClick}
+        selected={false}
+        onDoubleClick={() => {
+          navigate(`/app/workspace/${data.id}`);
+        }}
+      >
         <Box
           sx={{
             pr: 1,
@@ -54,7 +62,7 @@ export function NestedList() {
           {<Bars3BottomLeftIcon color={palette.blackPearl.main} />}
         </Box>
         <ListItemText
-          primary={data.workspace.name}
+          primary={data.name}
           sx={{ color: palette.blackPearl.main }}
         />
         {open ? (
@@ -67,7 +75,13 @@ export function NestedList() {
         <List component="div" disablePadding>
           {data.projects.map((el) => {
             return (
-              <ListItemMenuButton key={el.name} sx={{ pl: 4 }}>
+              <ListItemMenuButton
+                key={uuidv4()}
+                sx={{ pl: 4 }}
+                onDoubleClick={() => {
+                  navigate(`/app/workspace/${data.id}/project/${el.id}`);
+                }}
+              >
                 <Box
                   sx={{
                     pr: 1,

@@ -9,8 +9,10 @@ const getConnectedUserRequest = gql`
     getConnectedUser {
       id
       name
+      phone
       email
       role
+      avatar
     }
   }
 `;
@@ -19,7 +21,6 @@ export const useUser = () => {
   const [getUser, { data, error, loading }] = useCustomLazyQuery(
     getConnectedUserRequest,
     true
-
   );
   const [globalState, setGlobalState] = useAppContext();
 
