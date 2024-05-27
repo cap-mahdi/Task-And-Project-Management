@@ -10,8 +10,31 @@ import {
 import React from 'react';
 import { theme } from '../theme';
 import { StyledButton } from './StyledButton';
+import { useCustomMutation } from '../hooks/useCustomMutation';
+import { CREATE_COMMENT } from '../services/comment/commentMutation';
 
-export function AddComment(props) {
+export function AddComment({ taskID }) {
+  const [createComment] = useCustomMutation(CREATE_COMMENT, true);
+  const [comment, setComment] = React.useState('');
+
+  const handleAddComment = async () => {
+    console.log('HOSSSSS ', comment);
+    createComment({
+      variables: {
+        content: comment,
+        taskID: taskID,
+      },
+    })
+      .then((res) => {
+        console.log('created comment', res);
+      })
+      .catch((err) => {
+        console.error('error creating comment', err);
+      });
+
+    setComment('');
+  };
+
   return (
     <Box
       sx={{
@@ -40,6 +63,8 @@ export function AddComment(props) {
           N
         </Avatar>
         <TextField
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
           sx={{
             '.MuiInputBase-input': {
               fontSize: '80%', // Adjust the font size for the placeholder text
@@ -65,6 +90,7 @@ export function AddComment(props) {
         sx={{
           mt: 1,
         }}
+        onClick={handleAddComment}
       >
         Send
       </StyledButton>

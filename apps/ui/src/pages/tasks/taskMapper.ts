@@ -23,25 +23,27 @@ export const taksMapper = (intialTasks: Task[]): TasksDataType => {
       id: 'column-1',
       title: 'Todo',
       taskIds: intialTasks
-        .filter((task) => task.status === Status.Open)
+        .filter((task) => task.status === Status.OPEN)
         .map((task) => task.id),
-      status: Status.Open,
+      status: Status.OPEN,
     },
     'column-2': {
       id: 'column-2',
       title: 'Progress',
       taskIds: intialTasks
-        .filter((task) => task.status === Status.InProgress)
+        .filter((task) => task.status === Status.IN_PROGRESS)
         .map((task) => task.id),
-      status: Status.InProgress,
+      status: Status.IN_PROGRESS,
     },
     'column-3': {
       id: 'column-3',
       title: 'Done',
       taskIds: intialTasks
-        .filter((task) => task.status === Status.Done)
+        .filter((task) => task.status === Status.
+      DONE)
         .map((task) => task.id),
-      status: Status.Done,
+      status: Status.
+      DONE,
     },
   };
 

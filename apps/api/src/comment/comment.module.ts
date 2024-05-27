@@ -7,6 +7,7 @@ import { MilestoneModule } from '../milestone/milestone.module';
 import { UserProjectModule } from '../user-project/user-project.module';
 import { CommentSchema } from '../entities';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -14,9 +15,11 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     TaskModule,
     MilestoneModule,
     UserProjectModule,
+    UserModule,
+    EventEmitterModule.forRoot(),
   ],
-  controllers: [CommentController],
+  controllers: [],
   providers: [CommentResolver, CommentService],
   exports: [CommentService],
 })
-export class CommentModule {}
+export class CommentModule { }

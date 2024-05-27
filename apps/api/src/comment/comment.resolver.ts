@@ -19,7 +19,7 @@ export class CommentResolver {
   constructor(
     private readonly commentService: CommentService,
     private readonly taskService: TaskService
-  ) {}
+  ) { }
 
   @Mutation('createComment')
   async createComment(
@@ -47,10 +47,10 @@ export class CommentResolver {
     return this.commentService.editComment(commentId, content, user);
   }
 
-  //   @Query('comments')
-  //   async comments(@Args('taskId') taskId: string): Promise<CommentSchema[]> {
-  //     return this.commentService.findCommentsByTaskId(taskId);
-  //   }
+  @Query('comments')
+  async comments(@Args('taskId') taskId: string): Promise<CommentSchema[]> {
+    return this.commentService.find({ where: { task: { id: taskId } } });
+  }
 
   @ResolveField('task')
   async task(@Parent() comment: CommentSchema) {

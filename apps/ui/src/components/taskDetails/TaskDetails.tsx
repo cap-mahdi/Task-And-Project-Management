@@ -78,7 +78,7 @@ export function TaskDetails({ task }: TaskDetailsProps) {
       <Divider orientation="vertical" />
       {/*  -----------------------------------------  RIGHT-SECTION ------------------------------------------- */}
 
-      <TaskRightSection />
+      <TaskRightSection taskId={task.id} />
     </Card>
   );
 }

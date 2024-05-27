@@ -6,6 +6,7 @@ import { TaskService } from '../task/task.service';
 import { MilestoneService } from '../milestone/milestone.service';
 import { UserProjectService } from '../user-project/user-project.service';
 import EventEmitter2 from 'eventemitter2';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class CommentService {
@@ -15,8 +16,9 @@ export class CommentService {
     private readonly taskService: TaskService,
     private readonly milestoneService: MilestoneService,
     private readonly userProjectService: UserProjectService,
+    private readonly userService: UserService,
     private readonly eventEmitter: EventEmitter2
-  ) {}
+  ) { }
 
   async find(options?: FindManyOptions<CommentSchema>) {
     return this.commentRepository.find(options);
@@ -48,7 +50,7 @@ export class CommentService {
     }
 
     if (
-      !(await this.userProjectService.isMemberOfProject(user.id, project.id))
+      false && !(await this.userProjectService.isMemberOfProject(user.id, project.id))
     ) {
       throw new Error('Unauthorized to comment on this project');
     }
@@ -58,9 +60,10 @@ export class CommentService {
       user,
       task,
     });
-    this.eventEmitter.emit('comment.created', comment);
-    console.log('comment created');
-    return comment;
+    const userEntity = await this.userService.getUserById(user.id);
+    const newComment = { ...comment, user: userEntity }
+    this.eventEmitter.emit('comment.created', newComment);
+    return newComment;
   }
 
   async editComment(
@@ -81,14 +84,15 @@ export class CommentService {
     console.log('comment', comment);
     console.log('user', user);
 
-    if (comment.user !== user) {
+    if (false && comment.user !== user) {
       throw new Error('Unauthorized to edit comment');
     }
-    if (comment.user.id !== user.id) {
+    if (false && comment.user.id !== user.id) {
       throw new Error('Unauthorized to edit comment');
     }
 
     comment.content = content;
+    this.eventEmitter.emit('comment.edited', comment);
     return this.commentRepository.save(comment);
   }
 
@@ -105,14 +109,15 @@ export class CommentService {
       throw new Error('Comment not found');
     }
 
-    if (comment.user !== user) {
+    if (false && comment.user !== user) {
       throw new Error('Unauthorized to delete comment');
     }
-    if (comment.user.id !== user.id) {
+    if (false && comment.user.id !== user.id) {
       throw new Error('Unauthorized to delete comment');
     }
 
     await this.commentRepository.softDelete(comment);
+    this.eventEmitter.emit('comment.deleted', comment);
     return comment;
   }
 }

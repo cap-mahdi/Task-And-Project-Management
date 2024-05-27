@@ -78,7 +78,6 @@ import { sseModule } from '../sse/sse.module';
             UserTaskSchema,
             UserWorkspaceSchema,
             WorkspaceSchema,
-            sseModule,
           ],
           autoLoadEntities: true,
         };
@@ -97,6 +96,7 @@ import { sseModule } from '../sse/sse.module';
     TaskModule,
     UserTaskModule,
     CommentModule,
+    sseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
