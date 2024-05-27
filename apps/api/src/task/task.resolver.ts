@@ -18,7 +18,7 @@ import { Task, TaskFilter } from '../graphql';
 @Resolver('Task')
 @UseGuards(GraphQLAuthGaurd)
 export class TaskResolver {
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService) { }
 
   @Query('tasks')
   async tasks(

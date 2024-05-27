@@ -25,11 +25,11 @@ export function SecondSection() {
   const miniFeatures = [
     {
       title: {
-        text: 'Feature 1',
+        text: 'Progress Tracking',
         color: contrastColor,
       },
       description: {
-        text: 'This is a feature description',
+        text: 'Track your progress with visual indicators',
         color: featureDescriptionColor,
       },
       titleVariant: 'h6' as TypographyProps['variant'],
@@ -39,11 +39,11 @@ export function SecondSection() {
 
     {
       title: {
-        text: 'Feature 2',
+        text: 'Security and Privacy',
         color: contrastColor,
       },
       description: {
-        text: 'This is a feature description',
+        text: 'Ensure your data is safe and secure',
         color: featureDescriptionColor,
       },
       titleVariant: 'h6' as TypographyProps['variant'],
@@ -53,11 +53,11 @@ export function SecondSection() {
 
     {
       title: {
-        text: 'Feature 3',
+        text: 'Due dates and reminders',
         color: contrastColor,
       },
       description: {
-        text: 'This is a feature description',
+        text: 'Set due dates and reminders to ensure you never miss a deadline',
         color: featureDescriptionColor,
       },
       titleVariant: 'h6' as TypographyProps['variant'],
@@ -69,11 +69,11 @@ export function SecondSection() {
   const features = [
     {
       title: {
-        text: 'Feature 1',
+        text: 'Task Creation and Management',
         color: contrastColor,
       },
       description: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        text: 'Create, edit and delete tasks with just a few clicks. Organize your tasks into lists for better project management',
         color: featureDescriptionColor,
       },
       buttonColor: buttonColor,
@@ -81,11 +81,11 @@ export function SecondSection() {
     },
     {
       title: {
-        text: 'Feature 2',
+        text: 'Collaborative Workspace',
         color: contrastColor,
       },
       description: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        text: 'Invite team members to your projects, assign tasks, and track progress effectively. Improve team communication and efficiency.',
         color: featureDescriptionColor,
       },
       buttonColor: buttonColor,
@@ -94,11 +94,11 @@ export function SecondSection() {
     },
     {
       title: {
-        text: 'Feature 3',
+        text: 'Notifications',
         color: contrastColor,
       },
       description: {
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        text: 'Receive real-time notifications for task updates, deadlines, and team comments to stay informed and up-to-date.',
         color: featureDescriptionColor,
       },
       buttonColor: buttonColor,

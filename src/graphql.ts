@@ -31,6 +31,15 @@ export enum WorkspaceRole {
     WORKSPACE_MEMBER = "WORKSPACE_MEMBER"
 }
 
+export class CreateCommentInput {
+    content: string;
+    taskId: string;
+}
+
+export class EditCommentInput {
+    content?: Nullable<string>;
+}
+
 export class CreateMilestone {
     name: string;
     description: string;
@@ -135,29 +144,14 @@ export class Comment {
     id: string;
     content: string;
     createdAt: Date;
+    updatedAt: Date;
     user: User;
-}
-
-export class Message {
-    id: string;
-    content: string;
-    createdAt: Date;
-    sender: User;
-    room: Room;
-}
-
-export class Milestone {
-    id: string;
-    name: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    status: Status;
-    project: Project;
-    tasks: Task[];
+    task: Task;
 }
 
 export abstract class IQuery {
+    abstract comments(taskId: string): Comment[] | Promise<Comment[]>;
+
     abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
@@ -190,6 +184,12 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
+    abstract createComment(input: CreateCommentInput): Comment | Promise<Comment>;
+
+    abstract deleteComment(id: string): Comment | Promise<Comment>;
+
+    abstract editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
+
     abstract createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
 
     abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
@@ -229,6 +229,25 @@ export abstract class IMutation {
     abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 
     abstract updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+}
+
+export class Message {
+    id: string;
+    content: string;
+    createdAt: Date;
+    sender: User;
+    room: Room;
+}
+
+export class Milestone {
+    id: string;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    status: Status;
+    project: Project;
+    tasks: Task[];
 }
 
 export class Project {
