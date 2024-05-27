@@ -41,6 +41,9 @@ export const TaskDialog: FC<TaskDialogProps> = ({
     number | undefined
   >(undefined);
 
+  console.log('selectedProjectIndex', selectedProjectIndex);
+  console.log('projects', projects);
+
   const [selectedMilestoneIndex, setSelectedMilestoneIndex] = useState<
     number | undefined
   >(undefined);
@@ -206,7 +209,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
               </Stack>
             )}
           </Stack>
-          {!!projects && (
+          {!!projects && selectedProjectIndex != undefined && (
             <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
               <InputLabel htmlFor="project">Project</InputLabel>
               <Select
@@ -215,8 +218,8 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                   flex: 1,
                 }}
                 id="project"
+                defaultValue={selectedProjectIndex}
                 renderValue={(value) => {
-                  console.log('value', value);
                   return projects[value].name;
                 }}
                 onChange={(event) => {
@@ -260,10 +263,14 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                     return projects[selectedProjectIndex]?.milestones[value]
                       ?.name;
                   }}
+                  onChange={(event) => {
+                    console.log('event.target.value', event.target.value);
+                    setSelectedMilestoneIndex(Number(event.target.value));
+                  }}
                 >
                   {projects[selectedProjectIndex]?.milestones.map(
-                    (milestone) => (
-                      <MenuItem key={milestone.id} value={milestone.id}>
+                    (milestone, index) => (
+                      <MenuItem key={milestone.id} value={index}>
                         {milestone?.name}
                       </MenuItem>
                     )

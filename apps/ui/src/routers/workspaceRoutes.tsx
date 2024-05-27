@@ -9,7 +9,6 @@ import { Sprints } from '../pages/sprint';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { SprintProvider } from '../context/useSprintContext';
 import { Sprint } from '../pages/sprint/Sprint';
-import { Tasks } from '../pages/tasks/Tasks';
 import { ProjectTasks } from '../pages/tasks/ProjectTasks';
 import { SprintTasks } from '../pages/tasks/SprintTasks';
 
