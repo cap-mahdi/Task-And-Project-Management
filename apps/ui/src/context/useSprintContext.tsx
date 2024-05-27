@@ -1,10 +1,11 @@
 import { createContext, useContext, useState } from 'react';
+import { Milestone } from '../__generated__/graphql';
 
 interface SprintState {
-  data: string;
+  sprint: Milestone | null;
 }
 const initialState: SprintState = {
-  data: '',
+  sprint: null,
 };
 
 const SprintContext = createContext({});

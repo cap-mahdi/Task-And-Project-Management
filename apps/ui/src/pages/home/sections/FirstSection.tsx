@@ -8,12 +8,12 @@ export function FirstSection() {
   const contrastColor = customTheme.palette.albescentWhite.main;
 
   const title = {
-    text: 'This is description title.',
+    text: 'Simplify task management and take control of your day.',
     color: '#FFFFFF',
   };
 
   const description = {
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    text: "TeamFlow is designed to make your life easier by providing a multitude of tools to organize and track your tasks efficiently. Whether you're managing personal to-dos or coordinating complex team projects, our app provides a wide range of functionalities to help you stay on top of your workloads.",
     color: '#979797',
   };
 

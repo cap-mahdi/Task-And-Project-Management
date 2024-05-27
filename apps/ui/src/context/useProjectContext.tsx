@@ -1,10 +1,11 @@
 import { createContext, useContext, useState } from 'react';
+import { Project } from '../__generated__/graphql';
 
 interface ProjectState {
-  data: string;
+  project: Project | null;
 }
 const initialState: ProjectState = {
-  data: '',
+  project: null,
 };
 
 const ProjectContext = createContext({});
@@ -15,6 +16,7 @@ interface ProjectProviderProps {
 
 const ProjectProvider = ({ children }: ProjectProviderProps) => {
   const [state, setState] = useState(initialState);
+  console.log('state changedddd ', state);
   return (
     <ProjectContext.Provider value={{ state, setState }}>
       {children}

@@ -1,38 +1,36 @@
 type Milestone {
-    id: ID!
-    name: String!
-    description: String!
-    startDate: Date!
-    endDate: Date!
-    status: Status!
-    project: Project!
-    tasks: [Task!]!
-
+  id: ID!
+  name: String!
+  description: String!
+  startDate: Date!
+  endDate: Date!
+  status: Status!
+  project: Project!
+  tasks: [Task!]!
 }
 
 input CreateMilestone {
-    name: String!
-    description: String!
-    startDate: Date!
-    endDate: Date!
+  name: String!
+  description: String!
+  startDate: Date!
+  endDate: Date!
 }
 
 input UpdateMilestone {
-    name: String
-    description: String
-    startDate: Date
-    endDate: Date
-    status: Status
+  name: String
+  description: String
+  startDate: Date
+  endDate: Date
+  status: Status
 }
 
 type Query {
-    milestones: [Milestone!]!
-    milestone(id: ID!): Milestone
-
-}   
+  milestones(projectId: ID!): [Milestone!]!
+  milestone(id: ID!): Milestone
+}
 
 type Mutation {
-    createMilestone(input: CreateMilestone!,projectId: String!): Milestone!
-    updateMilestone(id: ID!, input: UpdateMilestone!): Milestone!
-    deleteMilestone(id: ID!): Milestone!
+  createMilestone(input: CreateMilestone!, projectId: String!): Milestone!
+  updateMilestone(id: ID!, input: UpdateMilestone!): Milestone!
+  deleteMilestone(id: ID!): Milestone!
 }

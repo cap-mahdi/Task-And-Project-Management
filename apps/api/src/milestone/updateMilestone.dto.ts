@@ -1,5 +1,5 @@
-import { IsDate, IsString, MinDate } from 'class-validator';
-import { UpdateMilestone } from '../graphql';
+import { IsDate, IsEnum, IsString, MinDate } from 'class-validator';
+import { Status, UpdateMilestone } from '../graphql';
 import { IsBiggerThan } from '../validators/isBiggerThan';
 import { Type } from 'class-transformer';
 
@@ -9,6 +9,10 @@ export class UpdateMilestoneMilestoneDto implements UpdateMilestone {
 
   @IsString()
   description: string;
+
+  @IsString()
+  @IsEnum(Status)
+  status?: Status;
 
   @IsDate()
   @Type(() => Date)

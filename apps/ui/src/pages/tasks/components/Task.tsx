@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { FC, useState } from 'react';
-import { Task as TaskType } from '../types';
+import { TaskType } from '../types';
 import { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import BasicModal from '../../../components/BasicModal';
 import { TaskDetails } from '../../../components/taskDetails/TaskDetails';
@@ -20,8 +20,6 @@ interface TaskProps {
 }
 export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
   const [openDetails, setOpenDetails] = useState(false);
-
-  console.log(task);
 
   return (
     <>
@@ -50,7 +48,8 @@ export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
         //     : 'unset'
         // }
       >
-        {task.image && (
+        {/* DO NOT DELETE */}
+        {/* {task.image && (
           <Box sx={{ width: '100%', height: '200px' }}>
             <img
               src={task.image}
@@ -62,8 +61,8 @@ export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
               }}
             />
           </Box>
-        )}
-        <Typography>{task.title}</Typography>
+        )} */}
+        <Typography>{task.name}</Typography>
         <Stack
           flexDirection="row"
           justifyContent={'space-between'}
@@ -83,12 +82,12 @@ export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
           <AvatarGroup max={4}>
             {task.assignees.map((assignee, index) => (
               <Avatar
-                key={assignee + index}
+                key={assignee.id}
                 sx={{
                   backgroundColor: `orange`,
                 }}
               >
-                {assignee}
+                {assignee.name.charAt(0).toUpperCase()}
               </Avatar>
             ))}
           </AvatarGroup>

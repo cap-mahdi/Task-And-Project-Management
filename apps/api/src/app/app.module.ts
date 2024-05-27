@@ -36,6 +36,9 @@ import { EventsModule } from '../events/events.module';
 import { RoomModule } from '../room/room.module';
 import { UserRoomModule } from '../user-room/user-room.module';
 import { MilestoneModule } from '../milestone/milestone.module';
+import { TaskModule } from '../task/task.module';
+import { UserTaskModule } from '../user-task/user-task.module';
+import { CommentModule } from '../comment/comment.module';
 import { MessageModule } from '../message/message.module';
 @Module({
   imports: [
@@ -90,6 +93,9 @@ import { MessageModule } from '../message/message.module';
     MilestoneModule,
     RoomModule,
     UserRoomModule,
+    TaskModule,
+    UserTaskModule,
+    CommentModule,
     MessageModule,
   ],
   controllers: [AppController],

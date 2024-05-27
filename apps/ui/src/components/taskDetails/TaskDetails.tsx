@@ -5,6 +5,7 @@ import {
   Card,
   Divider,
   ImageListItem,
+  Stack,
   SxProps,
   Typography,
 } from '@mui/material';
@@ -20,13 +21,16 @@ import { TitleAndButton } from '../TitleAndButton';
 import { TaskRightSection } from './TaskRightSection';
 import { SxPropsObject } from '../../utils/SxPropsObject';
 import { time } from 'console';
+import { Task } from '../../__generated__/graphql';
+import { TaskType } from '../../pages/tasks/types';
+import moment from 'moment';
+import { DateTime } from 'luxon';
 
-const description =
-  ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. ';
-
-const title = 'Design a new logo for the company';
-
-export function TaskDetails({ task }) {
+interface TaskDetailsProps {
+  task: TaskType;
+}
+export function TaskDetails({ task }: TaskDetailsProps) {
+  console.log('AAZAZAZAZEZaze', task);
   return (
     <Card
       sx={{
@@ -52,7 +56,7 @@ export function TaskDetails({ task }) {
         }}
       >
         {/* <h1>{task.title}</h1> */}
-        <TaskHeader />
+        <TaskHeader task={task} />
         {/* ------------------ TASK DETAILS ----------------*/}
         <Box
           sx={{
@@ -63,12 +67,12 @@ export function TaskDetails({ task }) {
             my: 1,
           }}
         >
-          <TextSection label={title} disableButton />
-          <TextSection label={'Description'} text={description} />
-          <ImageSection />
-          <Deadline />
-          <AssignedTo />
-          <Tags />
+          <TextSection label={task.name} disableButton />
+          <TextSection label={'Description'} text={task.description} />
+          {/* <ImageSection /> */}
+          {/* <Deadline /> */}
+          <AssignedTo task={task} />
+          <Tags task={task} />
         </Box>
       </Box>
       <Divider orientation="vertical" />
@@ -167,43 +171,37 @@ function Deadline(props) {
   );
 }
 
-function AssignedTo(props) {
+function AssignedTo({ task }: { task: TaskType }) {
   return (
     <>
       <TitleAndButton sectionName="Assigned To" ButtonText="Edit" />
-      <AvatarGroupDisplay
-        avatars={[
-          {
-            name: 'John',
-            src: 'https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg',
-          },
-          {
-            name: 'John',
-            src: 'https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg',
-          },
-          {
-            name: 'John',
-            src: 'https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg',
-          },
-          {
-            name: 'John',
-            src: 'https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg',
-          },
-          {
-            name: 'John',
-            src: 'https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg',
-          },
-          {
-            name: 'John',
-            src: 'https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg',
-          },
-        ]}
-      />
+      {task.assignees.length > 0 ? (
+        <Stack>
+          {task.assignees.map((assignee) => (
+            <Avatar
+              sx={{
+                backgroundColor: `orange`,
+              }}
+            >
+              {assignee.name[0].toUpperCase()}
+            </Avatar>
+          ))}
+        </Stack>
+      ) : (
+        <Typography
+          sx={{
+            fontSize: '80%',
+            mt: 1,
+          }}
+        >
+          No one assigned yet
+        </Typography>
+      )}
     </>
   );
 }
 
-function Tags(props) {
+function Tags({ task }: { task: TaskType }) {
   return (
     <>
       <TitleAndButton sectionName="Tags" ButtonText="Edit" />
@@ -215,23 +213,14 @@ function Tags(props) {
           flexWrap: 'wrap',
         }}
       >
-        {[
-          '#Design',
-          '#UI',
-          '#UX',
-          '#Figma',
-          '#AdobeXD',
-          '#Sketch',
-          '#Wireframes',
-          '#Prototyping',
-        ].map((tag) => (
+        {task.tags.map((tag) => (
           <Tag
             sx={{
               bgcolor: (theme) => theme.palette.shadowGreen.main,
               color: (theme) => theme.palette.blackPearl.main,
             }}
           >
-            {tag}
+            #{tag}
           </Tag>
         ))}
       </Box>
@@ -258,7 +247,14 @@ function ImageSection(props) {
   );
 }
 
-function TaskHeader(props) {
+interface TaskHeaderProps {
+  task: Task;
+}
+function TaskHeader({ task }: TaskHeaderProps) {
+  console.log(
+    'here',
+    DateTime.fromJSDate(new Date(task.createdAt)).toFormat('yyyyMMdd')
+  );
   const styles: SxPropsObject = {
     wrapper: {
       display: 'flex',
@@ -290,9 +286,13 @@ function TaskHeader(props) {
   return (
     <Box sx={styles.wrapper}>
       <Avatar
-        src="https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg"
-        sx={styles.avatar}
-      ></Avatar>
+        sx={{
+          backgroundColor: `orange`,
+          ...styles.avatar,
+        }}
+      >
+        {task.creator.name[0].toUpperCase()}
+      </Avatar>
       <Box sx={styles.rightBox}>
         <Typography sx={styles.action}>
           <span
@@ -302,11 +302,18 @@ function TaskHeader(props) {
           >
             John{' '}
           </span>
-          updated this task
+          created this task
         </Typography>
         <Box sx={styles.timeWrapper}>
           <BsClock />
-          <Typography sx={{ fontSize: '80%' }}>3 hours ago </Typography>
+          <Typography sx={{ fontSize: '80%' }}>
+            {moment(
+              DateTime.fromJSDate(new Date(task.createdAt)).toFormat(
+                'yyyyMMddhhmmss'
+              ),
+              'YYYYMMDDHHmmss'
+            ).fromNow()}
+          </Typography>
         </Box>
       </Box>
     </Box>

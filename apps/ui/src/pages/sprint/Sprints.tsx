@@ -12,7 +12,12 @@ import { MdOutlinePostAdd } from 'react-icons/md';
 import { BsPersonFillAdd } from 'react-icons/bs';
 import useAppContext from '../../context/useAppContext';
 import SprintCard from './components/SprintCard';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AddSprint } from '../../components/AddSprint';
+import { useEffect, useRef } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { GET_MILESTONES } from '../../services/milestone/milestoneQueries';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -24,6 +29,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Sprints = () => {
   const [globalState] = useAppContext();
+  const { projectId } = useParams();
   const styles: SxPropsObject = {
     title: {
       fontWeight: 'bold',
@@ -35,166 +41,195 @@ const Sprints = () => {
       color: (theme) => theme.palette.text.secondary,
     },
   };
+  const sprintRef = useRef(null);
+
+  const [loadSprints, sprintItems] = useCustomLazyQuery(GET_MILESTONES, true);
+  useEffect(() => {
+    if (projectId)
+      loadSprints({
+        variables: {
+          projectId,
+        },
+      });
+  }, [projectId, loadSprints]);
   return (
-    <Box
-      sx={{
-        px: 2,
-        py: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1.5rem',
-      }}
-    >
-      <Box>
-        <Typography sx={styles.title}>
-          Welcome back, {globalState.user?.name}
-        </Typography>
-        <Typography sx={styles.subTitle}>
-          Nice progress so far, keep it up!
-        </Typography>
-      </Box>
+    <>
       <Box
         sx={{
+          px: 2,
+          py: 1,
           display: 'flex',
-          gap: '1rem',
-          justifyContent: 'space-between',
+          flexDirection: 'column',
+          gap: '1.5rem',
         }}
       >
-        <Card
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            py: 1,
-            px: 3,
-            borderRadius: 2,
-            boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
-            gap: 1,
-            width: '100%',
-          }}
-        >
-          <SemiCircleProgress
-            percentage={20}
-            size={{
-              width: 200,
-              height: 100,
-            }}
-            strokeWidth={10}
-            strokeColor="#468189"
-            hasBackground={true}
-            bgStrokeColor="#EBEEFE"
-          />
+        <Box>
           <Typography sx={styles.title}>
-            Not so much time left on this sprint. Keep Going
+            Welcome back, {globalState.user?.name}
           </Typography>
           <Typography sx={styles.subTitle}>
-            You have used 80% of your available spots. Upgrade plan to create
-            more projects.{' '}
+            Nice progress so far, keep it up!
           </Typography>
-          <StyledButton
-            sx={{
-              width: '15rem',
-              borderRadius: '0.5rem',
-            }}
-          >
-            Continue: Sprint Name
-          </StyledButton>
-        </Card>
-        <Card
+        </Box>
+        <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column',
+            gap: '1rem',
             justifyContent: 'space-between',
-            py: 2,
-            px: 2,
-            borderRadius: 2.5,
-            border: 'solid 2px #6C737F22',
-
-            boxShadow: ' none',
-            gap: 1,
-            // width: '100%',
           }}
         >
-          <Box
+          <Card
             sx={{
               display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              height: '50%',
-              // bgcolor: 'red',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              py: 1,
+              px: 3,
+              borderRadius: 2,
+              boxShadow: ' 0px 4px 8px rgba(0, 0, 0, 0.25)',
+              gap: 1,
+              width: '100%',
             }}
           >
-            <MdOutlinePostAdd
-              style={{
-                fontSize: '2rem',
-                // color: '#6C737F',
-                marginRight: '1rem',
+            <SemiCircleProgress
+              percentage={20}
+              size={{
+                width: 200,
+                height: 100,
               }}
+              strokeWidth={10}
+              strokeColor="#468189"
+              hasBackground={true}
+              bgStrokeColor="#EBEEFE"
             />
+            <Typography sx={styles.title}>
+              Not so much time left on this sprint. Keep Going
+            </Typography>
+            <Typography sx={styles.subTitle}>
+              You have used 80% of your available spots. Upgrade plan to create
+              more projects.{' '}
+            </Typography>
+            <StyledButton
+              sx={{
+                width: '15rem',
+                borderRadius: '0.5rem',
+              }}
+            >
+              Continue: Sprint Name
+            </StyledButton>
+          </Card>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              py: 2,
+              px: 2,
+              borderRadius: 2.5,
+              border: 'solid 2px #6C737F22',
+
+              boxShadow: ' none',
+              gap: 1,
+              // width: '100%',
+            }}
+          >
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                height: '50%',
+                // bgcolor: 'red',
               }}
             >
-              Manage your sprint settings
-              <StyledButton
+              <MdOutlinePostAdd
+                style={{
+                  fontSize: '2rem',
+                  // color: '#6C737F',
+                  marginRight: '1rem',
+                }}
+              />
+              <Box
                 sx={{
-                  marginTop: '0.5rem',
-                  height: '2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                 }}
               >
-                Add Sprint{' '}
-              </StyledButton>
+                Manage your sprint settings
+                <StyledButton
+                  onClick={() => sprintRef?.current?.setOpen(true)}
+                  sx={{
+                    marginTop: '0.5rem',
+                    height: '2rem',
+                  }}
+                >
+                  Add Sprint{' '}
+                </StyledButton>
+              </Box>
             </Box>
-          </Box>
-          <Divider />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              height: '50%',
-              // bgcolor: 'red',
-            }}
-          >
-            <BsPersonFillAdd
-              style={{
-                fontSize: '2rem',
-                // color: '#6C737F',
-                marginRight: '1rem',
-              }}
-            />
+            <Divider />
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                height: '50%',
+                // bgcolor: 'red',
               }}
             >
-              Add members to this project
-              <StyledButton
+              <BsPersonFillAdd
+                style={{
+                  fontSize: '2rem',
+                  // color: '#6C737F',
+                  marginRight: '1rem',
+                }}
+              />
+              <Box
                 sx={{
-                  marginTop: '0.5rem',
-                  height: '2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                 }}
               >
-                Add Member
-              </StyledButton>
+                Add members to this project
+                <StyledButton
+                  sx={{
+                    marginTop: '0.5rem',
+                    height: '2rem',
+                  }}
+                >
+                  Add Member
+                </StyledButton>
+              </Box>
             </Box>
-          </Box>
-        </Card>
+          </Card>
+        </Box>
+        <Box
+          sx={{
+            marginTop: '1rem',
+          }}
+        >
+          <Typography sx={styles.title}>Milestones</Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '2%',
+            rowGap: '1rem',
+            flexWrap: 'wrap',
+            justifyContent: '',
+          }}
+        >
+          {sprintItems?.data?.milestones &&
+            sprintItems?.data?.milestones.map((sprint: any) => (
+              <SprintCard sprint={sprint} />
+            ))}
+        </Box>
       </Box>
-      <Box
-        sx={{
-          marginTop: '1rem',
-        }}
-      >
-        <Typography sx={styles.title}>Milestones</Typography>
-      </Box>
-      <SprintCard />
-    </Box>
+
+      <AddSprint ref={sprintRef} />
+    </>
   );
 };
 
