@@ -10,6 +10,8 @@ import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { SprintProvider } from '../context/useSprintContext';
 import { Sprint } from '../pages/sprint/Sprint';
 import { Tasks } from '../pages/tasks/Tasks';
+import { ProjectTasks } from '../pages/tasks/ProjectTasks';
+import { SprintTasks } from '../pages/tasks/SprintTasks';
 
 export const workspaceRoutes = {
   path: 'workspace/:workspaceId',
@@ -51,7 +53,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'task',
-          element: <Tasks />,
+          element: <ProjectTasks />,
         },
         {
           path: 'team',
@@ -81,7 +83,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'task',
-          element: <Tasks />,
+          element: <SprintTasks />,
         },
         {
           path: 'settings',
