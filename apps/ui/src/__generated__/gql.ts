@@ -23,6 +23,7 @@ const documents = {
     "\n  query GetMilestone($id: ID!) {\n    milestone(id: $id) {\n      id\n      name\n      description\n      startDate\n      endDate\n      status\n    }\n  }\n": types.GetMilestoneDocument,
     "\n  query GetMilestoneAndTasks($id: ID!) {\n    milestone(id: $id) {\n      tasks {\n        id\n        name\n        description\n        userTasks {\n          user {\n            name\n          }\n        }\n      }\n    }\n  }\n": types.GetMilestoneAndTasksDocument,
     "\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      id\n      name\n      description\n      userProjects {\n        id\n      }\n    }\n  }\n": types.CreateProjectDocument,
+    "\n  mutation AddUsersToProject($input: AddUserProjectInput!) {\n    addUsersToProject(input: $input) {\n      id\n      user {\n        id\n        email\n      }\n      role\n    }\n  }\n": types.AddUsersToProjectDocument,
     "\n  mutation createTask($input: CreateTask!, $milestoneId: ID!) {\n    createTask(input: $input, milestoneId: $milestoneId) {\n      id\n      name\n      description\n      status\n    }\n  }\n": types.CreateTaskDocument,
     "\n  mutation updateTaskStatus($id: ID!, $status: Status!) {\n    updateTask(input: { status: $status }, id: $id) {\n      id\n      name\n      description\n      status\n      tags\n      creator {\n        id\n        name\n      }\n      userTasks {\n        id\n        user {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.UpdateTaskStatusDocument,
     "\n  query getTasks($projectId: String, $milestoneId: String) {\n    tasks(filter: { projectId: $projectId, milestoneId: $milestoneId }) {\n      id\n      name\n      description\n      status\n      tags\n      createdAt\n      creator {\n        id\n        name\n        avatar\n      }\n      milestone {\n        id\n        name\n      }\n      comments {\n        id\n        content\n        createdAt\n        user {\n          id\n          name\n          avatar\n        }\n      }\n      userTasks {\n        id\n        user {\n          name\n          avatar\n        }\n      }\n    }\n  }\n": types.GetTasksDocument,
@@ -88,6 +89,10 @@ export function gql(source: "\n  query GetMilestoneAndTasks($id: ID!) {\n    mil
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      id\n      name\n      description\n      userProjects {\n        id\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      id\n      name\n      description\n      userProjects {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation AddUsersToProject($input: AddUserProjectInput!) {\n    addUsersToProject(input: $input) {\n      id\n      user {\n        id\n        email\n      }\n      role\n    }\n  }\n"): (typeof documents)["\n  mutation AddUsersToProject($input: AddUserProjectInput!) {\n    addUsersToProject(input: $input) {\n      id\n      user {\n        id\n        email\n      }\n      role\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

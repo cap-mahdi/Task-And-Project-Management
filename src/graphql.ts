@@ -116,6 +116,16 @@ export class UpdateUserProject {
     role?: Nullable<ProjectRole>;
 }
 
+export class EmailRoleProjectInput {
+    email: string;
+    role: string;
+}
+
+export class AddUserProjectInput {
+    projectId: string;
+    emailRoles: EmailRoleProjectInput[];
+}
+
 export class EmailRoleInput {
     email: string;
     role: string;
@@ -162,6 +172,8 @@ export abstract class IQuery {
 
     abstract project(id: string): Project | Promise<Project>;
 
+    abstract getWorkspaceMembersNotInProject(projectId: string): User[] | Promise<User[]>;
+
     abstract room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
 
     abstract tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
@@ -179,6 +191,8 @@ export abstract class IQuery {
     abstract userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
 
     abstract getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
+
+    abstract getWorkspaceUsers(workspaceId: string): UserWorkspace[] | Promise<UserWorkspace[]>;
 
     abstract userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
 
@@ -222,7 +236,7 @@ export abstract class IMutation {
 
     abstract changeUserAvatar(file: Upload): User | Promise<User>;
 
-    abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+    abstract addUsersToProject(input: AddUserProjectInput): UserProject[] | Promise<UserProject[]>;
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 

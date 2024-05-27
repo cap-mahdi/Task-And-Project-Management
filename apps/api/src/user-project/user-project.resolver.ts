@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
-import { ProjectRole } from '../graphql';
+import { AddUserProjectInput, ProjectRole } from '../graphql';
 import { ProjectRoles } from '../auth/decorators/project-roles.decorator';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { UserSchema } from '../entities/user.entity';
@@ -9,6 +9,7 @@ import { UserProjectSchema } from '../entities/userProject.entity';
 import { UserProjectService } from './user-project.service';
 import { ProjectService } from '../project/project.service';
 import { UserService } from '../user/user.service';
+import mapStringToEnum from '../utils/mapStringToEnum';
 
 @Resolver()
 @UseGuards(GraphQLAuthGaurd)
@@ -29,7 +30,7 @@ export class UserProjectResolver {
     // test if project exists
 
     const project = await this.projectService.findProjectById(projectId);
-    // console.log('project from', project);
+    // console.log('project from', project)
     // test if users exist
 
     const users = await Promise.all(
@@ -108,19 +109,5 @@ export class UserProjectResolver {
     );
 
     return deleteUserProjects;
-  }
-
-  @Query('getProjectUsers')
-  async getProjectUsers(
-    @Args('projectId') projectId: string
-  ): Promise<UserSchema[]> {
-    return await this.userProjectService
-      .find({
-        where: { project: { id: projectId } },
-        relations: ['user'],
-      })
-      .then((userProjects) =>
-        userProjects.map((userProject) => userProject.user)
-      );
   }
 }

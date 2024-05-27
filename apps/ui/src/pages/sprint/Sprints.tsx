@@ -51,7 +51,7 @@ const Sprints = () => {
           projectId,
         },
       });
-  }, [projectId, loadSprints]);
+  }, [projectId, loadSprints, globalState.events['CREATE_MILESTONE']]);
   return (
     <>
       <Box

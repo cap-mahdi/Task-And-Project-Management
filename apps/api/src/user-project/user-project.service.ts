@@ -13,7 +13,7 @@ export class UserProjectService {
   constructor(
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) { }
+  ) {}
 
   async find(options?: FindManyOptions<UserProjectSchema>) {
     return this.userProjectRepository.find(options);
