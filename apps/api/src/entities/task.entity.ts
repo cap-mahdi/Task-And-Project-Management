@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
@@ -20,7 +21,7 @@ import { UserTaskSchema } from './userTask.entity';
   name: 'task',
 })
 export class TaskSchema
-  implements Omit<Task, 'userTasks' | 'comments' | 'milestone'>
+  implements Omit<Task, 'userTasks' | 'comments' | 'milestone' | 'creator'>
 {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -51,4 +52,10 @@ export class TaskSchema
 
   @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
   deletedAt: Date;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 }

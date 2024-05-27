@@ -21,7 +21,8 @@ export const reorderColumnList = (
 export const onDragEndHandler = (
   result: DropResult,
   state: TasksDataType,
-  setState: (newState: TasksDataType) => void
+  setState: (newState: TasksDataType) => void,
+  updateTask: (obj: any) => void
 ) => {
   const { destination, source } = result;
   // If user tries to drop in an unknown destination
@@ -68,6 +69,14 @@ export const onDragEndHandler = (
     ...destinationCol,
     taskIds: endTaskIds,
   };
+  console.log('newEndCol', newEndCol);
+  console.log('removed', removed);
+  updateTask({
+    variables: {
+      id: removed,
+      status: newEndCol.status,
+    },
+  });
 
   const newState = {
     ...state,

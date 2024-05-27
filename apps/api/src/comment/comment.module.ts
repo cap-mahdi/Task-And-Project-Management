@@ -9,14 +9,14 @@ import { CommentSchema } from '../entities';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
-  providers: [CommentResolver, CommentService],
-  exports: [CommentService],
   imports: [
     TypeOrmModule.forFeature([CommentSchema]),
     TaskModule,
     MilestoneModule,
     UserProjectModule,
-    EventEmitterModule.forRoot(),
   ],
+  controllers: [CommentController],
+  providers: [CommentResolver, CommentService],
+  exports: [CommentService],
 })
 export class CommentModule {}

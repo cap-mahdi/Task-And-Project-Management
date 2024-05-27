@@ -1,4 +1,11 @@
-import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Resolver,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { MilestoneService } from './milestone.service';
@@ -87,5 +94,15 @@ export class MilestoneResolver {
       user,
       Reflect.getMetadata('roles', this.milestones)
     );
+  }
+
+  @ResolveField('tasks')
+  async tasks(@Parent() milestone: Milestone) {
+    return this.milestoneService
+      .findOne({
+        where: { id: milestone.id },
+        relations: ['tasks'],
+      })
+      .then((milestone) => milestone.tasks);
   }
 }

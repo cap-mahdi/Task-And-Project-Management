@@ -4,13 +4,12 @@ import { Workspace } from '../pages/workspace/Workspace';
 import { WorkspaceProjects } from '../pages/workspace/WorkspaceProjects';
 import { ProjectProvider } from '../context/useProjectContext';
 import { Project } from '../pages/project/Project';
-import { ProjectSprints } from '../pages/project/ProjectSprints';
-import { Tasks } from '../pages/tasks';
 import { Chat } from '../pages/chat/chat';
 import { Sprints } from '../pages/sprint';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { SprintProvider } from '../context/useSprintContext';
 import { Sprint } from '../pages/sprint/Sprint';
+import { Tasks } from '../pages/tasks/Tasks';
 import { SprintOverview } from '../pages/sprint/components/SprintOverview';
 import { AddUserToProject } from '../components';
 import { ProjectTeam } from '../pages/project/ProjectTeam';
@@ -56,7 +55,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'task',
-          element: <div>My tasks in the project goes here</div>,
+          element: <Tasks />,
         },
         {
           path: 'team',
@@ -86,7 +85,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'task',
-          element: <div>All tasks in sprint</div>,
+          element: <Tasks />,
         },
         {
           path: 'settings',

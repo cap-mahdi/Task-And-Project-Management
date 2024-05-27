@@ -25,3 +25,20 @@ export const GET_MILESTONE_BY_ID = gql`
     }
   }
 `;
+
+export const GET_MILESTONE_TASKS = gql`
+  query GetMilestoneAndTasks($id: ID!) {
+    milestone(id: $id) {
+      tasks {
+        id
+        name
+        description
+        userTasks {
+          user {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
