@@ -18,7 +18,6 @@ import { ProjectSchema, UserProjectSchema, WorkspaceSchema } from '../entities';
 import { UserProjectService } from '../user-project/user-project.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { ProjectService } from '../project/project.service';
-import { finished } from 'stream/promises';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Resolver('User')
@@ -30,7 +29,7 @@ export class UserResolver {
     private readonly workspaceService: WorkspaceService,
     private readonly projectService: ProjectService,
     private readonly cloudinaryService: CloudinaryService
-  ) { }
+  ) {}
 
   @Query()
   async users() {
@@ -70,7 +69,7 @@ export class UserResolver {
   @Mutation()
   @UseGuards(GraphQLAuthGaurd)
   async changePassword(
-    @Args("input") input: ChangePasswordInput,
+    @Args('input') input: ChangePasswordInput,
     @GetUserGQL() user: UserSchema
   ) {
     return this.userService.changePassword(user.id, input);
@@ -78,10 +77,7 @@ export class UserResolver {
 
   @Mutation()
   @UseGuards(GraphQLAuthGaurd)
-  async changeUserAvatar(
-    @Args("file") file,
-    @GetUserGQL() user: UserSchema
-  ) {
+  async changeUserAvatar(@Args('file') file, @GetUserGQL() user: UserSchema) {
     return this.userService.changeUserAvatar(user.id, file);
   }
 
@@ -107,5 +103,4 @@ export class UserResolver {
   async createdProjects(@Parent() user: UserSchema): Promise<ProjectSchema[]> {
     return this.projectService.findCreatedProjectsByUserId(user.id);
   }
-
 }

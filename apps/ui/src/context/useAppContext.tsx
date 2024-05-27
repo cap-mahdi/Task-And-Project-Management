@@ -23,6 +23,7 @@ interface AppProviderProps {
 const AppProvider = ({ children }: AppProviderProps) => {
   initialState.token = localStorage.getItem('token')?.slice(1, -1);
   const [state, setState] = useState(initialState);
+
   return (
     <AppContext.Provider value={{ state, setState }}>
       {children}

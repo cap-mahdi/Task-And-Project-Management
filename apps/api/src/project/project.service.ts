@@ -52,6 +52,8 @@ export class ProjectService {
       },
     });
 
+    console.log('project is ', project);
+
     if (!project) {
       throw new Error('Project not found');
     }

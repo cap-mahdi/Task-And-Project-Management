@@ -39,6 +39,7 @@ import { MilestoneModule } from '../milestone/milestone.module';
 import { TaskModule } from '../task/task.module';
 import { UserTaskModule } from '../user-task/user-task.module';
 import { CommentModule } from '../comment/comment.module';
+import { MessageModule } from '../message/message.module';
 import { sseModule } from '../sse/sse.module';
 @Module({
   imports: [
@@ -97,6 +98,7 @@ import { sseModule } from '../sse/sse.module';
     TaskModule,
     UserTaskModule,
     CommentModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
