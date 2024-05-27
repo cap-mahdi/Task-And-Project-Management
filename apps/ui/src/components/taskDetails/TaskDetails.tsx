@@ -61,7 +61,7 @@ export function TaskDetails({ task }: TaskDetailsProps) {
         >
           <TextSection label={task.name} disableButton />
           <TextSection label={'Description'} text={task.description} />
-          {/* <ImageSection /> */}
+          <ImageSection />
           {/* <Deadline /> */}
           <AssignedTo task={task} />
           <Tags task={task} />
