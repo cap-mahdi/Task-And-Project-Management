@@ -144,18 +144,9 @@ export class Message {
     room: Room;
 }
 
-export class Milestone {
-    id: string;
-    name: string;
-    description: string;
-    startDate: Date;
-    endDate: Date;
-    status: Status;
-    project: Project;
-    tasks: Task[];
-}
-
 export abstract class IQuery {
+    abstract messages(roomId: string): Message[] | Promise<Message[]>;
+
     abstract milestones(): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
@@ -163,6 +154,8 @@ export abstract class IQuery {
     abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
     abstract project(id: string): Project | Promise<Project>;
+
+    abstract room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
 
     abstract tasks(): Task[] | Promise<Task[]>;
 
@@ -178,6 +171,8 @@ export abstract class IQuery {
 
     abstract userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
 
+    abstract getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
+
     abstract userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
 
     abstract userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
@@ -185,6 +180,17 @@ export abstract class IQuery {
     abstract workspaces(): Workspace[] | Promise<Workspace[]>;
 
     abstract workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+}
+
+export class Milestone {
+    id: string;
+    name: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    status: Status;
+    project: Project;
+    tasks: Task[];
 }
 
 export abstract class IMutation {
@@ -196,7 +202,7 @@ export abstract class IMutation {
 
     abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
 
-    abstract createRoom(projectId: string): Room | Promise<Room>;
+    abstract createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
 
     abstract createTask(input: CreateTask): Task | Promise<Task>;
 
@@ -244,6 +250,7 @@ export class Project {
 export class Room {
     id: string;
     createdAt: Date;
+    name: string;
     project: Project;
     userRooms: UserRoom[];
     messages: Message[];

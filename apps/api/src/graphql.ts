@@ -144,6 +144,27 @@ export interface Message {
     room: Room;
 }
 
+export interface IQuery {
+    messages(roomId: string): Message[] | Promise<Message[]>;
+    milestones(): Milestone[] | Promise<Milestone[]>;
+    milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
+    projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+    project(id: string): Project | Promise<Project>;
+    room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
+    tasks(): Task[] | Promise<Task[]>;
+    task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    users(): User[] | Promise<User[]>;
+    getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
+    getConnectedUser(): User | Promise<User>;
+    getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
+    userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
+    getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
+    userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
+    userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
+    workspaces(): Workspace[] | Promise<Workspace[]>;
+    workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+}
+
 export interface Milestone {
     id: string;
     name: string;
@@ -155,30 +176,12 @@ export interface Milestone {
     tasks: Task[];
 }
 
-export interface IQuery {
-    milestones(): Milestone[] | Promise<Milestone[]>;
-    milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
-    projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
-    project(id: string): Project | Promise<Project>;
-    tasks(): Task[] | Promise<Task[]>;
-    task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
-    users(): User[] | Promise<User[]>;
-    getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
-    getConnectedUser(): User | Promise<User>;
-    getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
-    userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
-    userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
-    userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
-    workspaces(): Workspace[] | Promise<Workspace[]>;
-    workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-}
-
 export interface IMutation {
     createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
     updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
     deleteMilestone(id: string): Milestone | Promise<Milestone>;
     createProject(input: CreateProjectInput): Project | Promise<Project>;
-    createRoom(projectId: string): Room | Promise<Room>;
+    createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
     createTask(input: CreateTask): Task | Promise<Task>;
     updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
     assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
@@ -211,6 +214,7 @@ export interface Project {
 export interface Room {
     id: string;
     createdAt: Date;
+    name: string;
     project: Project;
     userRooms: UserRoom[];
     messages: Message[];

@@ -36,6 +36,7 @@ import { EventsModule } from '../events/events.module';
 import { RoomModule } from '../room/room.module';
 import { UserRoomModule } from '../user-room/user-room.module';
 import { MilestoneModule } from '../milestone/milestone.module';
+import { MessageModule } from '../message/message.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -89,6 +90,7 @@ import { MilestoneModule } from '../milestone/milestone.module';
     MilestoneModule,
     RoomModule,
     UserRoomModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

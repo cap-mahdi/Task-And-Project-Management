@@ -63,7 +63,6 @@ const LoginCard = () => {
         ...prevState,
         token: res.data.createPost.accessToken,
       }));
-      socket.emit('login', res.data);
     });
   };
 

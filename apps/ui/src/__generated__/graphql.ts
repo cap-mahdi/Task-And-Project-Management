@@ -33,11 +33,9 @@ export enum WorkspaceRole {
 
 export interface CreateMilestone {
     name: string;
-    description?: Nullable<string>;
+    description: string;
     startDate: Date;
     endDate: Date;
-    status: Status;
-    projectId: string;
 }
 
 export interface UpdateMilestone {
@@ -117,7 +115,7 @@ export interface UpdateUserWorkspace {
 }
 
 export interface AddUserWorkspaceInput {
-    WorkspaceId: string;
+    workspaceId: string;
     emailRoles: EmailRoleInput[];
 }
 
@@ -161,6 +159,7 @@ export interface IQuery {
     milestones(): Milestone[] | Promise<Milestone[]>;
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+    project(id: string): Project | Promise<Project>;
     tasks(): Task[] | Promise<Task[]>;
     task(id: string): Nullable<Task> | Promise<Nullable<Task>>;
     users(): User[] | Promise<User[]>;
@@ -168,6 +167,7 @@ export interface IQuery {
     getConnectedUser(): User | Promise<User>;
     getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
     userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
+    getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
     userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
     userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
     workspaces(): Workspace[] | Promise<Workspace[]>;
@@ -175,9 +175,11 @@ export interface IQuery {
 }
 
 export interface IMutation {
-    createMilestone(input: CreateMilestone): Milestone | Promise<Milestone>;
+    createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
     updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
+    deleteMilestone(id: string): Milestone | Promise<Milestone>;
     createProject(input: CreateProjectInput): Project | Promise<Project>;
+    createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
     createTask(input: CreateTask): Task | Promise<Task>;
     updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
     assignUsersToTask(taskId: string, input: AssignUsersToTask): Task | Promise<Task>;
@@ -185,8 +187,10 @@ export interface IMutation {
     updateUser(input: UpdateUserInput): User | Promise<User>;
     deleteUser(): User | Promise<User>;
     changePassword(input: ChangePasswordInput): User | Promise<User>;
+    changeUserAvatar(file: Upload): File | Promise<File>;
     addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
     deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+    addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
     updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
     addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
     createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
@@ -208,6 +212,7 @@ export interface Project {
 export interface Room {
     id: string;
     createdAt: Date;
+    name: string;
     project: Project;
     userRooms: UserRoom[];
     messages: Message[];
@@ -230,6 +235,7 @@ export interface User {
     email: string;
     phone?: Nullable<string>;
     password: string;
+    avatar?: Nullable<string>;
     createdAt: Date;
     role: UserRole;
     userWorkspaces: UserWorkspace[];
@@ -238,6 +244,12 @@ export interface User {
     userTasks: UserTask[];
     createdWorkspaces: Workspace[];
     createdProjects: Project[];
+}
+
+export interface File {
+    filename: string;
+    mimetype: string;
+    encoding: string;
 }
 
 export interface UserProject {
@@ -278,4 +290,5 @@ export interface Workspace {
     creator: User;
 }
 
+export type Upload = any;
 type Nullable<T> = T | null;

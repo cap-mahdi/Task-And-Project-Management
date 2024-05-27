@@ -1,7 +1,11 @@
 type Message {
-    id: ID!
-    content: String!
-    createdAt: Date!
-    sender: User!
-    room: Room!
+  id: ID!
+  content: String!
+  createdAt: Date!
+  sender: User!
+  room: Room!
+}
+
+type Query {
+  messages(roomId: ID!): [Message!]!
 }
