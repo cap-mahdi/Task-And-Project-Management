@@ -64,6 +64,7 @@ export class CreateProjectInput {
 export class CreateTask {
     name: string;
     description: string;
+    status: Status;
     tags: string[];
     assignees: string[];
 }
@@ -76,9 +77,9 @@ export class UpdateTask {
     assignees?: Nullable<string[]>;
 }
 
-export class UserFilter {
+export class TaskFilter {
     projectId?: Nullable<string>;
-    mileStoneId?: Nullable<string>;
+    milestoneId?: Nullable<string>;
 }
 
 export class CreateUserInput {
@@ -159,7 +160,7 @@ export abstract class IQuery {
 
     abstract project(id: string): Project | Promise<Project>;
 
-    abstract tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
+    abstract tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
 
     abstract task(id: string): Task | Promise<Task>;
 
@@ -279,6 +280,7 @@ export class Task {
     comments: Comment[];
     userTasks: UserTask[];
     creator: User;
+    createdAt: Date;
 }
 
 export class User {

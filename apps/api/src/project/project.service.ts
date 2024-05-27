@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectSchema } from '../entities';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class ProjectService {
@@ -9,6 +9,12 @@ export class ProjectService {
     @InjectRepository(ProjectSchema)
     private readonly projectRepository: Repository<ProjectSchema>
   ) {}
+
+  async findOne(
+    options: FindOneOptions<ProjectSchema>
+  ): Promise<ProjectSchema> {
+    return this.projectRepository.findOne(options);
+  }
 
   async findCreatedProjectsByUserId(userId: string): Promise<ProjectSchema[]> {
     const projects = await this.projectRepository.find({

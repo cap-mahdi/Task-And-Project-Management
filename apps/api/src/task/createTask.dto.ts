@@ -1,5 +1,5 @@
-import { ArrayUnique, IsArray, IsString } from 'class-validator';
-import { CreateTask } from '../graphql';
+import { ArrayUnique, IsArray, IsEnum, IsString } from 'class-validator';
+import { CreateTask, Status } from '../graphql';
 
 export class CreateTaskDto implements CreateTask {
   @IsString()
@@ -8,6 +8,9 @@ export class CreateTaskDto implements CreateTask {
   @IsString()
   description: string;
 
+  @IsString()
+  @IsEnum(Status)
+  status: Status;
   @IsArray()
   @IsString({ each: true })
   @ArrayUnique()

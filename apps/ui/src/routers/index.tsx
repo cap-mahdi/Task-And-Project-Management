@@ -10,6 +10,7 @@ import { SideBar } from './../components/sideBar';
 import { Chat } from '../pages/chat/chat';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { Overview } from '../pages/overview';
+import { UserTasks } from '../pages/tasks/UserTasks';
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'task',
-        element: <div>My tasks are displayed here</div>,
+        element: <UserTasks />,
       },
       {
         path: '',

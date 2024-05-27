@@ -1,4 +1,3 @@
-
 /*
  * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
@@ -9,26 +8,26 @@
 /* eslint-disable */
 
 export enum Status {
-  OPEN = "OPEN",
-  IN_PROGRESS = "IN_PROGRESS",
-  DONE = "DONE"
+  OPEN = 'OPEN',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
 }
 
 export enum UserRole {
-  ADMIN = "ADMIN",
-  USER = "USER"
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }
 
 export enum ProjectRole {
-  Project_ADMIN = "Project_ADMIN",
-  Project_EDITOR = "Project_EDITOR",
-  Project_MEMBER = "Project_MEMBER"
+  Project_ADMIN = 'Project_ADMIN',
+  Project_EDITOR = 'Project_EDITOR',
+  Project_MEMBER = 'Project_MEMBER',
 }
 
 export enum WorkspaceRole {
-  WORKSPACE_ADMIN = "WORKSPACE_ADMIN",
-  WORKSPACE_EDITOR = "WORKSPACE_EDITOR",
-  WORKSPACE_MEMBER = "WORKSPACE_MEMBER"
+  WORKSPACE_ADMIN = 'WORKSPACE_ADMIN',
+  WORKSPACE_EDITOR = 'WORKSPACE_EDITOR',
+  WORKSPACE_MEMBER = 'WORKSPACE_MEMBER',
 }
 
 export interface CreateCommentInput {
@@ -66,6 +65,11 @@ export interface CreateTask {
   description: string;
   tags: string[];
   assignees: string[];
+  name: string;
+  description: string;
+  status: Status;
+  tags: string[];
+  assignees: string[];
 }
 
 export interface UpdateTask {
@@ -76,9 +80,9 @@ export interface UpdateTask {
   assignees?: Nullable<string[]>;
 }
 
-export interface UserFilter {
+export interface TaskFilter {
   projectId?: Nullable<string>;
-  mileStoneId?: Nullable<string>;
+  milestoneId?: Nullable<string>;
 }
 
 export interface CreateUserInput {
@@ -149,7 +153,6 @@ export interface Comment {
 }
 
 export interface IQuery {
-  comments(taskId: string): Comment[] | Promise<Comment[]>;
   milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
   milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
   projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
@@ -160,9 +163,15 @@ export interface IQuery {
   getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
   getConnectedUser(): User | Promise<User>;
   getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
-  userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
+  userProject(
+    userId: string,
+    projectId: string
+  ): UserProject | Promise<UserProject>;
   userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
-  userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
+  userWorkspace(
+    userId: string,
+    workspaceId: string
+  ): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
   workspaces(): Workspace[] | Promise<Workspace[]>;
   workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
 }
@@ -171,8 +180,14 @@ export interface IMutation {
   createComment(input: CreateCommentInput): Comment | Promise<Comment>;
   deleteComment(id: string): Comment | Promise<Comment>;
   editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
-  createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
-  updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
+  createMilestone(
+    input: CreateMilestone,
+    projectId: string
+  ): Milestone | Promise<Milestone>;
+  updateMilestone(
+    id: string,
+    input: UpdateMilestone
+  ): Milestone | Promise<Milestone>;
   deleteMilestone(id: string): Milestone | Promise<Milestone>;
   createProject(input: CreateProjectInput): Project | Promise<Project>;
   createRoom(projectId: string): Room | Promise<Room>;
@@ -184,13 +199,31 @@ export interface IMutation {
   deleteUser(): User | Promise<User>;
   changePassword(input: ChangePasswordInput): User | Promise<User>;
   changeUserAvatar(file: Upload): User | Promise<User>;
-  addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
-  deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
-  addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
-  updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-  addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
+  addUsersToProject(
+    projectId: string,
+    userIds: string[]
+  ): UserProject[] | Promise<UserProject[]>;
+  deleteUsersFromProject(
+    projectId: string,
+    userIds: string[]
+  ): UserProject[] | Promise<UserProject[]>;
+  addUserToRoom(
+    userId: string[],
+    roomId: string
+  ): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
+  updateUserWorkspace(
+    userId: string,
+    workspaceId: string,
+    input: UpdateUserWorkspace
+  ): UserWorkspace | Promise<UserWorkspace>;
+  addUsersToWorkspace(
+    input: AddUserWorkspaceInput
+  ): UserWorkspace[] | Promise<UserWorkspace[]>;
   createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
-  updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+  updateWorkspace(
+    id: string,
+    input: UpdateWorkspaceInput
+  ): Workspace | Promise<Workspace>;
 }
 
 export interface Message {

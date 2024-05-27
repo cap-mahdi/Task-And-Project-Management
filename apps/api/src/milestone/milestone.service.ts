@@ -1,7 +1,7 @@
 import {
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -22,7 +22,7 @@ export class MilestoneService {
     private projectRepository: Repository<ProjectSchema>,
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) { }
+  ) {}
 
   async find(options?: FindManyOptions<MilestoneSchema>) {
     return this.milestoneRepository.find(options);
@@ -30,7 +30,6 @@ export class MilestoneService {
   async findOne(options?: FindOneOptions<MilestoneSchema>) {
     return this.milestoneRepository.findOne(options);
   }
-
 
   async createMilestone(
     milestone: Partial<Milestone>,
@@ -147,7 +146,7 @@ export class MilestoneService {
     });
 
     if (!userProject || !allowedRoles.includes(userProject.role)) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
   }
   async findMilestonesByProjectId(

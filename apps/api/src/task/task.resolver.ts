@@ -4,6 +4,7 @@ import {
   Parent,
   ResolveField,
   Resolver,
+  Query,
 } from '@nestjs/graphql';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
@@ -12,12 +13,21 @@ import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { UserSchema } from '../entities';
 import { CreateTaskDto } from './createTask.dto';
 import { UpdateTaskDto } from './updateTask.dto';
-import { Task } from '../graphql';
+import { Task, TaskFilter } from '../graphql';
 
 @Resolver('Task')
 @UseGuards(GraphQLAuthGaurd)
 export class TaskResolver {
   constructor(private taskService: TaskService) { }
+
+  @Query('tasks')
+  async tasks(
+    @Args('filter') filter: TaskFilter,
+    @GetUserGQL() user: UserSchema
+  ) {
+    console.log('filter***************', filter);
+    return this.taskService.findUserTasks(user, filter);
+  }
 
   @Mutation('createTask')
   async createTask(

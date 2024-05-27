@@ -5,7 +5,7 @@ import useSprintContext from '../../context/useSprintContext';
 import { GET_MILESTONE_BY_ID } from '../../services/milestone/milestoneQueries';
 import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
-export function Sprint(props) {
+export function Sprint() {
   const { sprintId } = useParams();
   const [sprintState, setSprintState] = useSprintContext();
 

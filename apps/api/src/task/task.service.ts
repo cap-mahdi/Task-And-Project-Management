@@ -12,7 +12,7 @@ import {
   UserTaskSchema,
 } from '../entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import { CreateTask, Status, Task, UpdateTask } from '../graphql';
+import { CreateTask, Status, Task, TaskFilter, UpdateTask } from '../graphql';
 
 @Injectable()
 export class TaskService {
@@ -27,6 +27,29 @@ export class TaskService {
     private userProjectRepository: Repository<UserProjectSchema>
   ) {}
 
+  async findUserTasks(user: UserSchema, filters?: TaskFilter) {
+    console.log('user', user, { projectId: filters?.projectId });
+    console.log('AAA', filters?.projectId ? 'project.id = :projectId' : '1=1');
+    console.log(
+      'BBB',
+      filters?.milestoneId ? 'milestone.id = :milestoneId' : '1=1'
+    );
+    const tasks = await this.taskRepository
+      .createQueryBuilder('task')
+      .innerJoin('task.milestone', 'milestone')
+      .innerJoin('milestone.project', 'project')
+      .innerJoin('project.userProjects', 'userProject')
+      .innerJoin('userProject.user', 'user')
+      .where('user.id = :userId', { userId: user.id })
+      .andWhere(filters?.projectId ? 'project.id = :projectId' : '1=1', {
+        projectId: filters?.projectId,
+      })
+      .andWhere(filters?.milestoneId ? 'milestone.id = :milestoneId' : '1=1', {
+        milestoneId: filters?.milestoneId,
+      })
+      .getMany();
+    return tasks;
+  }
   async find(options?: FindManyOptions<TaskSchema>) {
     return this.taskRepository.find(options);
   }
@@ -66,13 +89,16 @@ export class TaskService {
       relations: ['user'],
     });
     console.log('userProjects', userProjects);
-    if (userProjects.length !== task.assignees.length) {
+    console.log('task.assignees', task.assignees);
+    if (
+      task.assignees.length != 0 &&
+      userProjects.length !== task.assignees.length
+    ) {
       throw new BadRequestException('Assignee not found in project');
     }
 
     const newTask = this.taskRepository.create({
       ...task,
-      status: Status.OPEN,
       creator,
       milestone,
     });
@@ -80,7 +106,7 @@ export class TaskService {
     console.log('newTask', newTask);
     const savedTask = await this.taskRepository.save(newTask);
     console.log('savedTask', savedTask);
-    const e = this.userTaskRepository.save(
+    const e = await this.userTaskRepository.save(
       task.assignees.map((assignee) => ({
         user: { id: assignee },
         task: savedTask,
