@@ -1,50 +1,53 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
-  ProjectSchema,
-  RoomSchema,
-  UserRoomSchema,
-  UserSchema,
-} from '../entities';
-import { Repository } from 'typeorm';
-import { NotFoundException, UseGuards } from '@nestjs/common';
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { MessageSchema, RoomSchema, UserSchema } from '../entities';
+import { UseGuards } from '@nestjs/common';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
+import { RoomService } from './room.service';
 
-@Resolver()
+@Resolver('Room')
 @UseGuards(GraphQLAuthGaurd)
 export class RoomResolver {
-  constructor(
-    @InjectRepository(RoomSchema)
-    private readonly roomRepository: Repository<RoomSchema>,
-    @InjectRepository(ProjectSchema)
-    private readonly projectRepository: Repository<ProjectSchema>,
-    @InjectRepository(UserRoomSchema)
-    private readonly userRoomRepository: Repository<UserRoomSchema>
-  ) {}
+  constructor(private readonly roomService: RoomService) {}
 
   @Mutation('createRoom')
   async createRoom(
     @Args('projectId') projectId: string,
-    @GetUserGQL() user: UserSchema
+    @Args('name') name: string,
+    @Args('members') members: [string],
+    @GetUserGQL()
+    user: UserSchema
   ): Promise<RoomSchema> {
-    const project = await this.projectRepository.findOne({
+    return await this.roomService.createRoom(projectId, name, user, members);
+  }
+
+  @Query('room')
+  async room(@Args('id') id: string): Promise<RoomSchema> {
+    const room = await this.roomService.findOne({
       where: {
-        id: projectId,
+        id,
       },
     });
-    if (!project) {
-      throw new NotFoundException('Project not found');
-    }
+    return room;
+  }
 
-    const room = new RoomSchema();
-    room.project = project;
-    const newroom: RoomSchema = await this.roomRepository.save(room);
-    await this.userRoomRepository.save({
-      user,
-      room: newroom,
+  @ResolveField('messages')
+  async messages(@Parent() room: RoomSchema): Promise<MessageSchema[]> {
+    console.log(room);
+    const roomFound = await this.roomService.findOne({
+      where: {
+        id: room.id,
+      },
+      relations: ['messages'],
     });
 
-    return newroom;
+    return roomFound.messages;
   }
 }

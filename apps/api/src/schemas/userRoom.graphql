@@ -7,3 +7,7 @@ type UserRoom {
 type Mutation {
   addUserToRoom(userId: [ID!]!, roomId: ID!): [UserRoom!]
 }
+
+type Query {
+  getUserRoomsByUserIdAndProjectId(projectId: ID!): [Room!]
+}

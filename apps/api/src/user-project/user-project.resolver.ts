@@ -76,6 +76,7 @@ export class UserProjectResolver {
     );
 
     // test if user is able to do change
+    // test if user is able to do change
 
     const roles = Reflect.getMetadata('roles', this.addUsersToProject);
     if (
@@ -84,6 +85,7 @@ export class UserProjectResolver {
       throw new Error('Unauthorized access');
     }
 
+    // do change, the users will be members by default
     // do change, the users will be members by default
 
     const userProjects = await Promise.all(
@@ -121,19 +123,39 @@ export class UserProjectResolver {
     ) {
       throw new Error('Unauthorized access');
     }
+    // check privileges
 
     const deleteUserProjects = await Promise.all(
       userIds.map(async (userId) => {
         // test if user exists
         await this.userService.getUserById(userId);
+        const deleteUserProjects = await Promise.all(
+          userIds.map(async (userId) => {
+            // test if user exists
+            await this.userService.getUserById(userId);
 
-        // remove user if exists
-        if (
-          !(await this.userProjectService.isMemberOfProject(userId, projectId))
-        ) {
-          throw new Error('User not member of the project');
-        }
+            // remove user if exists
+            if (
+              !(await this.userProjectService.isMemberOfProject(
+                userId,
+                projectId
+              ))
+            ) {
+              throw new Error('User not member of the project');
+            }
+            // remove user if exists
+            if (
+              !(await this.userProjectService.isMemberOfProject(
+                userId,
+                projectId
+              ))
+            ) {
+              throw new Error('User not member of the project');
+            }
 
+            return await this.userProjectService.softRemove(projectId, userId);
+          })
+        );
         return await this.userProjectService.softRemove(projectId, userId);
       })
     );
