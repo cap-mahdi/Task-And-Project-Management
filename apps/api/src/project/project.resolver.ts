@@ -9,7 +9,12 @@ import {
 } from '@nestjs/graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { GetUserGQL } from '../auth/decorators/gql-user.decorator';
-import { CreateProjectInput, ProjectRole, WorkspaceRole } from '../graphql';
+import {
+  CreateProjectInput,
+  Milestone,
+  ProjectRole,
+  WorkspaceRole,
+} from '../graphql';
 import { ProjectSchema } from '../entities/project.entity';
 import { WorkspaceSchema } from '../entities/workspace.entity';
 import { UserProjectSchema } from '../entities/userProject.entity';
@@ -19,6 +24,7 @@ import { UserProjectService } from '../user-project/user-project.service';
 import { UserWorkspaceService } from '../user-workspace/user-workspace.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { ProjectService } from './project.service';
+import { MilestoneSchema } from '../entities';
 
 @Resolver('Project')
 @UseGuards(GraphQLAuthGaurd)
@@ -106,5 +112,16 @@ export class ProjectResolver {
   @ResolveField('workspace')
   async workspace(@Parent() project: ProjectSchema): Promise<WorkspaceSchema> {
     return this.workspaceService.findWorkspacebyProjectId(project.id);
+  }
+  @ResolveField('milestones')
+  async milestones(
+    @Parent() project: ProjectSchema
+  ): Promise<MilestoneSchema[]> {
+    return this.projectService
+      .findOne({
+        where: { id: project.id },
+        relations: ['milestones'],
+      })
+      .then((project) => project.milestones);
   }
 }

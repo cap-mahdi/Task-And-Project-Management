@@ -55,6 +55,7 @@ export interface CreateProjectInput {
 export interface CreateTask {
     name: string;
     description: string;
+    status: Status;
     tags: string[];
     assignees: string[];
 }
@@ -67,9 +68,9 @@ export interface UpdateTask {
     assignees?: Nullable<string[]>;
 }
 
-export interface UserFilter {
+export interface TaskFilter {
     projectId?: Nullable<string>;
-    mileStoneId?: Nullable<string>;
+    milestoneId?: Nullable<string>;
 }
 
 export interface CreateUserInput {
@@ -161,7 +162,7 @@ export interface IQuery {
     milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
     projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
     project(id: string): Project | Promise<Project>;
-    tasks(filter?: Nullable<UserFilter>): Task[] | Promise<Task[]>;
+    tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
     task(id: string): Task | Promise<Task>;
     users(): User[] | Promise<User[]>;
     getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
@@ -227,6 +228,7 @@ export interface Task {
     comments: Comment[];
     userTasks: UserTask[];
     creator: User;
+    createdAt: Date;
 }
 
 export interface User {

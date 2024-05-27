@@ -8,11 +8,13 @@ type Task {
   comments: [Comment!]!
   userTasks: [UserTask!]!
   creator: User!
+  createdAt: Date!
 }
 
 input CreateTask {
   name: String!
   description: String!
+  status: Status!
   tags: [String!]!
   assignees: [String!]!
 }
@@ -25,20 +27,20 @@ input UpdateTask {
   assignees: [String!]
 }
 
-input UserFilter {
+input TaskFilter {
   projectId: String
-  mileStoneId: String
+  milestoneId: String
 }
 
 
 
 type Query {
-  tasks(filter: UserFilter): [Task!]!
+  tasks(filter: TaskFilter): [Task!]!
   task(id: ID!): Task!
 }
 
 type Mutation {
-  createTask(input: CreateTask!,milestoneId: String!): Task!
-  updateTask(id: String!, input: UpdateTask!): Task!
-  deleteTask(id: String!): Boolean!
+  createTask(input: CreateTask!,milestoneId: ID!): Task!
+  updateTask(id: ID!, input: UpdateTask!): Task!
+  deleteTask(id: ID!): Boolean!
 }

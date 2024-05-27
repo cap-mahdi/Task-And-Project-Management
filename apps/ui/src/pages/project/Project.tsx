@@ -2,15 +2,24 @@ import React, { useEffect } from 'react';
 import { MainLayout } from '../../layout/MainLayout';
 import { Outlet, useParams } from 'react-router-dom';
 import useProjectContext from '../../context/useProjectContext';
+import { useLazyQuery } from '@apollo/client';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
+import { GET_PROJECT_BY_ID } from '../../services/project/projectQueries';
 
-export function Project(props) {
-  const params = useParams();
+export function Project() {
+  const { projectId } = useParams();
   const [projectState, setProjectState] = useProjectContext();
-  console.log('params', params);
-
+  const [getProject, project] = useCustomLazyQuery(GET_PROJECT_BY_ID, true);
+  console.log('Project ID STATETETETETETETET ', projectState);
   useEffect(() => {
-    setProjectState({ data: 'Project Data' });
-  }, []);
+    console.info('Project ID ', projectId);
+    getProject({
+      variables: { id: projectId },
+    }).then((res) => {
+      console.log('Project ', res.data.project);
+      setProjectState({ project: res.data.project });
+    });
+  }, [projectId]);
 
   return (
     <MainLayout
