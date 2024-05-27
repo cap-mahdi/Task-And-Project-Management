@@ -4,7 +4,7 @@
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
  * -------------------------------------------------------
  */
-
+ 
 /* tslint:disable */
 /* eslint-disable */
 
@@ -119,6 +119,7 @@ export class UpdateUserProject {
 export class EmailRoleProjectInput {
     email: string;
     role: string;
+
 }
 
 export class AddUserProjectInput {

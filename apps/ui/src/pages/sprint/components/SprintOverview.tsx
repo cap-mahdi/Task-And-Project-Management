@@ -30,6 +30,7 @@ export function SprintOverview() {
         alignItems: 'center',
       }}
     >
+
       <Typography
         sx={{
           fontWeight: 'medium',
@@ -39,6 +40,7 @@ export function SprintOverview() {
       >
         {sprint?.description}
       </Typography>
+
 
       <Box
         sx={{

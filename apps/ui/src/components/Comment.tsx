@@ -2,7 +2,8 @@ import { Avatar, Box, Card, Typography } from '@mui/material';
 import React from 'react';
 import { theme } from '../theme';
 
-export function Comment({ src = '', data }) {
+export function Comment({ name, content }) {
+  console.log('name', name, 'content', content);
   return (
     <Box
       sx={{
@@ -20,7 +21,7 @@ export function Comment({ src = '', data }) {
           height: '2.5rem',
           fontSize: '140%',
         }}
-        src={src}
+        // src={src}
       >
         N
       </Avatar>
@@ -42,7 +43,7 @@ export function Comment({ src = '', data }) {
           }}
         >
           {' '}
-          My name is here
+          {name}
         </Typography>
         <Typography
           sx={{
@@ -52,10 +53,7 @@ export function Comment({ src = '', data }) {
             mb: 1,
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore
-          necessitatibus, mollitia expedita necessitatibus, mollitia expedita
-          necessitatibus, mollitia expedita necessitatibus, mollitia expedita
-          necessitatibus, mollitia expedita ne
+          {content}
         </Typography>
       </Box>
     </Box>

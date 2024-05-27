@@ -39,9 +39,12 @@ export const taksMapper = (intialTasks: Task[]): TasksDataType => {
       id: 'column-3',
       title: 'Done',
       taskIds: intialTasks
-        .filter((task) => task.status === Status.DONE)
+        .filter((task) => task.status === Status.
+      DONE)
         .map((task) => task.id),
-      status: Status.DONE,
+      status: Status.
+      DONE,
+
     },
   };
 
