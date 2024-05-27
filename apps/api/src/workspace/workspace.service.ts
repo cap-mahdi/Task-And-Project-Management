@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserSchema, UserWorkspaceSchema, WorkspaceSchema } from '../entities';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CreateWorkspaceInput, WorkspaceRole } from '../graphql';
 
 @Injectable()
@@ -12,6 +12,13 @@ export class WorkspaceService {
     @InjectRepository(UserWorkspaceSchema)
     private userWorkspaceRepository: Repository<UserWorkspaceSchema>
   ) {}
+
+  async find(options?: FindManyOptions<WorkspaceSchema>) {
+    return this.workspaceRepository.find(options);
+  }
+  async findOne(options?: FindOneOptions<WorkspaceSchema>) {
+    return this.workspaceRepository.findOne(options);
+  }
 
   async findCreatedWorkspacesByUserId(
     userId: string

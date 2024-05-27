@@ -93,6 +93,16 @@ export class ProjectResolver {
     return userProject.project;
   }
 
+  @Query('getWorkspaceMembersNotInProject')
+  async getWorkspaceMembersNotInProject(
+    @Args('projectId') projectId: string,
+    @GetUserGQL() user: UserSchema
+  ) {
+    const users =
+      this.projectService.getWorkspaceMembersNotInProject(projectId);
+    return users;
+  }
+
   @ResolveField('userProjects')
   async userProjects(
     @Parent() project: ProjectSchema

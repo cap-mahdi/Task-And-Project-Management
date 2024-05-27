@@ -22,12 +22,22 @@ input UpdateUserProject {
   role: ProjectRole
 }
 
+input EmailRoleProjectInput {
+  email: String!
+  role: String!
+}
+
+input AddUserProjectInput {
+  projectId: ID!
+  emailRoles: [EmailRoleProjectInput!]!
+}
+
 type Query {
   getProjectUsers(projectId: ID!): [UserProject!]!
   userProject(userId: ID!, projectId: ID!): UserProject!
 }
 
 type Mutation {
-  addUsersToProject(projectId: ID!, userIds: [ID!]!): [UserProject!]! #done
+  addUsersToProject(input: AddUserProjectInput!): [UserProject!]! #done
   deleteUsersFromProject(projectId: ID!, userIds: [ID!]!): [UserProject!]! #done
 }

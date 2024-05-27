@@ -24,3 +24,18 @@ export const FetchWorkspaceByIdRequest = (
   }
 `;
 };
+
+export const GET_WORKSPACE_USERS = gql`
+  query GetWorkspaceUsers($workspaceId: ID!) {
+    getWorkspaceUsers(workspaceId: $workspaceId) {
+      id
+      user {
+        id
+        name
+        email
+      }
+
+      role
+    }
+  }
+`;

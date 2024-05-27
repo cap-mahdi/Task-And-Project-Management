@@ -10,7 +10,7 @@ import {
   UserProjectSchema,
   UserSchema,
 } from '../entities';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { Milestone, ProjectRole, Status } from '../graphql';
 
 @Injectable()
@@ -22,7 +22,16 @@ export class MilestoneService {
     private projectRepository: Repository<ProjectSchema>,
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) {}
+  ) { }
+
+  async find(options?: FindManyOptions<MilestoneSchema>) {
+    return this.milestoneRepository.find(options);
+  }
+  async findOne(options?: FindOneOptions<MilestoneSchema>) {
+    return this.milestoneRepository.findOne(options);
+  }
+
+
   async createMilestone(
     milestone: Partial<Milestone>,
     projectId: string,

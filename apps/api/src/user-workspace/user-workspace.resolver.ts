@@ -33,6 +33,26 @@ export class UserWorkspaceResolver {
     private readonly userService: UserService
   ) {}
 
+  @Query('getWorkspaceUsers')
+  async getWorkspaceUsers(
+    @Args('workspaceId') workspaceId: string,
+    @GetUserGQL() user: UserSchema
+  ): Promise<UserWorkspaceSchema[]> {
+    const userWorkspaces =
+      await this.userWorkspaceService.findUserWorkspacesByWorkspaceId(
+        workspaceId
+      );
+    if (
+      !userWorkspaces.find((userWorkspace) => {
+        if (userWorkspace.user.id === user.id) {
+          return userWorkspace;
+        }
+      })
+    ) {
+      throw new Error('Unauthorized access');
+    }
+    return userWorkspaces;
+  }
   @Mutation('updateUserWorkspace')
   @WorkspaceRoles(WorkspaceRole.WORKSPACE_ADMIN, WorkspaceRole.WORKSPACE_EDITOR)
   async updateUserWorkspace(

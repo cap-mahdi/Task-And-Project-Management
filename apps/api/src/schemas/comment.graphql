@@ -2,6 +2,7 @@ type Comment {
   id: ID!
   content: String!
   createdAt: Date!
+  updatedAt: Date!
   user: User!
   task: Task!
 }
