@@ -94,7 +94,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
     }
     const milestones = projects[selectedProjectIndex]?.milestones;
 
-    if (milestones.length === 0) {
+    if (milestones?.length === 0) {
       setSelectedMilestoneIndex(undefined);
       return;
     }
@@ -219,7 +219,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                 }
               }}
             />
-            {tags.length > 0 && (
+            {tags?.length > 0 && (
               <Stack flexDirection={'row'} gap={1} flexWrap={'wrap'}>
                 {tags.map((tag) => (
                   <Chip

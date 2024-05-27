@@ -8,7 +8,7 @@ import useAppContext from '../../context/useAppContext';
 import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
 export const UserTasks = () => {
-  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS);
+  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS, true);
   const [globalState, setGlobalState] = useAppContext();
 
   const [tasks, setTasks] = useState([]);

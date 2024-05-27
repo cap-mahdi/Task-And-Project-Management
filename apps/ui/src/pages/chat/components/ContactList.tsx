@@ -98,7 +98,7 @@ export const ContactList: FC = () => {
 
             <ListItemText
               primary={chat.name}
-              secondary={<>{' send a photo'}</>}
+              // secondary={<>{' send a photo'}</>}
             />
           </ListItem>
         );
