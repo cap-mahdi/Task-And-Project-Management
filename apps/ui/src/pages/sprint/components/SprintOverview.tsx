@@ -30,7 +30,15 @@ export function SprintOverview() {
         alignItems: 'center',
       }}
     >
-      <Typography>{sprint.description}</Typography>
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+          fontSize: '1.2rem',
+          marginBottom: '1rem',
+        }}
+      >
+        {sprint?.description}
+      </Typography>
 
       <Box
         sx={{
@@ -62,7 +70,7 @@ export function SprintOverview() {
               }}
             />
             <Typography sx={styles.subTitle}>
-              {new Date(sprint.startDate).toLocaleDateString({
+              {new Date(sprint?.startDate).toLocaleDateString({
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
@@ -77,7 +85,7 @@ export function SprintOverview() {
               }}
             />
             <Typography sx={styles.subTitle}>
-              {new Date(sprint.endDate).toLocaleDateString({
+              {new Date(sprint?.endDate).toLocaleDateString({
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',

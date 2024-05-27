@@ -45,6 +45,21 @@ export class ProjectService {
     return projects;
   }
 
+  async findOwnProjects(userId: string, workspaceId) {
+    const projects = await this.projectRepository.find({
+      where: {
+        workspace: {
+          id: workspaceId,
+        },
+        userProjects: {
+          user: { id: userId },
+        },
+      },
+      relations: ['workspace'],
+    });
+    return projects;
+  }
+
   async findProjectById(projectId: string): Promise<ProjectSchema> {
     const project = await this.projectRepository.findOne({
       where: {

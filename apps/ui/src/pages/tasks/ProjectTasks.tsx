@@ -6,11 +6,12 @@ import { Tasks } from './Tasks';
 import { taksMapper } from './taskMapper';
 import { useParams } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
 export const ProjectTasks = () => {
   const [globalState, setGlobalState] = useAppContext();
 
-  const [getTasks, { loading }] = useLazyQuery(GET_TASKS);
+  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS);
   const [tasks, setTasks] = useState([]);
   const { projectId } = useParams();
   useEffect(() => {

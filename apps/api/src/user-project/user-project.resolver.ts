@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { GraphQLAuthGaurd } from '../auth/guards/gql-auth-guard';
 import { AddUserProjectInput, ProjectRole } from '../graphql';
 import { ProjectRoles } from '../auth/decorators/project-roles.decorator';
@@ -20,26 +20,52 @@ export class UserProjectResolver {
     private readonly userService: UserService
   ) {}
 
+  @Query('getProjectUsers')
+  async getProjectUsers(
+    @Args('projectId') projectId: string,
+    @GetUserGQL() user: UserSchema
+  ): Promise<UserProjectSchema[]> {
+    // test if project exists
+    await this.projectService.findProjectById(projectId);
+
+    // test if user is able to do change
+
+    const userProjects =
+      await this.userProjectService.findUserProjectsByProjectId(projectId);
+
+    if (
+      !userProjects.find((userProject) => {
+        if (userProject.user.id === user.id) {
+          return userProject;
+        }
+      })
+    ) {
+      throw new Error('Unauthorized access');
+    }
+    return userProjects;
+  }
+
   @Mutation('addUsersToProject')
   @ProjectRoles(ProjectRole.Project_ADMIN, ProjectRole.Project_EDITOR)
   async addUsersToProject(
-    @Args('projectId') projectId: string,
-    @Args('userIds') userIds: string[],
+    @Args('input') input: AddUserProjectInput,
+
     @GetUserGQL() user: UserSchema
   ): Promise<Partial<UserProjectSchema>[]> {
     // test if project exists
+    const { projectId, emailRoles } = input;
 
     const project = await this.projectService.findProjectById(projectId);
     // console.log('project from', project)
     // test if users exist
 
     const users = await Promise.all(
-      userIds.map(async (userId) => {
+      emailRoles.map(async ({ email, role: roleString }) => {
         // console.log('looking for user with id: ', userId);
-        const user = await this.userService.getUserById(userId);
+        const user = await this.userService.getUserByEmail(email);
         // console.log('user hhh', user);
         if (
-          await this.userProjectService.isMemberOfProject(userId, projectId)
+          await this.userProjectService.isMemberOfProject(user.id, projectId)
         ) {
           // console.log('entrere tttttt')
           throw new Error('User already member of the project');
@@ -50,6 +76,7 @@ export class UserProjectResolver {
     );
 
     // test if user is able to do change
+    // test if user is able to do change
 
     const roles = Reflect.getMetadata('roles', this.addUsersToProject);
     if (
@@ -59,13 +86,18 @@ export class UserProjectResolver {
     }
 
     // do change, the users will be members by default
+    // do change, the users will be members by default
 
     const userProjects = await Promise.all(
-      users.map(async (user) => {
+      emailRoles.map(async ({ email, role: roleString }) => {
+        const role = mapStringToEnum(roleString, ProjectRole);
+
+        const user = await this.userService.getUserByEmail(email);
+
         const userProject = await this.userProjectService.addUserToProject(
           user,
           project,
-          ProjectRole.Project_MEMBER
+          role
         );
         return userProject;
       })
@@ -91,19 +123,39 @@ export class UserProjectResolver {
     ) {
       throw new Error('Unauthorized access');
     }
+    // check privileges
 
     const deleteUserProjects = await Promise.all(
       userIds.map(async (userId) => {
         // test if user exists
         await this.userService.getUserById(userId);
+        const deleteUserProjects = await Promise.all(
+          userIds.map(async (userId) => {
+            // test if user exists
+            await this.userService.getUserById(userId);
 
-        // remove user if exists
-        if (
-          !(await this.userProjectService.isMemberOfProject(userId, projectId))
-        ) {
-          throw new Error('User not member of the project');
-        }
+            // remove user if exists
+            if (
+              !(await this.userProjectService.isMemberOfProject(
+                userId,
+                projectId
+              ))
+            ) {
+              throw new Error('User not member of the project');
+            }
+            // remove user if exists
+            if (
+              !(await this.userProjectService.isMemberOfProject(
+                userId,
+                projectId
+              ))
+            ) {
+              throw new Error('User not member of the project');
+            }
 
+            return await this.userProjectService.softRemove(projectId, userId);
+          })
+        );
         return await this.userProjectService.softRemove(projectId, userId);
       })
     );

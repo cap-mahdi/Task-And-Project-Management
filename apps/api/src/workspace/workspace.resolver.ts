@@ -22,6 +22,7 @@ import { UserWorkspaceService } from '../user-workspace/user-workspace.service';
 import { WorkspaceService } from './workspace.service';
 import { ProjectService } from '../project/project.service';
 import { ProjectSchema } from '../entities';
+import { UserProjectService } from '../user-project/user-project.service';
 
 @Resolver('Workspace')
 @UseGuards(GraphQLAuthGaurd)
@@ -29,7 +30,8 @@ export class WorkspaceResolver {
   constructor(
     private readonly workspaceService: WorkspaceService,
     private readonly userWorkspaceService: UserWorkspaceService,
-    private readonly projectService: ProjectService
+    private readonly projectService: ProjectService,
+    private readonly userProjectService: UserProjectService
   ) {}
 
   @Mutation('createWorkspace')
@@ -111,8 +113,9 @@ export class WorkspaceResolver {
   }
   @ResolveField('projects')
   async projects(
-    @Parent() workspace: WorkspaceSchema
+    @Parent() workspace: WorkspaceSchema,
+    @GetUserGQL() user: UserSchema
   ): Promise<ProjectSchema[]> {
-    return this.projectService.findProjectsByWorkspaceId(workspace.id);
+    return this.projectService.findOwnProjects(user.id, workspace.id);
   }
 }

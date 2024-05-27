@@ -6,18 +6,19 @@ import { Tasks } from './Tasks';
 import { taksMapper } from './taskMapper';
 import { useParams } from 'react-router-dom';
 import useAppContext from '../../context/useAppContext';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
 export const SprintTasks = () => {
   const [globalState, setGlobalState] = useAppContext();
 
-  const [getTasks, { loading }] = useLazyQuery(GET_TASKS);
+  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS);
   const [tasks, setTasks] = useState([]);
   const { sprintId } = useParams();
   useEffect(() => {
     getTasks({
       variables: { milestoneId: sprintId },
     }).then((res) => {
-      console.log('res', res);
+      console.log('res sprints', res);
       setTasks(res.data.tasks);
     });
   }, [globalState.events.CREATE_TASK]);

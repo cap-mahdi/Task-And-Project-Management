@@ -4,13 +4,17 @@ interface AppState {
   token?: any;
   user: any;
   events?: any;
+  workspaces?: any[];
 }
 const initialState: AppState = {
   user: null,
+  workspaces: [],
   events: {
     CREATE_WORKSPACE: 0,
     CREATE_PROJECT: 0,
     CREATE_MILESTONE: 0,
+    ADD_USER_TO_PROJECT: 0,
+    ADD_USER_TO_WORKSPACE: 0,
     CREATE_TASK: 0,
   },
 };
