@@ -9,6 +9,11 @@ import { Sprints } from '../pages/sprint';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { SprintProvider } from '../context/useSprintContext';
 import { Sprint } from '../pages/sprint/Sprint';
+import { Tasks } from '../pages/tasks/Tasks';
+import { SprintOverview } from '../pages/sprint/components/SprintOverview';
+import { AddUserToProject } from '../components';
+import { ProjectTeam } from '../pages/project/ProjectTeam';
+import { WorkspaceTeam } from '../pages/workspace/WorkspaceTeam';
 import { ProjectTasks } from '../pages/tasks/ProjectTasks';
 import { SprintTasks } from '../pages/tasks/SprintTasks';
 
@@ -30,7 +35,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'team',
-          element: <AddUserToWorkspace />,
+          element: <WorkspaceTeam />,
         },
         {
           path: 'settings',
@@ -56,7 +61,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'team',
-          element: <div>Project Team here</div>,
+          element: <ProjectTeam />,
         },
         {
           path: 'settings',
@@ -78,7 +83,7 @@ export const workspaceRoutes = {
       children: [
         {
           path: '',
-          element: <div> Sprint here</div>,
+          element: <SprintOverview />,
         },
         {
           path: 'task',

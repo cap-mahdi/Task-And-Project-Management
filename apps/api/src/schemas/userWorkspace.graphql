@@ -28,6 +28,8 @@ input AddUserWorkspaceInput {
 }
 
 type Query {
+  getWorkspaceUsers(workspaceId: ID!): [UserWorkspace!]!
+
   userWorkspaces: [UserWorkspace!]! #done
   userWorkspace(userId: ID!, workspaceId: ID!): UserWorkspace
 }

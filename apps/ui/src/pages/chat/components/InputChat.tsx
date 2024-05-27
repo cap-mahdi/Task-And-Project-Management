@@ -1,9 +1,29 @@
 import { Avatar, IconButton, InputBase, Paper } from '@mui/material';
-import { FC } from 'react';
+import { FC, useContext, useState } from 'react';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import useProjectContext from '../../../context/useProjectContext';
+import { SocketContext } from '../../../context/useSocketContext';
+import useAppContext from '../../../context/useAppContext';
 
 export const InputChat: FC = () => {
+  const [projectState, setProjectState] = useProjectContext();
+  const [message, setMessage] = useState('');
+  const socket = useContext(SocketContext);
+  const [globalState] = useAppContext();
+
+  function sendMessage(e: any) {
+    e.preventDefault();
+    if (!message) return;
+
+    socket.emit('sendmessage', {
+      message,
+      roomId: projectState.currentChat.id,
+      userId: globalState.user.id,
+    });
+    setMessage('');
+  }
+
   return (
     <Paper
       sx={{
@@ -17,6 +37,8 @@ export const InputChat: FC = () => {
         padding: '0 10px',
         boxShadow: 'none',
       }}
+      component={'form'}
+      onSubmit={sendMessage}
     >
       <IconButton>
         <Avatar
@@ -33,6 +55,8 @@ export const InputChat: FC = () => {
           borderRadius: 2,
         }}
         placeholder="Type a message"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
       />
       <IconButton type="submit">
         <SendOutlinedIcon />

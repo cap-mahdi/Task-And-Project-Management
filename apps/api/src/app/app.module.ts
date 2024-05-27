@@ -39,6 +39,8 @@ import { MilestoneModule } from '../milestone/milestone.module';
 import { TaskModule } from '../task/task.module';
 import { UserTaskModule } from '../user-task/user-task.module';
 import { CommentModule } from '../comment/comment.module';
+import { MessageModule } from '../message/message.module';
+import { sseModule } from '../sse/sse.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -77,6 +79,7 @@ import { CommentModule } from '../comment/comment.module';
             UserTaskSchema,
             UserWorkspaceSchema,
             WorkspaceSchema,
+            sseModule,
           ],
           autoLoadEntities: true,
         };
@@ -95,6 +98,7 @@ import { CommentModule } from '../comment/comment.module';
     TaskModule,
     UserTaskModule,
     CommentModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

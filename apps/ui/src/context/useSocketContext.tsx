@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 import { Socket, io } from 'socket.io-client';
 
 export const socket = io('http://localhost:3000');

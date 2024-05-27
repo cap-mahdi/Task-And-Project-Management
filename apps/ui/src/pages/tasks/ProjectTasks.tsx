@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import { Tasks } from './Tasks';
 import { taksMapper } from './taskMapper';
 import { useParams } from 'react-router-dom';
+import useAppContext from '../../context/useAppContext';
 
 export const ProjectTasks = () => {
+  const [globalState, setGlobalState] = useAppContext();
+
   const [getTasks, { loading }] = useLazyQuery(GET_TASKS);
   const [tasks, setTasks] = useState([]);
   const { projectId } = useParams();
@@ -17,8 +20,7 @@ export const ProjectTasks = () => {
       console.log('res', res);
       setTasks(res.data.tasks);
     });
-  }, []);
+  }, [globalState.events.CREATE_TASK]);
 
-  if (loading) return <CircularProgress />;
-  else return <Tasks intialData={taksMapper(tasks)} />;
+  return <Tasks intialData={taksMapper(tasks)} />;
 };

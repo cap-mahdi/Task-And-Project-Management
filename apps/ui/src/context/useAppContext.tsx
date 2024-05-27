@@ -3,9 +3,16 @@ import { createContext, useContext, useState } from 'react';
 interface AppState {
   token?: any;
   user: any;
+  events?: any;
 }
 const initialState: AppState = {
   user: null,
+  events: {
+    CREATE_WORKSPACE: 0,
+    CREATE_PROJECT: 0,
+    CREATE_MILESTONE: 0,
+    CREATE_TASK: 0,
+  },
 };
 
 const AppContext = createContext({});
@@ -17,6 +24,7 @@ interface AppProviderProps {
 const AppProvider = ({ children }: AppProviderProps) => {
   initialState.token = localStorage.getItem('token')?.slice(1, -1);
   const [state, setState] = useState(initialState);
+
   return (
     <AppContext.Provider value={{ state, setState }}>
       {children}

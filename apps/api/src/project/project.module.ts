@@ -17,7 +17,7 @@ import { WorkspaceModule } from '../workspace/workspace.module';
       ProjectSchema,
       UserProjectSchema,
       WorkspaceSchema,
-      UserWorkspaceSchema
+      UserWorkspaceSchema,
     ]),
     forwardRef(() => UserProjectModule),
     forwardRef(() => UserWorkspaceModule),
@@ -27,4 +27,4 @@ import { WorkspaceModule } from '../workspace/workspace.module';
   providers: [ProjectResolver, ProjectService],
   exports: [ProjectService],
 })
-export class ProjectModule { }
+export class ProjectModule {}

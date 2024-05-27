@@ -4,18 +4,23 @@ import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Tasks } from './Tasks';
 import { taksMapper } from './taskMapper';
+import useAppContext from '../../context/useAppContext';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 
 export const UserTasks = () => {
-  const [getTasks, { loading }] = useLazyQuery(GET_TASKS);
+  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS);
+  const [globalState, setGlobalState] = useAppContext();
+
   const [tasks, setTasks] = useState([]);
   console.log(' HERERERERER', taksMapper(tasks));
   useEffect(() => {
+    console.log('i got the event');
     getTasks().then((res) => {
-      console.log('res', res);
+      console.log('waaaaaaaay jdida AAAAAAAAAAAAAA', res);
       setTasks(res.data.tasks);
     });
-  }, []);
+  }, [globalState.events.CREATE_TASK]);
 
-  if (loading) return <CircularProgress />;
-  else return <Tasks intialData={taksMapper(tasks)} />;
+  // if (loading) return <CircularProgress />;
+  return <Tasks intialData={taksMapper(tasks)} />;
 };

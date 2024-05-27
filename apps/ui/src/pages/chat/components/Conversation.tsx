@@ -1,8 +1,11 @@
 import { Box } from '@mui/material';
-import { FC } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { MenuBar } from './MenuBar';
 import { MessageList } from './MessageList';
 import { InputChat } from './InputChat';
+import { SocketContext } from '../../../context/useSocketContext';
+import useProjectContext from '../../../context/useProjectContext';
+import { log } from 'console';
 
 export const Conversation: FC = () => {
   return (

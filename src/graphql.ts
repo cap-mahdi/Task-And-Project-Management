@@ -116,6 +116,16 @@ export class UpdateUserProject {
     role?: Nullable<ProjectRole>;
 }
 
+export class EmailRoleProjectInput {
+    email: string;
+    role: string;
+}
+
+export class AddUserProjectInput {
+    projectId: string;
+    emailRoles: EmailRoleProjectInput[];
+}
+
 export class EmailRoleInput {
     email: string;
     role: string;
@@ -152,6 +162,8 @@ export class Comment {
 export abstract class IQuery {
     abstract comments(taskId: string): Comment[] | Promise<Comment[]>;
 
+    abstract messages(roomId: string): Message[] | Promise<Message[]>;
+
     abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
     abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
@@ -159,6 +171,10 @@ export abstract class IQuery {
     abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
     abstract project(id: string): Project | Promise<Project>;
+
+    abstract getWorkspaceMembersNotInProject(projectId: string): User[] | Promise<User[]>;
+
+    abstract room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
 
     abstract tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
 
@@ -173,6 +189,10 @@ export abstract class IQuery {
     abstract getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
 
     abstract userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
+
+    abstract getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
+
+    abstract getWorkspaceUsers(workspaceId: string): UserWorkspace[] | Promise<UserWorkspace[]>;
 
     abstract userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
 
@@ -198,7 +218,7 @@ export abstract class IMutation {
 
     abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
 
-    abstract createRoom(projectId: string): Room | Promise<Room>;
+    abstract createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
 
     abstract createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
 
@@ -216,7 +236,7 @@ export abstract class IMutation {
 
     abstract changeUserAvatar(file: Upload): User | Promise<User>;
 
-    abstract addUsersToProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+    abstract addUsersToProject(input: AddUserProjectInput): UserProject[] | Promise<UserProject[]>;
 
     abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
@@ -265,6 +285,7 @@ export class Project {
 export class Room {
     id: string;
     createdAt: Date;
+    name: string;
     project: Project;
     userRooms: UserRoom[];
     messages: Message[];

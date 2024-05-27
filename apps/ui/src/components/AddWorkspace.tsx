@@ -8,10 +8,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { CREATE_WORKSPACE } from '../services/workspace/workspaceMutations';
 import { useCustomMutation } from '../hooks/useCustomMutation';
+import useAppContext from '../context/useAppContext';
+import useEvent from '../hooks/useEvent';
 
 const AddWorkspace = React.forwardRef((props, ref) => {
-  const [createWorkspace] = useCustomMutation(CREATE_WORKSPACE, true);
-
+  const [globalState, setGlobalState] = useAppContext();
+  const [createWorkspace, { data }] = useCustomMutation(CREATE_WORKSPACE, true);
+  const [emitCreateWorkspace] = useEvent(['CREATE_WORKSPACE']);
   const [open, setOpen] = React.useState(false);
   React.useImperativeHandle(ref, () => ({
     setOpen,
@@ -24,6 +27,11 @@ const AddWorkspace = React.forwardRef((props, ref) => {
   const handleClose = () => {
     setOpen(false);
   };
+  React.useEffect(() => {
+    if (data) {
+      emitCreateWorkspace();
+    }
+  }, [data]);
 
   return (
     <Dialog

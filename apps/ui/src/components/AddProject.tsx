@@ -13,13 +13,20 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useCustomMutation } from '../hooks/useCustomMutation';
 import { CREATE_PROJECT } from '../services/project/projectMutations';
 import useWorkspaceContext from '../context/useWorkspaceContext';
+import useEvent from '../hooks/useEvent';
 
 const AddProject = () => {
   const [open, setOpen] = React.useState(false);
   const [workspaceState] = useWorkspaceContext();
+  const [emitCreateProject] = useEvent(['CREATE_PROJECT']);
 
-  const [createProject] = useCustomMutation(CREATE_PROJECT, true);
+  const [createProject, { data }] = useCustomMutation(CREATE_PROJECT, true);
 
+  React.useEffect(() => {
+    if (data) {
+      emitCreateProject();
+    }
+  }, [data]);
   const handleClickOpen = () => {
     setOpen(true);
   };

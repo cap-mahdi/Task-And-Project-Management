@@ -9,16 +9,22 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useCustomMutation } from '../hooks/useCustomMutation';
 import { useParams } from 'react-router-dom';
 import { CREATE_MILESTONE } from '../services/milestone/milestoneMutations';
+import useEvent from '../hooks/useEvent';
 
 const AddSprint = React.forwardRef((props, ref) => {
   const { projectId } = useParams();
 
-  const [createMilestone] = useCustomMutation(CREATE_MILESTONE, true);
-
+  const [createMilestone, { data }] = useCustomMutation(CREATE_MILESTONE, true);
+  const [emitCreateSprint] = useEvent(['CREATE_MILESTONE']);
   const [open, setOpen] = React.useState(false);
   React.useImperativeHandle(ref, () => ({
     setOpen,
   }));
+  React.useEffect(() => {
+    if (data) {
+      emitCreateSprint();
+    }
+  }, [data]);
 
   const handleClickOpen = () => {
     setOpen(true);
