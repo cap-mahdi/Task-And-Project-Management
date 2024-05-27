@@ -22,13 +22,13 @@ export const Column: FC<ColumnProps> = ({ column, tasks }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      {isOpen && (
+      {
         <TaskDialog
           open={isOpen}
           onClose={() => setIsOpen(false)}
           status={column.status}
         />
-      )}
+      }
 
       <Card
         sx={{

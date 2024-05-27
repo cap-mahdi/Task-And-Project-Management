@@ -11,6 +11,7 @@ const initialState: AppState = {
     CREATE_WORKSPACE: 0,
     CREATE_PROJECT: 0,
     CREATE_MILESTONE: 0,
+    CREATE_TASK: 0,
   },
 };
 

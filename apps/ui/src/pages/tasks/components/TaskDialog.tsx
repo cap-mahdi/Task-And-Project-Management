@@ -24,6 +24,8 @@ import { RxCross2 } from 'react-icons/rx';
 import CloseIcon from '@mui/icons-material/Close';
 import { CREATE_TASK } from '../../../services/task/taskMutations';
 import { useCustomMutation } from '../../../hooks/useCustomMutation';
+import useEvent from '../../../hooks/useEvent';
+import { log } from 'console';
 
 interface TaskDialogProps {
   open: boolean;
@@ -40,6 +42,10 @@ export const TaskDialog: FC<TaskDialogProps> = ({
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<
     number | undefined
   >(undefined);
+  const [emitCreateTask] = useEvent(['CREATE_TASK']);
+
+  console.log('selectedProjectIndex', selectedProjectIndex);
+  console.log('projects', projects);
 
   const [selectedMilestoneIndex, setSelectedMilestoneIndex] = useState<
     number | undefined
@@ -53,13 +59,20 @@ export const TaskDialog: FC<TaskDialogProps> = ({
   const [status, setStatus] = useState<Status>(firstStatus);
 
   const [loadProjects] = useCustomLazyQuery(GET_PROJECTS_WITH_WORKSPACE, false);
-  const [createTask] = useCustomMutation(CREATE_TASK, true);
+  const [createTask, { data: addData }] = useCustomMutation(CREATE_TASK, true);
 
   useEffect(() => {
     loadProjects().then((res) => {
       setProjects(res.data.projects);
     });
   }, []);
+
+  useEffect(() => {
+    if (addData) {
+      console.log('addData', addData);
+      emitCreateTask();
+    }
+  }, [addData]);
 
   useEffect(() => {
     if (!projects) {
@@ -98,21 +111,42 @@ export const TaskDialog: FC<TaskDialogProps> = ({
     <Dialog
       open={open}
       onClose={onClose}
-      // PaperProps={{
-      //   component: 'form',
-      //   onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-      //     event.preventDefault();
-      //     const formData = new FormData(event.currentTarget);
-      //     const formJson = Object.fromEntries((formData as any).entries());
-      //     console.log(formJson);
-      //     createWorkspace({
-      //       variables: {
-      //         input: formJson,
-      //       },
-      //     });
-      //     handleClose();
-      //   },
-      // }}
+      PaperProps={{
+        component: 'form',
+        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+          if (!title || !description || !status) {
+            return;
+          }
+          if (
+            !projects ||
+            selectedProjectIndex === undefined ||
+            selectedMilestoneIndex === undefined
+          ) {
+            return;
+          }
+          console.log(
+            'assignees to send',
+            assignees.map((a) => a.id)
+          );
+          createTask({
+            variables: {
+              input: {
+                name: title,
+                description,
+                status,
+                tags,
+                assignees: assignees.map((a) => a.id),
+              },
+              milestoneId:
+                projects[selectedProjectIndex]?.milestones[
+                  selectedMilestoneIndex
+                ]?.id,
+            },
+          });
+          onClose();
+        },
+      }}
     >
       <DialogTitle>Add a new task</DialogTitle>
       <DialogContent>
@@ -206,7 +240,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
               </Stack>
             )}
           </Stack>
-          {!!projects && (
+          {!!projects && selectedProjectIndex != undefined && (
             <Stack flexDirection={'row'} alignItems={'center'} gap={1}>
               <InputLabel htmlFor="project">Project</InputLabel>
               <Select
@@ -215,8 +249,8 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                   flex: 1,
                 }}
                 id="project"
+                defaultValue={selectedProjectIndex}
                 renderValue={(value) => {
-                  console.log('value', value);
                   return projects[value].name;
                 }}
                 onChange={(event) => {
@@ -260,10 +294,14 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                     return projects[selectedProjectIndex]?.milestones[value]
                       ?.name;
                   }}
+                  onChange={(event) => {
+                    console.log('event.target.value', event.target.value);
+                    setSelectedMilestoneIndex(Number(event.target.value));
+                  }}
                 >
                   {projects[selectedProjectIndex]?.milestones.map(
-                    (milestone) => (
-                      <MenuItem key={milestone.id} value={milestone.id}>
+                    (milestone, index) => (
+                      <MenuItem key={milestone.id} value={index}>
                         {milestone?.name}
                       </MenuItem>
                     )
@@ -343,43 +381,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button
-          type="submit"
-          onClick={() => {
-            if (!title || !description || !status) {
-              return;
-            }
-            if (
-              !projects ||
-              selectedProjectIndex === undefined ||
-              selectedMilestoneIndex === undefined
-            ) {
-              return;
-            }
-            console.log(
-              'assignees to send',
-              assignees.map((a) => a.id)
-            );
-            createTask({
-              variables: {
-                input: {
-                  name: title,
-                  description,
-                  status,
-                  tags,
-                  assignees: assignees.map((a) => a.id),
-                },
-                milestoneId:
-                  projects[selectedProjectIndex]?.milestones[
-                    selectedMilestoneIndex
-                  ]?.id,
-              },
-            });
-            onClose();
-          }}
-        >
-          Create
-        </Button>
+        <Button type="submit">Create</Button>
       </DialogActions>
     </Dialog>
   );
