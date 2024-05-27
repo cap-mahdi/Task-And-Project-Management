@@ -14,8 +14,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     TaskModule,
     MilestoneModule,
     UserProjectModule,
+    EventEmitterModule.forRoot(),
   ],
-  controllers: [CommentController],
+  controllers: [],
   providers: [CommentResolver, CommentService],
   exports: [CommentService],
 })
