@@ -8,6 +8,13 @@ import { Link } from 'react-router-dom';
 import { MdAlarmOn } from 'react-icons/md';
 
 export default function SprintCard({ sprint }) {
+  const progress =
+    ((new Date().getTime() - new Date(sprint.startDate).getTime()) /
+      (new Date(sprint.endDate).getTime() -
+        new Date(sprint.startDate).getTime())) *
+    100;
+  console.log('progress', progress);
+
   const styles: SxPropsObject = {
     title: {
       fontWeight: 'bold',
@@ -80,7 +87,7 @@ export default function SprintCard({ sprint }) {
           </Typography>
         </Box>
       </Box>
-      <HorizontalProgressBar value={20} />
+      <HorizontalProgressBar value={progress > 0 ? progress : 0} />
       <Link
         to={`sprint/${sprint.id}`}
         style={{

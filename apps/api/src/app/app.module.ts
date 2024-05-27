@@ -39,6 +39,7 @@ import { MilestoneModule } from '../milestone/milestone.module';
 import { TaskModule } from '../task/task.module';
 import { UserTaskModule } from '../user-task/user-task.module';
 import { CommentModule } from '../comment/comment.module';
+import { sseModule } from '../sse/sse.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -77,6 +78,7 @@ import { CommentModule } from '../comment/comment.module';
             UserTaskSchema,
             UserWorkspaceSchema,
             WorkspaceSchema,
+            sseModule,
           ],
           autoLoadEntities: true,
         };

@@ -8,3 +8,4 @@ export * from './Comment';
 export * from './StyledButton';
 export * from './Tag';
 export * from './ImageUpload';
+export * from './AddUserToProject';

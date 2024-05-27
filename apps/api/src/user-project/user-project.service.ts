@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectSchema, UserProjectSchema, UserSchema } from '../entities';
-import { Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { ProjectRole } from '../graphql';
 
 @Injectable()
@@ -13,7 +13,14 @@ export class UserProjectService {
   constructor(
     @InjectRepository(UserProjectSchema)
     private userProjectRepository: Repository<UserProjectSchema>
-  ) { }
+  ) {}
+
+  async find(options?: FindManyOptions<UserProjectSchema>) {
+    return this.userProjectRepository.find(options);
+  }
+  async findOne(options?: FindOneOptions<UserProjectSchema>) {
+    return this.userProjectRepository.findOne(options);
+  }
 
   async findUserProjectsByUserId(userId: string): Promise<UserProjectSchema[]> {
     const userProjects = await this.userProjectRepository.find({

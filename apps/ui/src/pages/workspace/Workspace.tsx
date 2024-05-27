@@ -4,11 +4,13 @@ import { MainLayout } from '../../layout/MainLayout';
 import useWorkspaceContext from '../../context/useWorkspaceContext';
 import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 import { FetchWorkspaceByIdRequest } from '../../services/workspace/workspaceQueries';
+import useAppContext from '../../context/useAppContext';
 
 export function Workspace(props: any) {
   const params = useParams();
   console.log('params from workspace', params);
   const [workspaceState, setWorkspaceState] = useWorkspaceContext();
+  const [globalState, setGlobalState] = useAppContext();
 
   const [loadWorkspace, workspaceItems] = useCustomLazyQuery(
     FetchWorkspaceByIdRequest(`${params?.workspaceId}`, [
@@ -29,7 +31,7 @@ export function Workspace(props: any) {
 
       loadWorkspace();
     }
-  }, [params, loadWorkspace]);
+  }, [params, loadWorkspace, globalState.events['CREATE_PROJECT']]);
   return (
     <MainLayout
       sectionsData={{

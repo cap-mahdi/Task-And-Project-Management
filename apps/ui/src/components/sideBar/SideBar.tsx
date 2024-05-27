@@ -20,12 +20,14 @@ import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 import { FetchWorkspaceRequest } from '../../services/workspace/workspaceQueries';
 import { v4 as uuidv4 } from 'uuid';
 import { AddWorkspace } from '../AddWorkspace';
+import useAppContext from '../../context/useAppContext';
 
 const drawerWidth = 270;
 
 export function SideBar({ toolbarSize }) {
   const theme = useTheme();
   const { palette, typography } = theme;
+  const [globalState, setGlobalState] = useAppContext();
 
   const [selectedMenu, setSelectedMenu] = useState('Home');
   const [loadWorkspace, workspaceItems] = useCustomLazyQuery(
@@ -40,8 +42,10 @@ export function SideBar({ toolbarSize }) {
   const workspaceRef = useRef(null);
 
   useEffect(() => {
+    console.log('workspace', workspaceItems);
+
     loadWorkspace();
-  }, []);
+  }, [globalState.events['CREATE_WORKSPACE'], loadWorkspace]);
 
   const handleMenuClick = (e: MouseEvent, details: any) => {
     setSelectedMenu(details.text);

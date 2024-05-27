@@ -3,9 +3,15 @@ import { createContext, useContext, useState } from 'react';
 interface AppState {
   token?: any;
   user: any;
+  events?: any;
 }
 const initialState: AppState = {
   user: null,
+  events: {
+    CREATE_WORKSPACE: 0,
+    CREATE_PROJECT: 0,
+    CREATE_MILESTONE: 0,
+  },
 };
 
 const AppContext = createContext({});
