@@ -1,26 +1,17 @@
 import {
   Avatar,
-  AvatarGroup,
   Box,
   Card,
   Divider,
   ImageListItem,
   Stack,
-  SxProps,
   Typography,
 } from '@mui/material';
-import React from 'react';
-import { Comment } from '../Comment';
-import { AddComment } from '../AddComment';
 import { BsClock } from 'react-icons/bs';
-import { StyledButton } from '../StyledButton';
-import { Image, Opacity } from '@mui/icons-material';
 import { Tag } from '../Tag';
-import { AvatarGroupDisplay } from '../AvatarGroupDisplay';
 import { TitleAndButton } from '../TitleAndButton';
 import { TaskRightSection } from './TaskRightSection';
 import { SxPropsObject } from '../../utils/SxPropsObject';
-import { time } from 'console';
 import { Task } from '../../__generated__/graphql';
 import { TaskType } from '../../pages/tasks/types';
 import moment from 'moment';
@@ -31,6 +22,7 @@ interface TaskDetailsProps {
 }
 export function TaskDetails({ task }: TaskDetailsProps) {
   console.log('AAZAZAZAZEZaze', task);
+
   return (
     <Card
       sx={{

@@ -14,6 +14,8 @@ import { SprintOverview } from '../pages/sprint/components/SprintOverview';
 import { AddUserToProject } from '../components';
 import { ProjectTeam } from '../pages/project/ProjectTeam';
 import { WorkspaceTeam } from '../pages/workspace/WorkspaceTeam';
+import { ProjectTasks } from '../pages/tasks/ProjectTasks';
+import { SprintTasks } from '../pages/tasks/SprintTasks';
 
 export const workspaceRoutes = {
   path: 'workspace/:workspaceId',
@@ -55,7 +57,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'task',
-          element: <Tasks />,
+          element: <ProjectTasks />,
         },
         {
           path: 'team',
@@ -85,7 +87,7 @@ export const workspaceRoutes = {
         },
         {
           path: 'task',
-          element: <Tasks />,
+          element: <SprintTasks />,
         },
         {
           path: 'settings',

@@ -4,12 +4,12 @@ import { UserRoomResolver } from './user-room.resolver';
 // import { Type } from 'class-transformer';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
-  ProjectSchema,
   RoomSchema,
   UserProjectSchema,
   UserRoomSchema,
   UserSchema,
 } from '../entities';
+import { RoomService } from '../room/room.service';
 
 @Module({
   imports: [

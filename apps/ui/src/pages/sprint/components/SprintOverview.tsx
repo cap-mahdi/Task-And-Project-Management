@@ -30,7 +30,17 @@ export function SprintOverview() {
         alignItems: 'center',
       }}
     >
-      <Typography>{sprint?.description}</Typography>
+
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+          fontSize: '1.2rem',
+          marginBottom: '1rem',
+        }}
+      >
+        {sprint?.description}
+      </Typography>
+
 
       <Box
         sx={{

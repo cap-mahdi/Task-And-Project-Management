@@ -1,11 +1,20 @@
 type Room {
   id: ID!
   createdAt: Date!
+  name: String!
   project: Project!
   userRooms: [UserRoom!]!
   messages: [Message!]!
 }
 
 type Mutation {
-  createRoom(projectId: ID!): Room!
+  createRoom(projectId: ID!, name: String!, members: [ID!]!): Room!
 }
+
+type Query {
+  room(id: ID!): Room
+}
+
+# type Query {
+#   getRoomsByProjectId(projectId: ID!): [Room!]!
+# }

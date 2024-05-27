@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
@@ -18,8 +19,11 @@ import { MessageSchema } from './message.entity';
 export class RoomSchema
   implements Omit<Room, 'project' | 'userRooms' | 'messages'>
 {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
+  name: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

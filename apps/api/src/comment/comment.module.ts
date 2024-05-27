@@ -19,6 +19,7 @@ import { UserModule } from '../user/user.module';
     EventEmitterModule.forRoot(),
   ],
   controllers: [],
+
   providers: [CommentResolver, CommentService],
   exports: [CommentService],
 })

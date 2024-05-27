@@ -4,9 +4,11 @@ import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 import { GET_PROJECT_USERS } from '../../services/project/projectQueries';
 import { useParams } from 'react-router-dom';
 import { Avatar, Box, Card, Typography } from '@mui/material';
+import useAppContext from '../../context/useAppContext';
 
 export function ProjectTeam(props) {
   const { projectId } = useParams();
+  const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_PROJECT_USERS, true);
   //   console.log('teamItems', teamItems);
 
@@ -16,7 +18,7 @@ export function ProjectTeam(props) {
         projectId,
       },
     });
-  }, []);
+  }, [globalState.events.ADD_USER_TO_PROJECT]);
   return (
     <Box
       sx={{

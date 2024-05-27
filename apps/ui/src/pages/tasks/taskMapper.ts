@@ -44,6 +44,7 @@ export const taksMapper = (intialTasks: Task[]): TasksDataType => {
         .map((task) => task.id),
       status: Status.
       DONE,
+
     },
   };
 

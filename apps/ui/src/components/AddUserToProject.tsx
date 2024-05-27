@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import {
@@ -27,6 +27,7 @@ import { useParams } from 'react-router-dom';
 import { useCustomLazyQuery } from '../hooks/useCustomLazyQuery';
 import { GET_ALL_WORKSPACE_MEMBERS_NOT_IN_PROJECT } from '../services/project/projectQueries';
 import { ADD_USERS_TO_PROJECT } from '../services/project/projectMutations';
+import useEvent from '../hooks/useEvent';
 
 const ProjectRoleMapper: Record<ProjectRole, string> = {
   [ProjectRole.Project_ADMIN]: 'Admin',
@@ -42,6 +43,7 @@ export const AddUserToProject: FC = () => {
     ProjectRole.Project_MEMBER
   );
 
+  const [emitAddUserToProjectEvent] = useEvent(['ADD_USER_TO_PROJECT']);
   const userRef = useRef<HTMLInputElement>(null);
 
   const [selectedUser, setSelectedUser] = useState<IUser>({});
@@ -55,12 +57,21 @@ export const AddUserToProject: FC = () => {
     GET_ALL_WORKSPACE_MEMBERS_NOT_IN_PROJECT(projectId),
     true
   );
-  const [addUsersToProject] = useCustomMutation(ADD_USERS_TO_PROJECT, true);
+  const [addUsersToProject, { data: dataAdd }] = useCustomMutation(
+    ADD_USERS_TO_PROJECT,
+    true
+  );
 
   const handlePersonAddIconClick = () => {
     getAllProjectUsers();
     setOpen(true);
   };
+
+  useEffect(() => {
+    if (dataAdd) {
+      emitAddUserToProjectEvent();
+    }
+  }, [dataAdd]);
 
   function handleAddUser() {
     const newdata = { user: selectedUser, role: selectedRole };
@@ -91,6 +102,7 @@ export const AddUserToProject: FC = () => {
         },
       },
     });
+
     setOpen(false);
   }
 

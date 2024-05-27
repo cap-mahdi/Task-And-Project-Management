@@ -146,7 +146,7 @@ export class MilestoneService {
     });
 
     if (!userProject || !allowedRoles.includes(userProject.role)) {
-      throw new ForbiddenException();
+      return new ForbiddenException('User not allowed to perform this action');
     }
   }
   async findMilestonesByProjectId(

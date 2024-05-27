@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectSchema, UserProjectSchema, UserSchema } from '../entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';

@@ -15,7 +15,7 @@ import { UserSchema } from './user.entity';
   schema: 'public',
 })
 export class MessageSchema implements Omit<Message, 'room' | 'sender'> {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

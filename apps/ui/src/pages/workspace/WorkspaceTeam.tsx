@@ -5,9 +5,12 @@ import { GET_PROJECT_USERS } from '../../services/project/projectQueries';
 import { useParams } from 'react-router-dom';
 import { Avatar, Box, Card, Typography } from '@mui/material';
 import { GET_WORKSPACE_USERS } from '../../services/workspace/workspaceQueries';
+import { AddUserToWorkspace } from '../../components/AddUserToWorkspace';
+import useAppContext from '../../context/useAppContext';
 
 export function WorkspaceTeam(props) {
   const { workspaceId } = useParams();
+  const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_WORKSPACE_USERS, true);
   //   console.log('teamItems', teamItems);
 
@@ -17,14 +20,14 @@ export function WorkspaceTeam(props) {
         workspaceId,
       },
     });
-  }, []);
+  }, [globalState.events.ADD_USER_TO_WORKSPACE]);
   return (
     <Box
       sx={{
         mx: '1rem',
       }}
     >
-      <AddUserToProject />
+      <AddUserToWorkspace />
 
       {data?.getWorkspaceUsers
         ? data?.getWorkspaceUsers.map((workspaceUser) => {

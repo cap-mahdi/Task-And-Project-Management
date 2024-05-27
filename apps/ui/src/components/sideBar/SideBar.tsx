@@ -47,6 +47,14 @@ export function SideBar({ toolbarSize }) {
     loadWorkspace();
   }, [globalState.events['CREATE_WORKSPACE'], loadWorkspace]);
 
+  useEffect(() => {
+    if (workspaceItems?.data) {
+      setGlobalState((prev) => {
+        return { ...prev, workspaces: workspaceItems?.data?.workspaces };
+      });
+    }
+  }, [workspaceItems?.data]);
+
   const handleMenuClick = (e: MouseEvent, details: any) => {
     setSelectedMenu(details.text);
   };

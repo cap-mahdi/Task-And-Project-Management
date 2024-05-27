@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import {
@@ -14,11 +14,13 @@ import {
   MenuItem,
   Paper,
   Select,
+  Typography,
 } from '@mui/material';
 import { WorkspaceRole } from '../__generated__/graphql';
 import { useCustomMutation } from '../hooks/useCustomMutation';
 import { ADD_USERS_TO_WORKSPACE } from '../services/workspace/workspaceMutations';
 import { useParams } from 'react-router-dom';
+import useEvent from '../hooks/useEvent';
 
 const workspaceRoleMapper: Record<WorkspaceRole, string> = {
   [WorkspaceRole.WORKSPACE_ADMIN]: 'Admin',
@@ -35,7 +37,17 @@ export const AddUserToWorkspace: FC = () => {
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [emails, setEmails] = useState<string[]>([]);
   const emailsRef = useRef<{ email: string; role: WorkspaceRole }[]>([]);
-  const [addUsersToWorkspace] = useCustomMutation(ADD_USERS_TO_WORKSPACE, true);
+  const [addUsersToWorkspace, { data: dataAdd }] = useCustomMutation(
+    ADD_USERS_TO_WORKSPACE,
+    true
+  );
+  const [emitAddUserToWorkspaceEvent] = useEvent(['ADD_USER_TO_WORKSPACE']);
+
+  useEffect(() => {
+    if (dataAdd) {
+      emitAddUserToWorkspaceEvent();
+    }
+  }, [dataAdd]);
 
   function handleAddUser() {
     const newdata = { email: selectedUser, role: selectedRole };
@@ -59,9 +71,29 @@ export const AddUserToWorkspace: FC = () => {
 
   return (
     <>
-      <IconButton size="large" onClick={() => setOpen(true)}>
-        <PersonAddAltIcon />
-      </IconButton>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 1,
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+          }}
+        >
+          {' '}
+          Add Members To workspace
+        </Typography>
+        <IconButton size="large" onClick={() => setOpen(true)}>
+          <PersonAddAltIcon />
+        </IconButton>
+      </Box>
+
       <Dialog
         open={open}
         onClose={() => {
