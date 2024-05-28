@@ -18,11 +18,11 @@ import SearchIcon from '@mui/icons-material/Search';
 export const ContactList: FC = () => {
   console.log('ContactList');
   const params = useParams();
-  const [loadChat, chatItems] = useCustomLazyQuery(GET_CHAT, true);
+  const [loadChat, chatItems] = useCustomLazyQuery(GET_CHAT, false);
   const [users, setUsers] = useState([]);
   const socket = useContext(SocketContext);
   const [projectState, setProjectState] = useProjectContext();
-  const [getmessages, { data }] = useCustomLazyQuery(GET_MESSAGES, true);
+  const [getmessages, { data }] = useCustomLazyQuery(GET_MESSAGES, false);
   const [search, setSearch] = useState('');
 
   function handleSearch(event: any) {

@@ -14,21 +14,23 @@ export function useCustomLazyQuery(
   });
   const { data, error, loading } = obj;
 
-  // useEffect(() => {
-  //   if (!loading) {
-  //     if (!error && data) {
-  //       toast.success('Welcome back', {
-  //         position: 'bottom-right',
-  //         icon: () => null,
-  //       });
-  //     } else if (error) {
-  //       toast.error('An error occurred', {
-  //         position: 'bottom-right',
-  //         icon: () => null,
-  //       });
-  //     }
-  //   }
-  // }, [loading, data, error]);
+  useEffect(() => {
+    if (renderToast) {
+      if (!loading) {
+        if (!error && data) {
+          toast.success('Welcome back', {
+            position: 'bottom-right',
+            icon: () => null,
+          });
+        } else if (error) {
+          toast.error('An error occurred', {
+            position: 'bottom-right',
+            icon: () => null,
+          });
+        }
+      }
+    }
+  }, [loading, data, error]);
 
   return [loadData, obj];
 }

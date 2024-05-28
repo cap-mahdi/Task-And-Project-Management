@@ -9,7 +9,7 @@ import useAppContext from '../../context/useAppContext';
 export function ProjectTeam(props) {
   const { projectId } = useParams();
   const [globalState] = useAppContext();
-  const [loadTeam, { data }] = useCustomLazyQuery(GET_PROJECT_USERS, true);
+  const [loadTeam, { data }] = useCustomLazyQuery(GET_PROJECT_USERS, false);
   //   console.log('teamItems', teamItems);
 
   useEffect(() => {

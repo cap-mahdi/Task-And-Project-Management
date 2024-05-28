@@ -38,7 +38,7 @@ export function CustomInputField({
   const [errorMessage, setErrorMessage] = useState('');
   const [updateUser, { data, error, loading }] = useCustomMutation(
     UPDATE_USERS,
-    true
+    false
   );
   const [globalState, setGlobalState] = useAppContext();
 

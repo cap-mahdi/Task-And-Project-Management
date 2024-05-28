@@ -14,7 +14,7 @@ import { useCustomMutation } from '../hooks/useCustomMutation';
 import { CREATE_COMMENT } from '../services/comment/commentMutation';
 
 export function AddComment({ taskID }) {
-  const [createComment] = useCustomMutation(CREATE_COMMENT, true);
+  const [createComment] = useCustomMutation(CREATE_COMMENT, false);
   const [comment, setComment] = React.useState('');
 
   const handleAddComment = async () => {

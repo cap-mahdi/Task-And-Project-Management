@@ -19,7 +19,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   const [comments, setComments] = React.useState([]);
   const [getComments, { data, loading, error }] = useCustomLazyQuery(
     GET_COMMENTS,
-    true
+    false
   );
 
   useEffect(() => {
