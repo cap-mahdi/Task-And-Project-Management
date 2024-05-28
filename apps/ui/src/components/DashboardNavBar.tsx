@@ -84,9 +84,7 @@ export function DashboardNavBar(props) {
               fontSize: '140%',
             }}
             src={globalState.user?.avatar || <PersonIcon />}
-          >
-            DDDZJKDNJZ
-          </Avatar>
+          ></Avatar>
         </Toolbar>
       </AppBar>
       <Divider

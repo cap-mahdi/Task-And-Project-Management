@@ -23,8 +23,17 @@ import { Transitions } from './Transition';
 import { NotificationList } from './NotificationList';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { Badge } from '@mui/material';
-import { Action, UserRole } from '../../__generated__/graphql';
-import { INotification } from './types';
+import {
+  Action,
+  ProjectNotification,
+  UserRole,
+  WorkspaceNotification,
+} from '../../__generated__/graphql';
+import { EntityType, INotification } from './types';
+import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
+import { GET_NOTIFICATIONS } from '../../services/notifications/notificationsQueries';
+import useAppContext from '../../context/useAppContext';
+import { set } from 'react-hook-form';
 
 const status = [
   {
@@ -45,359 +54,15 @@ const status = [
   },
 ];
 
-const initial_notifications: INotification[] = [
-  {
-    url: 'workspace/d3d4e0c3-b105-4f81-ac2d-0c053d09458c/project/15b2f276-5cf9-47d0-900b-9596ca59a4ae',
-    type: 'project',
-    id: '1',
-    actor: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    recipient: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    createdAt: new Date(new Date().getTime() - 2 * 60 * 60 * 1000),
-    project: {
-      rooms: [],
-      userProjects: [],
-      milestones: [],
-      id: '1',
-      name: 'Project 1',
-      description: 'Project 1 description',
-      workspace: {
-        id: '1',
-        name: 'Workspace 1',
-        description: 'Workspace 1 description',
-        createdAt: new Date(),
-        userWorkspaces: [],
-        projects: [],
-        creator: {
-          id: '1',
-          name: 'John Doe',
-          email: 'john@gmail.com',
-          avatar: 'https://i.pravatar.cc/300',
-          password: 'password',
-          createdAt: new Date(),
-          role: UserRole.ADMIN,
-          userWorkspaces: [],
-          userProjects: [],
-          userRooms: [],
-          userTasks: [],
-          createdWorkspaces: [],
-          createdProjects: [],
-        },
-      },
-      createdAt: new Date(),
-      creator: {
-        id: '1',
-        name: 'John Doe',
-        email: 'john@gmail.com',
-        avatar: 'https://i.pravatar.cc/300',
-        password: 'password',
-        createdAt: new Date(),
-        role: UserRole.ADMIN,
-        userWorkspaces: [],
-        userProjects: [],
-        userRooms: [],
-        userTasks: [],
-        createdWorkspaces: [],
-        createdProjects: [],
-      },
-    },
-    action: Action.ADD,
-    read: false,
-  },
-  {
-    url: 'workspace/d3d4e0c3-b105-4f81-ac2d-0c053d09458c/project/15b2f276-5cf9-47d0-900b-9596ca59a4ae',
-    type: 'project',
-    id: '1',
-    actor: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    recipient: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    createdAt: new Date(),
-    project: {
-      rooms: [],
-      userProjects: [],
-      milestones: [],
-      id: '1',
-      name: 'Project 1',
-      description: 'Project 1 description',
-      workspace: {
-        id: '1',
-        name: 'Workspace 1',
-        description: 'Workspace 1 description',
-        createdAt: new Date(),
-        userWorkspaces: [],
-        projects: [],
-        creator: {
-          id: '1',
-          name: 'John Doe',
-          email: 'john@gmail.com',
-          avatar: 'https://i.pravatar.cc/300',
-          password: 'password',
-          createdAt: new Date(),
-          role: UserRole.ADMIN,
-          userWorkspaces: [],
-          userProjects: [],
-          userRooms: [],
-          userTasks: [],
-          createdWorkspaces: [],
-          createdProjects: [],
-        },
-      },
-      createdAt: new Date(),
-      creator: {
-        id: '1',
-        name: 'John Doe',
-        email: 'john@gmail.com',
-        avatar: 'https://i.pravatar.cc/300',
-        password: 'password',
-        createdAt: new Date(),
-        role: UserRole.ADMIN,
-        userWorkspaces: [],
-        userProjects: [],
-        userRooms: [],
-        userTasks: [],
-        createdWorkspaces: [],
-        createdProjects: [],
-      },
-    },
-    action: Action.REMOVE,
-    read: true,
-  },
-  {
-    url: 'workspace/d3d4e0c3-b105-4f81-ac2d-0c053d09458c/project/15b2f276-5cf9-47d0-900b-9596ca59a4ae',
-    type: 'project',
-    id: '1',
-    actor: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    recipient: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    createdAt: new Date(),
-    project: {
-      rooms: [],
-      userProjects: [],
-      milestones: [],
-      id: '1',
-      name: 'Project 1',
-      description: 'Project 1 description',
-      workspace: {
-        id: '1',
-        name: 'Workspace 1',
-        description: 'Workspace 1 description',
-        createdAt: new Date(),
-        userWorkspaces: [],
-        projects: [],
-        creator: {
-          id: '1',
-          name: 'John Doe',
-          email: 'john@gmail.com',
-          avatar: 'https://i.pravatar.cc/300',
-          password: 'password',
-          createdAt: new Date(),
-          role: UserRole.ADMIN,
-          userWorkspaces: [],
-          userProjects: [],
-          userRooms: [],
-          userTasks: [],
-          createdWorkspaces: [],
-          createdProjects: [],
-        },
-      },
-      createdAt: new Date(),
-      creator: {
-        id: '1',
-        name: 'John Doe',
-        email: 'john@gmail.com',
-        avatar: 'https://i.pravatar.cc/300',
-        password: 'password',
-        createdAt: new Date(),
-        role: UserRole.ADMIN,
-        userWorkspaces: [],
-        userProjects: [],
-        userRooms: [],
-        userTasks: [],
-        createdWorkspaces: [],
-        createdProjects: [],
-      },
-    },
-    action: Action.ADD,
-    read: false,
-  },
-  {
-    url: 'workspace/d3d4e0c3-b105-4f81-ac2d-0c053d09458c/project/15b2f276-5cf9-47d0-900b-9596ca59a4ae',
-    type: 'project',
-    id: '1',
-    actor: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    recipient: {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@gmail.com',
-      avatar: 'https://i.pravatar.cc/300',
-      password: 'password',
-      createdAt: new Date(),
-      role: UserRole.ADMIN,
-      userWorkspaces: [],
-      userProjects: [],
-      userRooms: [],
-      userTasks: [],
-      createdWorkspaces: [],
-      createdProjects: [],
-    },
-    createdAt: new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000),
-    project: {
-      rooms: [],
-      userProjects: [],
-      milestones: [],
-      id: '1',
-      name: 'Project 1',
-      description: 'Project 1 description',
-      workspace: {
-        id: '1',
-        name: 'Workspace 1',
-        description: 'Workspace 1 description',
-        createdAt: new Date(),
-        userWorkspaces: [],
-        projects: [],
-        creator: {
-          id: '1',
-          name: 'John Doe',
-          email: 'john@gmail.com',
-          avatar: 'https://i.pravatar.cc/300',
-          password: 'password',
-          createdAt: new Date(),
-          role: UserRole.ADMIN,
-          userWorkspaces: [],
-          userProjects: [],
-          userRooms: [],
-          userTasks: [],
-          createdWorkspaces: [],
-          createdProjects: [],
-        },
-      },
-      createdAt: new Date(),
-      creator: {
-        id: '1',
-        name: 'John Doe',
-        email: 'john@gmail.com',
-        avatar: 'https://i.pravatar.cc/300',
-        password: 'password',
-        createdAt: new Date(),
-        role: UserRole.ADMIN,
-        userWorkspaces: [],
-        userProjects: [],
-        userRooms: [],
-        userTasks: [],
-        createdWorkspaces: [],
-        createdProjects: [],
-      },
-    },
-    action: Action.ADD,
-    read: true,
-  },
-];
-
 const NotificationSection = () => {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-
+  const [getNotifications] = useCustomLazyQuery(GET_NOTIFICATIONS, false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
-
-  const [notifications, setNotifications] = useState<INotification[]>(
-    initial_notifications
-  );
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [globalState] = useAppContext();
 
   const anchorRef = useRef(null);
 
@@ -424,6 +89,88 @@ const NotificationSection = () => {
     if (event?.target.value) setValue(event?.target.value);
   };
 
+  useEffect(() => {
+    getNotifications().then((res) => {
+      console.log('notifications ', res);
+      const notifsNotifications = res?.data?.workspaceNotifications;
+      const projectNotifications = res?.data?.projectNotifications;
+      const notifs: INotification[] = [
+        ...projectNotifications.map((notif: ProjectNotification) => ({
+          ...notif,
+          type: 'project',
+          url: `/workspace/${notif.project.workspace.id}/project/${notif.project.id}`,
+          entity: notif.project,
+        })),
+        ...notifsNotifications.map((notif: WorkspaceNotification) => ({
+          ...notif,
+          type: 'workspace',
+          url: `/workspace/${notif.workspace.id}`,
+          entity: notif.workspace,
+        })),
+      ];
+
+      //sort based on createdAt
+      notifs.sort((a, b) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+      const unreadCount = notifs.reduce(
+        (acc, curr) => (curr.read ? acc : acc + 1),
+        0
+      );
+      setUnreadCount(unreadCount);
+
+      setNotifications(notifs);
+      console.log('notifications after sort  ', notifs);
+    });
+  }, []);
+
+  useEffect(() => {
+    const eventSource = new EventSource(
+      `http://localhost:3000/api/notif/sse?token=${globalState.token}`
+    );
+    eventSource.onopen = () => {
+      console.log('EventSource connected');
+    };
+
+    eventSource.addEventListener('project-notification', (event) => {
+      setUnreadCount((prev) => prev + 1);
+      const data: ProjectNotification = JSON.parse(event.data);
+      console.log('project notification', data);
+      setNotifications((prev) => [
+        {
+          ...data,
+          type: EntityType.PROJECT,
+          url: `/workspace/${data.project.workspace.id}/project/${data.project.id}`,
+          entity: data.project,
+        },
+        ...prev,
+      ]);
+    });
+
+    eventSource.addEventListener('workspace-notification', (event) => {
+      setUnreadCount((prev) => prev + 1);
+      const data: WorkspaceNotification = JSON.parse(event.data);
+      setNotifications((prev) => [
+        {
+          ...data,
+          type: EntityType.WORKSPACE,
+          url: `/workspace/${data.workspace.id}`,
+          entity: data.workspace,
+        },
+        ...prev,
+      ]);
+    });
+
+    eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+    };
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
   return (
     <>
       <Box
@@ -449,13 +196,7 @@ const NotificationSection = () => {
             aria-haspopup="true"
             onClick={handleToggle}
           >
-            <Badge
-              badgeContent={notifications.reduce(
-                (acc, curr) => (curr.read ? acc : acc + 1),
-                0
-              )}
-              color="error"
-            >
+            <Badge badgeContent={unreadCount} color="error">
               <IoNotificationsOutline
                 style={{
                   color: '#000',
@@ -515,7 +256,7 @@ const NotificationSection = () => {
                             </Typography>
                             <Chip
                               size="small"
-                              label="01"
+                              label={unreadCount}
                               sx={{
                                 color: theme.palette.background.default,
                                 bgcolor: theme.palette.warning.dark,
@@ -572,6 +313,18 @@ const NotificationSection = () => {
                           </Grid>
                         </Grid>
                         <NotificationList
+                          markAsRead={(id: string) => {
+                            const clickedNotif = notifications.find(
+                              (n) => n.id === id
+                            );
+                            if (clickedNotif?.read) return;
+                            setUnreadCount((prev) => prev - 1);
+                            setNotifications((prev) =>
+                              prev.map((n) =>
+                                n.id === id ? { ...n, read: true } : n
+                              )
+                            );
+                          }}
                           notifications={notifications}
                           onClose={() => setOpen(false)}
                         />

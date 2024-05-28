@@ -13,18 +13,41 @@ import { NotificationItemWrapper } from './NotificationItemWrapper';
 import PersonIcon from '@mui/icons-material/Person';
 import { Action } from '../../__generated__/graphql';
 import { useNavigate } from 'react-router-dom';
-import { INotification } from './types';
+import { EntityType, INotification } from './types';
+import { dateToAgo } from '../../utils/dateToAgoHelper';
+import { useCustomMutation } from '../../hooks/useCustomMutation';
+import {
+  READ_PROJECT_NOTIF,
+  READ_WORKSPACE_NOTIF,
+} from '../../services/notifications/notificationsMutations';
+import { set } from 'react-hook-form';
 
 interface NotificationItemProps {
   notification: INotification;
   onClose: () => void;
+  markAsRead: (id: string) => void;
 }
 
 const readNotificationBgColor = 'catskillWhite.main';
 
-const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
+export const actionMapper: Record<Action, string> = {
+  [Action.Add]: 'added you to',
+  [Action.Remove]: 'removed you from',
+};
+
+export const entityMapper: Record<EntityType, string> = {
+  [EntityType.PROJECT]: 'project',
+  [EntityType.WORKSPACE]: 'workspace',
+};
+const NotificationItem = ({
+  notification,
+  onClose,
+  markAsRead,
+}: NotificationItemProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const [readProjectNotif] = useCustomMutation(READ_PROJECT_NOTIF, false);
+  const [readWorkspaceNotif] = useCustomMutation(READ_WORKSPACE_NOTIF, false);
 
   const chipSX = {
     height: 24,
@@ -45,8 +68,14 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
   };
 
   const handleNotificationClick = () => {
+    if (notification.type === EntityType.PROJECT) {
+      readProjectNotif({ variables: { id: notification.id } });
+    } else if (notification.type === EntityType.WORKSPACE) {
+      readWorkspaceNotif({ variables: { id: notification.id } });
+    }
     console.log('clicked');
-    navigate(notification.url);
+    navigate(`/app${notification.url}`);
+    markAsRead(notification.id);
     onClose();
   };
 
@@ -67,7 +96,7 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
           <Grid container justifyContent="flex-end">
             <Grid item xs={12}>
               <Typography variant="caption" display="block" gutterBottom>
-                {notification.createdAt?.getDate()} 2 min ago
+                {dateToAgo(notification.createdAt)}
               </Typography>
             </Grid>
           </Grid>
@@ -76,15 +105,11 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
       <Grid container direction="column" className="list-container">
         <Grid item xs={12} sx={{ pb: 2 }}>
           <Typography variant="subtitle2">
-            {notification.action === Action.ADD
-              ? `${notification.actor.name || ''} added you to ${
-                  notification.project?.name || ''
-                } project`
-              : notification.action === Action.REMOVE
-              ? `${notification.actor.name || ''} removed you from ${
-                  notification.project?.name || ''
-                } project`
-              : ''}
+            {notification.actor.name} {actionMapper[notification.action]}{' '}
+            {entityMapper[notification.type]}{' '}
+            <Typography variant="subtitle2" component="span" color="primary">
+              {notification.entity.name}
+            </Typography>
           </Typography>
         </Grid>
         <Grid item xs={12}>

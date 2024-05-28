@@ -10,36 +10,54 @@ import { WorkspaceNotificationSchema } from '../entities/WorkspaceNotification.e
 
 @Injectable()
 export class WorkspaceNotificationService {
-    constructor(
-        @InjectRepository(WorkspaceNotificationSchema)
-        private readonly workspaceNotificationRepository: Repository<WorkspaceNotificationSchema>,
-        private readonly eventEmitter: EventEmitter2
+  constructor(
+    @InjectRepository(WorkspaceNotificationSchema)
+    private readonly workspaceNotificationRepository: Repository<WorkspaceNotificationSchema>,
+    private readonly eventEmitter: EventEmitter2
+  ) {}
 
-    ) { }
+  async markWorkspaceNotificationAsRead(id: string) {
+    const workspaceNotification =
+      await this.workspaceNotificationRepository.findOne({ where: { id } });
+    workspaceNotification.read = true;
+    return this.workspaceNotificationRepository.save(workspaceNotification);
+  }
 
-    @OnEvent('user.workspace.added')
-    async handleUserWorkspaceAdd({ userWorkspace, user }: { userWorkspace: UserWorkspaceSchema, user: UserSchema }) {
-        console.log('got aaaaaaaaa: ', userWorkspace, user);
-        const workspaceNotification = await this.workspaceNotificationRepository.save({
-            actor: user,
-            recipient: userWorkspace.user,
-            project: userWorkspace.workspace,
-            action: Action.ADD,
-            read: false
-        });
-        console.log('workspaceNotification', workspaceNotification);
-        this.eventEmitter.emit('workspace.notification', workspaceNotification);
-        return workspaceNotification;
-    }
+  @OnEvent('user.workspace.added')
+  async handleUserWorkspaceAdd({
+    userWorkspace,
+    user,
+  }: {
+    userWorkspace: UserWorkspaceSchema;
+    user: UserSchema;
+  }) {
+    console.log('got aaaaaaaaa: ', userWorkspace, user);
+    const workspaceNotification =
+      await this.workspaceNotificationRepository.save({
+        actor: user,
+        recipient: userWorkspace.user,
+        workspace: userWorkspace.workspace,
+        action: Action.ADD,
+        read: false,
+      });
+    const populatedWorkspaceNotification =
+      await this.workspaceNotificationRepository.findOne({
+        where: { id: workspaceNotification.id },
+        relations: ['actor', 'recipient', 'workspace'],
+      });
+    console.log('workspaceNotification', workspaceNotification);
+    this.eventEmitter.emit(
+      'workspace.notification',
+      populatedWorkspaceNotification
+    );
+    return workspaceNotification;
+  }
 
-    async find(option?: FindManyOptions<WorkspaceNotificationSchema>) {
-        return this.workspaceNotificationRepository.find(option);
-    }
+  async find(option?: FindManyOptions<WorkspaceNotificationSchema>) {
+    return this.workspaceNotificationRepository.find(option);
+  }
 
-    async findOne(option?: FindManyOptions<WorkspaceNotificationSchema>) {
-        return this.workspaceNotificationRepository.findOne(option);
-    }
-
-
-
+  async findOne(option?: FindManyOptions<WorkspaceNotificationSchema>) {
+    return this.workspaceNotificationRepository.findOne(option);
+  }
 }

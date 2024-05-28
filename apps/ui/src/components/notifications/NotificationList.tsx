@@ -6,12 +6,14 @@ import { INotification } from './types';
 
 interface NotificationListProps {
   notifications: INotification[];
+  markAsRead: (id: string) => void;
   onClose: () => void;
 }
 
 const NotificationList = ({
   notifications,
   onClose,
+  markAsRead,
 }: NotificationListProps) => {
   const theme = useTheme();
 
@@ -43,6 +45,7 @@ const NotificationList = ({
           key={notification.id}
           notification={notification}
           onClose={onClose}
+          markAsRead={markAsRead}
         />
       ))}
     </List>

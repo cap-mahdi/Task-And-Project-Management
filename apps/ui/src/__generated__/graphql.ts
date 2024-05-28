@@ -1,355 +1,782 @@
-
-/*
- * -------------------------------------------------------
- * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
- * -------------------------------------------------------
- */
-
-/* tslint:disable */
 /* eslint-disable */
-
-export enum Status {
-  OPEN = "OPEN",
-  IN_PROGRESS = "IN_PROGRESS",
-  DONE = "DONE"
-}
-
-export enum UserRole {
-  ADMIN = "ADMIN",
-  USER = "USER"
-}
-
-export enum ProjectRole {
-  Project_ADMIN = "Project_ADMIN",
-  Project_EDITOR = "Project_EDITOR",
-  Project_MEMBER = "Project_MEMBER"
-}
-
-export enum WorkspaceRole {
-  WORKSPACE_ADMIN = "WORKSPACE_ADMIN",
-  WORKSPACE_EDITOR = "WORKSPACE_EDITOR",
-  WORKSPACE_MEMBER = "WORKSPACE_MEMBER"
-}
-
-export interface CreateCommentInput {
-  content: string;
-  taskId: string;
-}
-
-export interface ProjectNotification {
-  id: string;
-  actor: User;
-  recipient: User;
-  createdAt: Date;
-  project: Project;
-  action: Action;
-  read: boolean;
-}
-
-export interface WorkspaceNotification {
-  id: string;
-  actor: User;
-  recipient: User;
-  createdAt: Date;
-  Workspace: Workspace;
-  action: Action;
-  read: boolean;
-}
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+  Upload: { input: any; output: any; }
+};
 
 export enum Action {
-  ADD = "ADD",
-  REMOVE = "REMOVE"
+  Add = 'ADD',
+  Remove = 'REMOVE'
 }
 
+export type AddUserProjectInput = {
+  emailRoles: Array<EmailRoleProjectInput>;
+  projectId: Scalars['ID']['input'];
+};
 
-export interface EditCommentInput {
-  content?: Nullable<string>;
-}
+export type AddUserWorkspaceInput = {
+  emailRoles: Array<EmailRoleInput>;
+  workspaceId: Scalars['ID']['input'];
+};
 
-export interface CreateMilestone {
-  name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-}
+export type ChangePasswordInput = {
+  confirmPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+  oldPassword: Scalars['String']['input'];
+};
 
-export interface UpdateMilestone {
-  name?: Nullable<string>;
-  description?: Nullable<string>;
-  startDate?: Nullable<Date>;
-  endDate?: Nullable<Date>;
-  status?: Nullable<Status>;
-}
-
-export interface CreateProjectInput {
-  name: string;
-  description: string;
-  workspaceId: string;
-}
-
-export interface CreateTask {
-  name: string;
-  description: string;
-  status: Status;
-  tags: string[];
-  assignees: string[];
-}
-
-export interface UpdateTask {
-  name?: Nullable<string>;
-  description?: Nullable<string>;
-  status?: Nullable<Status>;
-  tags?: Nullable<string[]>;
-  assignees?: Nullable<string[]>;
-}
-
-export interface TaskFilter {
-  projectId?: Nullable<string>;
-  milestoneId?: Nullable<string>;
-}
-
-export interface CreateUserInput {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export interface GetUserInput {
-  id?: Nullable<string>;
-  email?: Nullable<string>;
-  name?: Nullable<string>;
-}
-
-export interface UpdateUserInput {
-  name?: Nullable<string>;
-  email?: Nullable<string>;
-  phone?: Nullable<string>;
-}
-
-export interface ChangePasswordInput {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
-export interface CreateUserProject {
-  userId: string;
-  projectId: string;
-  role: ProjectRole;
-}
-
-export interface UpdateUserProject {
-  role?: Nullable<ProjectRole>;
-}
-
-export interface EmailRoleProjectInput {
-  email: string;
-  role: string;
-}
-
-export interface AddUserProjectInput {
-  projectId: string;
-  emailRoles: EmailRoleProjectInput[];
-}
-
-export interface EmailRoleInput {
-  email: string;
-  role: string;
-}
-
-export interface UpdateUserWorkspace {
-  role?: Nullable<WorkspaceRole>;
-}
-
-export interface AddUserWorkspaceInput {
-  workspaceId: string;
-  emailRoles: EmailRoleInput[];
-}
-
-export interface CreateWorkspaceInput {
-  name: string;
-  description?: Nullable<string>;
-}
-
-export interface UpdateWorkspaceInput {
-  name?: Nullable<string>;
-  description?: Nullable<string>;
-}
-
-export interface Comment {
-  id: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  user: User;
+export type Comment = {
+  __typename?: 'Comment';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
   task: Task;
-}
+  updatedAt: Scalars['Date']['output'];
+  user: User;
+};
 
-export interface IQuery {
-  comments(taskId: string): Comment[] | Promise<Comment[]>;
-  messages(roomId: string): Message[] | Promise<Message[]>;
-  milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
-  milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
-  projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
-  project(id: string): Project | Promise<Project>;
-  getWorkspaceMembersNotInProject(projectId: string): User[] | Promise<User[]>;
-  room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
-  tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
-  task(id: string): Task | Promise<Task>;
-  users(): User[] | Promise<User[]>;
-  getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
-  getConnectedUser(): User | Promise<User>;
-  getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
-  userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
-  getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
-  getWorkspaceUsers(workspaceId: string): UserWorkspace[] | Promise<UserWorkspace[]>;
-  userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
-  userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
-  workspaces(): Workspace[] | Promise<Workspace[]>;
-  workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-}
+export type CreateCommentInput = {
+  content: Scalars['String']['input'];
+  taskId: Scalars['ID']['input'];
+};
 
-export interface IMutation {
-  createComment(input: CreateCommentInput): Comment | Promise<Comment>;
-  deleteComment(id: string): Comment | Promise<Comment>;
-  editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
-  createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
-  updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
-  deleteMilestone(id: string): Milestone | Promise<Milestone>;
-  createProject(input: CreateProjectInput): Project | Promise<Project>;
-  createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
-  createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
-  updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
-  deleteTask(id: string): boolean | Promise<boolean>;
-  createUser(createUserInput: CreateUserInput): User | Promise<User>;
-  updateUser(input: UpdateUserInput): User | Promise<User>;
-  deleteUser(): User | Promise<User>;
-  changePassword(input: ChangePasswordInput): User | Promise<User>;
-  changeUserAvatar(file: Upload): User | Promise<User>;
-  addUsersToProject(input: AddUserProjectInput): UserProject[] | Promise<UserProject[]>;
-  deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
-  addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
-  updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-  addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
-  createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
-  updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
-}
+export type CreateMilestone = {
+  description: Scalars['String']['input'];
+  endDate: Scalars['Date']['input'];
+  name: Scalars['String']['input'];
+  startDate: Scalars['Date']['input'];
+};
 
-export interface Message {
-  id: string;
-  content: string;
-  createdAt: Date;
+export type CreateProjectInput = {
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  workspaceId: Scalars['ID']['input'];
+};
+
+export type CreateTask = {
+  assignees: Array<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  status: Status;
+  tags: Array<Scalars['String']['input']>;
+};
+
+export type CreateUserInput = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type CreateUserProject = {
+  projectId: Scalars['ID']['input'];
+  role: ProjectRole;
+  userId: Scalars['ID']['input'];
+};
+
+export type CreateWorkspaceInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+};
+
+export type EditCommentInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EmailRoleInput = {
+  email: Scalars['String']['input'];
+  role: Scalars['String']['input'];
+};
+
+export type EmailRoleProjectInput = {
+  email: Scalars['String']['input'];
+  role: Scalars['String']['input'];
+};
+
+export type File = {
+  __typename?: 'File';
+  encoding: Scalars['String']['output'];
+  filename: Scalars['String']['output'];
+  mimetype: Scalars['String']['output'];
+};
+
+export type GetUserInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['Date']['output'];
+  deletedAt?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  room: Room;
   sender: User;
-  room: Room;
-}
+};
 
-export interface Milestone {
-  id: string;
-  name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  status: Status;
+export type Milestone = {
+  __typename?: 'Milestone';
+  description: Scalars['String']['output'];
+  endDate: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   project: Project;
-  tasks: Task[];
-}
+  startDate: Scalars['Date']['output'];
+  status: Status;
+  tasks: Array<Task>;
+};
 
-export interface Project {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: Date;
+export type Mutation = {
+  __typename?: 'Mutation';
+  addUserToRoom?: Maybe<Array<UserRoom>>;
+  addUsersToProject: Array<UserProject>;
+  addUsersToWorkspace: Array<UserWorkspace>;
+  changePassword: User;
+  changeUserAvatar: User;
+  createComment: Comment;
+  createMilestone: Milestone;
+  createProject: Project;
+  createRoom: Room;
+  createTask: Task;
+  createUser: User;
+  createWorkspace: Workspace;
+  deleteComment: Comment;
+  deleteMilestone: Milestone;
+  deleteTask: Scalars['Boolean']['output'];
+  deleteUser: User;
+  deleteUsersFromProject: Array<UserProject>;
+  editComment: Comment;
+  markProjectNotificationAsRead: ProjectNotification;
+  markWorkspaceNotificationAsRead: WorkspaceNotification;
+  updateMilestone: Milestone;
+  updateTask: Task;
+  updateUser: User;
+  updateUserWorkspace: UserWorkspace;
+  updateWorkspace: Workspace;
+};
+
+
+export type MutationAddUserToRoomArgs = {
+  roomId: Scalars['ID']['input'];
+  userId: Array<Scalars['ID']['input']>;
+};
+
+
+export type MutationAddUsersToProjectArgs = {
+  input: AddUserProjectInput;
+};
+
+
+export type MutationAddUsersToWorkspaceArgs = {
+  input: AddUserWorkspaceInput;
+};
+
+
+export type MutationChangePasswordArgs = {
+  input: ChangePasswordInput;
+};
+
+
+export type MutationChangeUserAvatarArgs = {
+  file: Scalars['Upload']['input'];
+};
+
+
+export type MutationCreateCommentArgs = {
+  input: CreateCommentInput;
+};
+
+
+export type MutationCreateMilestoneArgs = {
+  input: CreateMilestone;
+  projectId: Scalars['String']['input'];
+};
+
+
+export type MutationCreateProjectArgs = {
+  input: CreateProjectInput;
+};
+
+
+export type MutationCreateRoomArgs = {
+  members: Array<Scalars['ID']['input']>;
+  name: Scalars['String']['input'];
+  projectId: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateTaskArgs = {
+  input: CreateTask;
+  milestoneId: Scalars['ID']['input'];
+};
+
+
+export type MutationCreateUserArgs = {
+  createUserInput: CreateUserInput;
+};
+
+
+export type MutationCreateWorkspaceArgs = {
+  input: CreateWorkspaceInput;
+};
+
+
+export type MutationDeleteCommentArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteMilestoneArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteTaskArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteUsersFromProjectArgs = {
+  projectId: Scalars['ID']['input'];
+  userIds: Array<Scalars['ID']['input']>;
+};
+
+
+export type MutationEditCommentArgs = {
+  id: Scalars['ID']['input'];
+  input: EditCommentInput;
+};
+
+
+export type MutationMarkProjectNotificationAsReadArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationMarkWorkspaceNotificationAsReadArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateMilestoneArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateMilestone;
+};
+
+
+export type MutationUpdateTaskArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateTask;
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
+};
+
+
+export type MutationUpdateUserWorkspaceArgs = {
+  input: UpdateUserWorkspace;
+  userId: Scalars['ID']['input'];
+  workspaceId: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateWorkspaceArgs = {
+  id: Scalars['ID']['input'];
+  input: UpdateWorkspaceInput;
+};
+
+export type Project = {
+  __typename?: 'Project';
+  createdAt: Scalars['Date']['output'];
+  creator: User;
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  milestones: Array<Milestone>;
+  name: Scalars['String']['output'];
+  rooms: Array<Room>;
+  userProjects: Array<UserProject>;
   workspace: Workspace;
-  rooms: Room[];
-  userProjects: UserProject[];
-  milestones: Milestone[];
-  creator: User;
-}
+};
 
-export interface Room {
-  id: string;
-  createdAt: Date;
-  name: string;
+export type ProjectNotification = {
+  __typename?: 'ProjectNotification';
+  action: Action;
+  actor: User;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
   project: Project;
-  userRooms: UserRoom[];
-  messages: Message[];
+  read: Scalars['Boolean']['output'];
+  recipient: User;
+};
+
+export enum ProjectRole {
+  ProjectAdmin = 'Project_ADMIN',
+  ProjectEditor = 'Project_EDITOR',
+  ProjectMember = 'Project_MEMBER'
 }
 
-export interface Task {
-  id: string;
-  name: string;
-  description: string;
-  status: Status;
-  tags: string[];
-  milestone: Milestone;
-  comments: Comment[];
-  userTasks: UserTask[];
+export type Query = {
+  __typename?: 'Query';
+  comments: Array<Comment>;
+  getConnectedUser: User;
+  getProjectUsers: Array<UserProject>;
+  getUserRoomsByUserIdAndProjectId?: Maybe<Array<Room>>;
+  getUsersByParams: Array<User>;
+  getWorkspaceMembersNotInProject: Array<User>;
+  getWorkspaceUsers: Array<UserWorkspace>;
+  messages: Array<Message>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
+  project: Project;
+  projectNotifications: Array<ProjectNotification>;
+  projects?: Maybe<Array<Project>>;
+  room?: Maybe<Room>;
+  task: Task;
+  tasks: Array<Task>;
+  userProject: UserProject;
+  userWorkspace?: Maybe<UserWorkspace>;
+  userWorkspaces: Array<UserWorkspace>;
+  users: Array<User>;
+  workspace?: Maybe<Workspace>;
+  workspaceNotifications: Array<WorkspaceNotification>;
+  workspaces: Array<Workspace>;
+};
+
+
+export type QueryCommentsArgs = {
+  taskId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetProjectUsersArgs = {
+  projectId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetUserRoomsByUserIdAndProjectIdArgs = {
+  projectId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetUsersByParamsArgs = {
+  input: GetUserInput;
+};
+
+
+export type QueryGetWorkspaceMembersNotInProjectArgs = {
+  projectId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetWorkspaceUsersArgs = {
+  workspaceId: Scalars['ID']['input'];
+};
+
+
+export type QueryMessagesArgs = {
+  roomId: Scalars['ID']['input'];
+};
+
+
+export type QueryMilestoneArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryMilestonesArgs = {
+  projectId: Scalars['ID']['input'];
+};
+
+
+export type QueryProjectArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryRoomArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryTaskArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryTasksArgs = {
+  filter?: InputMaybe<TaskFilter>;
+};
+
+
+export type QueryUserProjectArgs = {
+  projectId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryUserWorkspaceArgs = {
+  userId: Scalars['ID']['input'];
+  workspaceId: Scalars['ID']['input'];
+};
+
+
+export type QueryWorkspaceArgs = {
+  id: Scalars['ID']['input'];
+};
+
+export type Room = {
+  __typename?: 'Room';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  messages: Array<Message>;
+  name: Scalars['String']['output'];
+  project: Project;
+  userRooms: Array<UserRoom>;
+};
+
+export enum Status {
+  Done = 'DONE',
+  InProgress = 'IN_PROGRESS',
+  Open = 'OPEN'
+}
+
+export type Task = {
+  __typename?: 'Task';
+  comments: Array<Comment>;
+  createdAt: Scalars['Date']['output'];
   creator: User;
-  createdAt: Date;
-}
+  description: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  milestone: Milestone;
+  name: Scalars['String']['output'];
+  status: Status;
+  tags: Array<Scalars['String']['output']>;
+  userTasks: Array<UserTask>;
+};
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  phone?: Nullable<string>;
-  password: string;
-  avatar?: Nullable<string>;
-  createdAt: Date;
+export type TaskFilter = {
+  milestoneId?: InputMaybe<Scalars['String']['input']>;
+  projectId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateMilestone = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  endDate?: InputMaybe<Scalars['Date']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['Date']['input']>;
+  status?: InputMaybe<Status>;
+};
+
+export type UpdateTask = {
+  assignees?: InputMaybe<Array<Scalars['String']['input']>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Status>;
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export type UpdateUserInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UpdateUserProject = {
+  role?: InputMaybe<ProjectRole>;
+};
+
+export type UpdateUserWorkspace = {
+  role?: InputMaybe<WorkspaceRole>;
+};
+
+export type UpdateWorkspaceInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type User = {
+  __typename?: 'User';
+  avatar?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Date']['output'];
+  createdProjects: Array<Project>;
+  createdWorkspaces: Array<Workspace>;
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
   role: UserRole;
-  userWorkspaces: UserWorkspace[];
-  userProjects: UserProject[];
-  userRooms: UserRoom[];
-  userTasks: UserTask[];
-  createdWorkspaces: Workspace[];
-  createdProjects: Project[];
-}
+  userProjects: Array<UserProject>;
+  userRooms: Array<UserRoom>;
+  userTasks: Array<UserTask>;
+  userWorkspaces: Array<UserWorkspace>;
+};
 
-export interface File {
-  filename: string;
-  mimetype: string;
-  encoding: string;
-}
-
-export interface UserProject {
-  id: string;
-  user: User;
+export type UserProject = {
+  __typename?: 'UserProject';
+  addedAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
   project: Project;
   role: ProjectRole;
-  addedAt: Date;
+  user: User;
+};
+
+export enum UserRole {
+  Admin = 'ADMIN',
+  User = 'USER'
 }
 
-export interface UserRoom {
-  id: string;
-  user: User;
+export type UserRoom = {
+  __typename?: 'UserRoom';
+  id: Scalars['ID']['output'];
   room: Room;
-}
-
-export interface UserTask {
-  id: string;
   user: User;
+};
+
+export type UserTask = {
+  __typename?: 'UserTask';
+  id: Scalars['ID']['output'];
   task: Task;
-}
-
-export interface UserWorkspace {
-  id: string;
   user: User;
-  addedAt: Date;
-  workspace: Workspace;
+};
+
+export type UserWorkspace = {
+  __typename?: 'UserWorkspace';
+  addedAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
   role: WorkspaceRole;
-}
+  user: User;
+  workspace: Workspace;
+};
 
-export interface Workspace {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: Date;
-  userWorkspaces: UserWorkspace[];
-  projects: Project[];
+export type Workspace = {
+  __typename?: 'Workspace';
+  createdAt: Scalars['Date']['output'];
   creator: User;
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  projects: Array<Project>;
+  userWorkspaces: Array<UserWorkspace>;
+};
+
+export type WorkspaceNotification = {
+  __typename?: 'WorkspaceNotification';
+  action: Action;
+  actor: User;
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  read: Scalars['Boolean']['output'];
+  recipient: User;
+  workspace: Workspace;
+};
+
+export enum WorkspaceRole {
+  WorkspaceAdmin = 'WORKSPACE_ADMIN',
+  WorkspaceEditor = 'WORKSPACE_EDITOR',
+  WorkspaceMember = 'WORKSPACE_MEMBER'
 }
 
-export type Upload = any;
-type Nullable<T> = T | null;
+export type GetConnectedUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
+export type GetConnectedUserQuery = { __typename?: 'Query', getConnectedUser: { __typename?: 'User', id: string, name: string, phone?: string | null, email: string, role: UserRole, avatar?: string | null } };
+
+export type CreateRoomMutationVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+  members: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+}>;
+
+
+export type CreateRoomMutation = { __typename?: 'Mutation', createRoom: { __typename?: 'Room', id: string, name: string } };
+
+export type GetUserRoomsByUserIdAndProjectIdQueryVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type GetUserRoomsByUserIdAndProjectIdQuery = { __typename?: 'Query', getUserRoomsByUserIdAndProjectId?: Array<{ __typename?: 'Room', id: string, createdAt: any, name: string }> | null };
+
+export type ProjectQueryVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type ProjectQuery = { __typename?: 'Query', project: { __typename?: 'Project', id: string, userProjects: Array<{ __typename?: 'UserProject', user: { __typename?: 'User', id: string, name: string } }> } };
+
+export type RoomQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type RoomQuery = { __typename?: 'Query', room?: { __typename?: 'Room', id: string, messages: Array<{ __typename?: 'Message', id: string, content: string, createdAt: any, deletedAt?: any | null, sender: { __typename?: 'User', id: string, name: string, avatar?: string | null } }> } | null };
+
+export type CreateCommentMutationVariables = Exact<{
+  content: Scalars['String']['input'];
+  taskID: Scalars['ID']['input'];
+}>;
+
+
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', id: string, content: string } };
+
+export type GetCommentsQueryVariables = Exact<{
+  taskID: Scalars['ID']['input'];
+}>;
+
+
+export type GetCommentsQuery = { __typename?: 'Query', comments: Array<{ __typename?: 'Comment', id: string, content: string, user: { __typename?: 'User', name: string } }> };
+
+export type CreateMilestoneMutationVariables = Exact<{
+  input: CreateMilestone;
+  projectId: Scalars['String']['input'];
+}>;
+
+
+export type CreateMilestoneMutation = { __typename?: 'Mutation', createMilestone: { __typename?: 'Milestone', id: string, name: string, description: string, startDate: any, endDate: any, status: Status } };
+
+export type GetMilestonesQueryVariables = Exact<{
+  projectId: Scalars['ID']['input'];
+}>;
+
+
+export type GetMilestonesQuery = { __typename?: 'Query', milestones: Array<{ __typename?: 'Milestone', id: string, name: string, description: string, startDate: any, endDate: any, status: Status }> };
+
+export type GetMilestoneQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetMilestoneQuery = { __typename?: 'Query', milestone?: { __typename?: 'Milestone', id: string, name: string, description: string, startDate: any, endDate: any, status: Status } | null };
+
+export type GetMilestoneAndTasksQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetMilestoneAndTasksQuery = { __typename?: 'Query', milestone?: { __typename?: 'Milestone', tasks: Array<{ __typename?: 'Task', id: string, name: string, description: string, userTasks: Array<{ __typename?: 'UserTask', user: { __typename?: 'User', name: string } }> }> } | null };
+
+export type GetNotificationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetNotificationsQuery = { __typename?: 'Query', workspaceNotifications: Array<{ __typename?: 'WorkspaceNotification', id: string, createdAt: any, action: Action, read: boolean, actor: { __typename?: 'User', id: string, name: string }, workspace: { __typename?: 'Workspace', id: string, name: string } }>, projectNotifications: Array<{ __typename?: 'ProjectNotification', id: string, createdAt: any, action: Action, read: boolean, actor: { __typename?: 'User', id: string, name: string }, project: { __typename?: 'Project', id: string, name: string } }> };
+
+export type CreateProjectMutationVariables = Exact<{
+  input: CreateProjectInput;
+}>;
+
+
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', id: string, name: string, description: string, userProjects: Array<{ __typename?: 'UserProject', id: string }> } };
+
+export type AddUsersToProjectMutationVariables = Exact<{
+  input: AddUserProjectInput;
+}>;
+
+
+export type AddUsersToProjectMutation = { __typename?: 'Mutation', addUsersToProject: Array<{ __typename?: 'UserProject', id: string, role: ProjectRole, user: { __typename?: 'User', id: string, email: string } }> };
+
+export type CreateTaskMutationVariables = Exact<{
+  input: CreateTask;
+  milestoneId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateTaskMutation = { __typename?: 'Mutation', createTask: { __typename?: 'Task', id: string, name: string, description: string, status: Status } };
+
+export type UpdateTaskStatusMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  status: Status;
+}>;
+
+
+export type UpdateTaskStatusMutation = { __typename?: 'Mutation', updateTask: { __typename?: 'Task', id: string, name: string, description: string, status: Status, tags: Array<string>, creator: { __typename?: 'User', id: string, name: string }, userTasks: Array<{ __typename?: 'UserTask', id: string, user: { __typename?: 'User', id: string, name: string } }> } };
+
+export type GetTasksQueryVariables = Exact<{
+  projectId?: InputMaybe<Scalars['String']['input']>;
+  milestoneId?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetTasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', id: string, name: string, description: string, status: Status, tags: Array<string>, createdAt: any, creator: { __typename?: 'User', id: string, name: string, avatar?: string | null }, milestone: { __typename?: 'Milestone', id: string, name: string }, comments: Array<{ __typename?: 'Comment', id: string, content: string, createdAt: any, user: { __typename?: 'User', id: string, name: string, avatar?: string | null } }>, userTasks: Array<{ __typename?: 'UserTask', id: string, user: { __typename?: 'User', name: string, avatar?: string | null } }> }> };
+
+export type ChangePasswordMutationVariables = Exact<{
+  input: ChangePasswordInput;
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'User', id: string, name: string, email: string, phone?: string | null, avatar?: string | null } };
+
+export type ChangeUserAvatarMutationVariables = Exact<{
+  file: Scalars['Upload']['input'];
+}>;
+
+
+export type ChangeUserAvatarMutation = { __typename?: 'Mutation', changeUserAvatar: { __typename?: 'User', id: string, name: string, email: string, phone?: string | null, avatar?: string | null } };
+
+export type DeleteUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: string, name: string, email: string, phone?: string | null } };
+
+export type UpdateUseMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type UpdateUseMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, name: string, email: string, phone?: string | null, avatar?: string | null } };
+
+export type CreateWorkspaceMutationVariables = Exact<{
+  input: CreateWorkspaceInput;
+}>;
+
+
+export type CreateWorkspaceMutation = { __typename?: 'Mutation', createWorkspace: { __typename?: 'Workspace', id: string, name: string, description: string } };
+
+export type AddUsersToWorkspaceMutationVariables = Exact<{
+  input: AddUserWorkspaceInput;
+}>;
+
+
+export type AddUsersToWorkspaceMutation = { __typename?: 'Mutation', addUsersToWorkspace: Array<{ __typename?: 'UserWorkspace', id: string, addedAt: any, role: WorkspaceRole, user: { __typename?: 'User', id: string, email: string }, workspace: { __typename?: 'Workspace', id: string, name: string } }> };
+
+
+export const GetConnectedUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getConnectedUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getConnectedUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]} as unknown as DocumentNode<GetConnectedUserQuery, GetConnectedUserQueryVariables>;
+export const CreateRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"members"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}},{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"members"},"value":{"kind":"Variable","name":{"kind":"Name","value":"members"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateRoomMutation, CreateRoomMutationVariables>;
+export const GetUserRoomsByUserIdAndProjectIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUserRoomsByUserIdAndProjectId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUserRoomsByUserIdAndProjectId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetUserRoomsByUserIdAndProjectIdQuery, GetUserRoomsByUserIdAndProjectIdQueryVariables>;
+export const ProjectDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"project"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"project"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userProjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ProjectQuery, ProjectQueryVariables>;
+export const RoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"room"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"room"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"deletedAt"}},{"kind":"Field","name":{"kind":"Name","value":"sender"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RoomQuery, RoomQueryVariables>;
+export const CreateCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"content"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"taskID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"content"},"value":{"kind":"Variable","name":{"kind":"Name","value":"content"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"taskId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"taskID"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]} as unknown as DocumentNode<CreateCommentMutation, CreateCommentMutationVariables>;
+export const GetCommentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetComments"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"taskID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"taskId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"taskID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<GetCommentsQuery, GetCommentsQueryVariables>;
+export const CreateMilestoneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMilestone"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMilestone"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMilestone"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<CreateMilestoneMutation, CreateMilestoneMutationVariables>;
+export const GetMilestonesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMilestones"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"milestones"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetMilestonesQuery, GetMilestonesQueryVariables>;
+export const GetMilestoneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMilestone"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"milestone"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"startDate"}},{"kind":"Field","name":{"kind":"Name","value":"endDate"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetMilestoneQuery, GetMilestoneQueryVariables>;
+export const GetMilestoneAndTasksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMilestoneAndTasks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"milestone"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"userTasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetMilestoneAndTasksQuery, GetMilestoneAndTasksQueryVariables>;
+export const GetNotificationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetNotifications"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"workspaceNotifications"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"actor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"workspace"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"read"}}]}},{"kind":"Field","name":{"kind":"Name","value":"projectNotifications"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"actor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"project"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"action"}},{"kind":"Field","name":{"kind":"Name","value":"read"}}]}}]}}]} as unknown as DocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>;
+export const CreateProjectDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateProject"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProjectInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"userProjects"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<CreateProjectMutation, CreateProjectMutationVariables>;
+export const AddUsersToProjectDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddUsersToProject"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddUserProjectInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addUsersToProject"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]} as unknown as DocumentNode<AddUsersToProjectMutation, AddUsersToProjectMutationVariables>;
+export const CreateTaskDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createTask"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTask"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"milestoneId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}},{"kind":"Argument","name":{"kind":"Name","value":"milestoneId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"milestoneId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<CreateTaskMutation, CreateTaskMutationVariables>;
+export const UpdateTaskStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateTaskStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Status"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTask"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"creator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"userTasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UpdateTaskStatusMutation, UpdateTaskStatusMutationVariables>;
+export const GetTasksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getTasks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"milestoneId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tasks"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"projectId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"projectId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"milestoneId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"milestoneId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"tags"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"creator"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}},{"kind":"Field","name":{"kind":"Name","value":"milestone"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"userTasks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetTasksQuery, GetTasksQueryVariables>;
+export const ChangePasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ChangePassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChangePasswordInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changePassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]} as unknown as DocumentNode<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const ChangeUserAvatarDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ChangeUserAvatar"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"file"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changeUserAvatar"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"file"},"value":{"kind":"Variable","name":{"kind":"Name","value":"file"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]} as unknown as DocumentNode<ChangeUserAvatarMutation, ChangeUserAvatarMutationVariables>;
+export const DeleteUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}}]}}]}}]} as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>;
+export const UpdateUseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUse"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]} as unknown as DocumentNode<UpdateUseMutation, UpdateUseMutationVariables>;
+export const CreateWorkspaceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateWorkspace"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateWorkspaceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createWorkspace"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<CreateWorkspaceMutation, CreateWorkspaceMutationVariables>;
+export const AddUsersToWorkspaceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddUsersToWorkspace"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddUserWorkspaceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addUsersToWorkspace"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"Field","name":{"kind":"Name","value":"addedAt"}},{"kind":"Field","name":{"kind":"Name","value":"workspace"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]} as unknown as DocumentNode<AddUsersToWorkspaceMutation, AddUsersToWorkspaceMutationVariables>;

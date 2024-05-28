@@ -17,11 +17,14 @@ const documents = {
     "\n  mutation createRoom($projectId: ID!, $name: String!, $members: [ID!]!) {\n    createRoom(projectId: $projectId, name: $name, members: $members) {\n      id\n      name\n    }\n  }\n": types.CreateRoomDocument,
     "\n  query getUserRoomsByUserIdAndProjectId($projectId: ID!) {\n    getUserRoomsByUserIdAndProjectId(projectId: $projectId) {\n      id\n      createdAt\n      name\n    }\n  }\n": types.GetUserRoomsByUserIdAndProjectIdDocument,
     "\n  query project($projectId: ID!) {\n    project(id: $projectId) {\n      id\n      userProjects {\n        user {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.ProjectDocument,
-    "\n  query room($id: ID!) {\n    room(id: $id) {\n      id\n      messages {\n        id\n        content\n        createdAt\n        sender {\n          id\n          name\n          avatar\n        }\n      }\n    }\n  }\n": types.RoomDocument,
+    "\n  query room($id: ID!) {\n    room(id: $id) {\n      id\n      messages {\n        id\n        content\n        createdAt\n        deletedAt\n        sender {\n          id\n          name\n          avatar\n        }\n      }\n    }\n  }\n": types.RoomDocument,
+    "\n  mutation CreateComment($content: String!, $taskID: ID!) {\n    createComment(input: {content: $content, taskId: $taskID}) {\n      id\n      content\n      \n    }\n  }\n": types.CreateCommentDocument,
+    "\n  query GetComments($taskID: ID!) {\n    comments(taskId: $taskID) {\n    id\n    content\n    user{\n        name\n    }\n  }\n  }\n": types.GetCommentsDocument,
     "\n  mutation CreateMilestone($input: CreateMilestone!, $projectId: String!) {\n    createMilestone(input: $input, projectId: $projectId) {\n      id\n      name\n      description\n      startDate\n      endDate\n      status\n    }\n  }\n": types.CreateMilestoneDocument,
     "\n  query GetMilestones($projectId: ID!) {\n    milestones(projectId: $projectId) {\n      id\n      name\n      description\n      startDate\n      endDate\n      status\n    }\n  }\n": types.GetMilestonesDocument,
     "\n  query GetMilestone($id: ID!) {\n    milestone(id: $id) {\n      id\n      name\n      description\n      startDate\n      endDate\n      status\n    }\n  }\n": types.GetMilestoneDocument,
     "\n  query GetMilestoneAndTasks($id: ID!) {\n    milestone(id: $id) {\n      tasks {\n        id\n        name\n        description\n        userTasks {\n          user {\n            name\n          }\n        }\n      }\n    }\n  }\n": types.GetMilestoneAndTasksDocument,
+    "\n  query GetNotifications {\n    workspaceNotifications {\n      id\n      actor {\n        id\n        name\n      }\n      createdAt\n      workspace {\n        id\n        name\n      }\n      action\n      read\n    }\n    projectNotifications {\n      id\n      actor {\n        id\n        name\n      }\n      createdAt\n      project {\n        id\n        name\n      }\n      action\n      read\n    }\n  }\n": types.GetNotificationsDocument,
     "\n  mutation CreateProject($input: CreateProjectInput!) {\n    createProject(input: $input) {\n      id\n      name\n      description\n      userProjects {\n        id\n      }\n    }\n  }\n": types.CreateProjectDocument,
     "\n  mutation AddUsersToProject($input: AddUserProjectInput!) {\n    addUsersToProject(input: $input) {\n      id\n      user {\n        id\n        email\n      }\n      role\n    }\n  }\n": types.AddUsersToProjectDocument,
     "\n  mutation createTask($input: CreateTask!, $milestoneId: ID!) {\n    createTask(input: $input, milestoneId: $milestoneId) {\n      id\n      name\n      description\n      status\n    }\n  }\n": types.CreateTaskDocument,
@@ -68,7 +71,15 @@ export function gql(source: "\n  query project($projectId: ID!) {\n    project(i
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query room($id: ID!) {\n    room(id: $id) {\n      id\n      messages {\n        id\n        content\n        createdAt\n        sender {\n          id\n          name\n          avatar\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query room($id: ID!) {\n    room(id: $id) {\n      id\n      messages {\n        id\n        content\n        createdAt\n        sender {\n          id\n          name\n          avatar\n        }\n      }\n    }\n  }\n"];
+export function gql(source: "\n  query room($id: ID!) {\n    room(id: $id) {\n      id\n      messages {\n        id\n        content\n        createdAt\n        deletedAt\n        sender {\n          id\n          name\n          avatar\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query room($id: ID!) {\n    room(id: $id) {\n      id\n      messages {\n        id\n        content\n        createdAt\n        deletedAt\n        sender {\n          id\n          name\n          avatar\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateComment($content: String!, $taskID: ID!) {\n    createComment(input: {content: $content, taskId: $taskID}) {\n      id\n      content\n      \n    }\n  }\n"): (typeof documents)["\n  mutation CreateComment($content: String!, $taskID: ID!) {\n    createComment(input: {content: $content, taskId: $taskID}) {\n      id\n      content\n      \n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetComments($taskID: ID!) {\n    comments(taskId: $taskID) {\n    id\n    content\n    user{\n        name\n    }\n  }\n  }\n"): (typeof documents)["\n  query GetComments($taskID: ID!) {\n    comments(taskId: $taskID) {\n    id\n    content\n    user{\n        name\n    }\n  }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -85,6 +96,10 @@ export function gql(source: "\n  query GetMilestone($id: ID!) {\n    milestone(i
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query GetMilestoneAndTasks($id: ID!) {\n    milestone(id: $id) {\n      tasks {\n        id\n        name\n        description\n        userTasks {\n          user {\n            name\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetMilestoneAndTasks($id: ID!) {\n    milestone(id: $id) {\n      tasks {\n        id\n        name\n        description\n        userTasks {\n          user {\n            name\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetNotifications {\n    workspaceNotifications {\n      id\n      actor {\n        id\n        name\n      }\n      createdAt\n      workspace {\n        id\n        name\n      }\n      action\n      read\n    }\n    projectNotifications {\n      id\n      actor {\n        id\n        name\n      }\n      createdAt\n      project {\n        id\n        name\n      }\n      action\n      read\n    }\n  }\n"): (typeof documents)["\n  query GetNotifications {\n    workspaceNotifications {\n      id\n      actor {\n        id\n        name\n      }\n      createdAt\n      workspace {\n        id\n        name\n      }\n      action\n      read\n    }\n    projectNotifications {\n      id\n      actor {\n        id\n        name\n      }\n      createdAt\n      project {\n        id\n        name\n      }\n      action\n      read\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

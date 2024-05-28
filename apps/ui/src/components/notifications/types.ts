@@ -1,14 +1,28 @@
-import { ProjectNotification, WorkspaceNotification } from "../../__generated__/graphql";
+import {
+  Project,
+  ProjectNotification,
+  Workspace,
+  WorkspaceNotification,
+} from '../../__generated__/graphql';
 
-
-export interface TypedProjectNotification extends ProjectNotification {
-  type: 'project';
+export enum EntityType {
+  PROJECT = 'project',
+  WORKSPACE = 'workspace',
+}
+export interface TypedProjectNotification
+  extends Omit<ProjectNotification, 'project'> {
+  type: EntityType.PROJECT;
   url: string;
+  entity: Project;
 }
 
-export interface TypedWorkspaceNotification extends WorkspaceNotification {
-  type: 'workspace';
+export interface TypedWorkspaceNotification
+  extends Omit<WorkspaceNotification, 'workspace'> {
+  type: EntityType.WORKSPACE;
   url: string;
+  entity: Workspace;
 }
 
-export type INotification = TypedProjectNotification | TypedWorkspaceNotification;
+export type INotification =
+  | TypedProjectNotification
+  | TypedWorkspaceNotification;

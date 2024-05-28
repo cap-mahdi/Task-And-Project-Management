@@ -7,3 +7,11 @@ type ProjectNotification {
   action: Action!
   read: Boolean!
 }
+
+type Query {
+  projectNotifications: [ProjectNotification!]!
+}
+
+type Mutation {
+  markProjectNotificationAsRead(id: ID!): ProjectNotification!
+}

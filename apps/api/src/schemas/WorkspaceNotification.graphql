@@ -3,7 +3,15 @@ type WorkspaceNotification {
   actor: User!
   recipient: User!
   createdAt: Date!
-  Workspace: Workspace!
+  workspace: Workspace!
   action: Action!
   read: Boolean!
+}
+
+type Query {
+  workspaceNotifications: [WorkspaceNotification!]!
+}
+
+type Mutation {
+  markWorkspaceNotificationAsRead(id: ID!): WorkspaceNotification!
 }

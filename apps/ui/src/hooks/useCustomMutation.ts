@@ -17,7 +17,8 @@ export function useCustomMutation(request: DocumentNode, renderToast: boolean) {
         } else {
           toast.error(
             error?.graphQLErrors[0].message ||
-              error?.networkError.result.message,
+              error?.networkError.result.message ||
+              'Something went wrong',
             {
               position: 'bottom-right',
               icon: () => null,

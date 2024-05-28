@@ -8,10 +8,12 @@ import { AuthGuard } from "@nestjs/passport";
 
 @Controller()
 @UseGuards(AuthGuard('jwt'))
+//every path shoud end with /sse
 export class sseController {
     constructor(private readonly sseService: sseService) { }
     @Sse('task/:taskId/sse')
     sse(@GetUser() user: UserSchema, @Param('taskId') taskId: string) {
+        console.log('my User:', user);
         return this.sseService.sse(user, taskId);
     }
 
