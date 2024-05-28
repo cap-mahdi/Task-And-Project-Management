@@ -183,9 +183,7 @@ export const AddUserToProject: FC = () => {
                 minWidth: 120,
               }}
               onChange={(e) => {
-                setSelectedRole(
-                  ProjectRole[e.target.value as keyof typeof ProjectRole]
-                );
+                setSelectedRole(e.target.value as ProjectRole);
               }}
               value={selectedRole}
             >

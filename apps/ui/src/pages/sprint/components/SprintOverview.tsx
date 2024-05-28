@@ -20,6 +20,12 @@ export function SprintOverview() {
       color: (theme) => theme.palette.text.secondary,
     },
   };
+
+  const daysLeft =
+    (new Date(sprint?.endDate).getTime() -
+      new Date(sprint?.startDate).getTime()) /
+    (1000 * 60 * 60 * 24);
+
   return (
     <Box
       sx={{
@@ -30,7 +36,6 @@ export function SprintOverview() {
         alignItems: 'center',
       }}
     >
-
       <Typography
         sx={{
           fontWeight: 'medium',
@@ -40,7 +45,6 @@ export function SprintOverview() {
       >
         {sprint?.description}
       </Typography>
-
 
       <Box
         sx={{
@@ -53,7 +57,7 @@ export function SprintOverview() {
       >
         <Road />
         <TrackCard
-          title={'10 Days Left 🚩'}
+          title={`${daysLeft} Days Left 🚩`}
           subTitle={'Hurry up!  time is flying'}
           background={car}
         >

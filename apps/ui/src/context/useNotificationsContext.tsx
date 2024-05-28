@@ -7,6 +7,7 @@ import {
   WorkspaceNotification,
 } from '../__generated__/graphql';
 import useAppContext from './useAppContext';
+import { log } from 'console';
 
 interface NotificationsState {
   notifications: INotification[];
@@ -28,6 +29,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
   const [getNotifications] = useCustomLazyQuery(GET_NOTIFICATIONS, false);
   const [globalState] = useAppContext();
   useEffect(() => {
+    if (!globalState.token) return;
     getNotifications().then((res) => {
       const notifsNotifications = res?.data?.workspaceNotifications;
       const projectNotifications = res?.data?.projectNotifications;
@@ -58,58 +60,61 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
       );
       setState({ notifications: notifs, unreadCount });
     });
-  }, []);
+  }, [globalState.token]);
 
   useEffect(() => {
-    const eventSource = new EventSource(
-      `http://localhost:3000/api/notif/sse?token=${globalState.token}`
-    );
-    eventSource.onopen = () => {
-    };
+    console.log('TOKEN', globalState.token);
+    if (globalState.token) {
+      console.log('HERE');
+      const eventSource = new EventSource(
+        `http://localhost:3000/api/notif/sse?token=${globalState.token}`
+      );
+      eventSource.onopen = () => {};
 
-    eventSource.addEventListener('project-notification', (event) => {
-      const data: ProjectNotification = JSON.parse(event.data);
-      setState((prev) => {
-        return {
-          notifications: [
-            {
-              ...data,
-              type: EntityType.PROJECT,
-              url: `/workspace/${data.project.workspace.id}/project/${data.project.id}`,
-              entity: data.project,
-            },
-            ...prev.notifications,
-          ],
-          unreadCount: prev.unreadCount + 1,
-        };
+      eventSource.addEventListener('project-notification', (event) => {
+        const data: ProjectNotification = JSON.parse(event.data);
+        setState((prev) => {
+          return {
+            notifications: [
+              {
+                ...data,
+                type: EntityType.PROJECT,
+                url: `/workspace/${data.project.workspace.id}/project/${data.project.id}`,
+                entity: data.project,
+              },
+              ...prev.notifications,
+            ],
+            unreadCount: prev.unreadCount + 1,
+          };
+        });
       });
-    });
 
-    eventSource.addEventListener('workspace-notification', (event) => {
-      const data: WorkspaceNotification = JSON.parse(event.data);
-      setState((prev) => {
-        return {
-          notifications: [
-            {
-              ...data,
-              type: EntityType.WORKSPACE,
-              url: `/workspace/${data.workspace.id}`,
-              entity: data.workspace,
-            },
-            ...prev.notifications,
-          ],
-          unreadCount: prev.unreadCount + 1,
-        };
+      eventSource.addEventListener('workspace-notification', (event) => {
+        const data: WorkspaceNotification = JSON.parse(event.data);
+        setState((prev) => {
+          return {
+            notifications: [
+              {
+                ...data,
+                type: EntityType.WORKSPACE,
+                url: `/workspace/${data.workspace.id}`,
+                entity: data.workspace,
+              },
+              ...prev.notifications,
+            ],
+            unreadCount: prev.unreadCount + 1,
+          };
+        });
       });
-    });
 
-    eventSource.onerror = (error) => {
-      console.error('EventSource failed:', error);
-    };
-    return () => {
-      eventSource.close();
-    };
-  }, []);
+      eventSource.onerror = (error) => {
+        console.error('EventSource failed:', error);
+      };
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [globalState.token]);
 
   return (
     <NotificationContext.Provider value={{ state, setState }}>

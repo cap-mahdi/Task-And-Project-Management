@@ -22,7 +22,7 @@ export function Project() {
   return (
     <MainLayout
       sectionsData={{
-        sectionTitle: 'Project',
+        sectionTitle: projectState.project?.name || 'Project',
         sections: [
           {
             title: 'Overview',
