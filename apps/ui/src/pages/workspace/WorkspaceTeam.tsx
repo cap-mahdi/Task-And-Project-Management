@@ -7,11 +7,19 @@ import { Avatar, Box, Card, Typography } from '@mui/material';
 import { GET_WORKSPACE_USERS } from '../../services/workspace/workspaceQueries';
 import { AddUserToWorkspace } from '../../components/AddUserToWorkspace';
 import useAppContext from '../../context/useAppContext';
+import { WorkspaceRole } from '../../__generated__/graphql';
 
 export function WorkspaceTeam(props) {
   const { workspaceId } = useParams();
   const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_WORKSPACE_USERS, false);
+
+  const workspaceRoleMapper: Record<WorkspaceRole, string> = {
+    [WorkspaceRole.WorkspaceAdmin]: 'Admin',
+    [WorkspaceRole.WorkspaceEditor]: 'Editor',
+    [WorkspaceRole.WorkspaceMember]: 'Member',
+  };
+
 
   useEffect(() => {
     loadTeam({
@@ -59,6 +67,13 @@ export function WorkspaceTeam(props) {
                   <Typography>{workspaceUser.user.name}</Typography>
                 </Box>
                 <Typography sx={{}}>{workspaceUser.user.email}</Typography>
+                <Typography
+                  sx={{
+                    pl: '0.5rem',
+                  }}
+                >
+                  {workspaceRoleMapper[workspaceUser.role]}
+                </Typography>
               </Card>
             );
           })

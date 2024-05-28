@@ -141,9 +141,8 @@ export const AddUserToWorkspace: FC = () => {
                 minWidth: 120,
               }}
               onChange={(e) => {
-                setSelectedRole(
-                  WorkspaceRole[e.target.value as keyof typeof WorkspaceRole]
-                );
+                console.log('role', e.target.value);
+                setSelectedRole(e.target.value as WorkspaceRole);
               }}
               value={selectedRole}
             >

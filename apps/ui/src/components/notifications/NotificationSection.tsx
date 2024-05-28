@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -57,6 +57,7 @@ const status = [
 
 const NotificationSection = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -251,7 +252,14 @@ const NotificationSection = () => {
                   </Grid>
                   <Divider />
                   <CardActions sx={{ p: 1.25, justifyContent: 'center' }}>
-                    <Button size="small" disableElevation>
+                    <Button
+                      size="small"
+                      disableElevation
+                      onClick={() => {
+                        navigate('/app/notification');
+                        setOpen(false);
+                      }}
+                    >
                       View All
                     </Button>
                   </CardActions>
