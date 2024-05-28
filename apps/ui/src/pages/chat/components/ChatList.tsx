@@ -1,8 +1,7 @@
-import { Box } from '@mui/material';
+import { Box, InputAdornment, TextField } from '@mui/material';
 import { FC } from 'react';
 import { ChatHeader } from './ChatHeader';
 import { ContactList } from './ContactList';
-import { Search } from './Search';
 
 export const ChatList: FC = () => {
   return (
@@ -15,7 +14,6 @@ export const ChatList: FC = () => {
       }}
     >
       <ChatHeader />
-      <Search />
       <ContactList />
     </Box>
   );

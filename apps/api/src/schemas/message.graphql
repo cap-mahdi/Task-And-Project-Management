@@ -4,6 +4,7 @@ type Message {
   createdAt: Date!
   sender: User!
   room: Room!
+  deleteAt: Date
 }
 
 type Query {

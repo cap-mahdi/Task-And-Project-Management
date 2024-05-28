@@ -46,6 +46,7 @@ export class RoomResolver {
         id: room.id,
       },
       relations: ['messages'],
+      withDeleted: true,
     });
 
     return roomFound.messages;
