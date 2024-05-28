@@ -240,6 +240,7 @@ export interface Message {
     createdAt: Date;
     sender: User;
     room: Room;
+    deletedAt?: Nullable<Date>;
 }
 
 export interface Milestone {

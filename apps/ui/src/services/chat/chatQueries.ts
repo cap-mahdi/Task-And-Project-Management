@@ -32,6 +32,7 @@ export const GET_MESSAGES = gql`
         id
         content
         createdAt
+        deletedAt
         sender {
           id
           name

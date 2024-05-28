@@ -29,28 +29,6 @@ export class EventsGateway implements OnModuleInit {
     });
   }
 
-  // You can listen to this event
-  // Client can send message to me by using the message key/event name
-  // @SubscribeMessage('message')
-  // newMessage(
-  //   @MessageBody()
-  //   data: any
-  // ): Observable<WsResponse<any>> {
-  //   //1
-  //   console.log('Message is receieved from the client');
-  //   console.log(data);
-  //   return of({ event: 'message', data: 'Returned from the servery' });
-  // }
-  // @SubscribeMessage('login')
-  // login(
-  //   @MessageBody()
-  //   data: any,
-  //   @ConnectedSocket() client: any
-  // ): Observable<WsResponse<any>> {
-  //   console.log(data);
-  //   return of({ event: 'login', data: 'Returned from the servery' });
-  // }
-
   @SubscribeMessage('leaveroom')
   leaveRoom(
     @MessageBody()
@@ -85,8 +63,8 @@ export class EventsGateway implements OnModuleInit {
     data: any
   ) {
     //2
-    console.log('sendmessage');
-    console.log(data);
+    // console.log('sendmessage');
+    // console.log(data);
     const newData = await this.messageservice.createMessage(
       data.message,
       data.roomId,
@@ -94,5 +72,18 @@ export class EventsGateway implements OnModuleInit {
     );
     this.server.to(data.roomId).emit('receivemessage', newData);
     return of({ event: 'sendmessage', data: 'Returned from the servery' });
+  }
+
+  @SubscribeMessage('deletemessage')
+  async deleteMessage(
+    @MessageBody()
+    id: any
+  ) {
+    console.log('deletemessage', id);
+    const roomId = await this.messageservice.getMessageRoom(id);
+    await this.messageservice.SoftDeleteMessage(id);
+    this.server.to(roomId).emit('deletemessage', id);
+
+    return of({ event: 'deletemessage', data: 'Returned from the servery' });
   }
 }
