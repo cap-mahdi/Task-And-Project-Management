@@ -12,7 +12,7 @@ export interface TasksProps {
 }
 export const Tasks = ({ intialData }: TasksProps) => {
   console.log('intialData', intialData);
-  const [updateTask] = useCustomMutation(UPDATE_TASK_STATUS, true);
+  const [updateTask] = useCustomMutation(UPDATE_TASK_STATUS, false);
   const [state, setState] = useState<TasksDataType>(intialData);
   console.log('data', state);
   const onDragEnd = useCallback(

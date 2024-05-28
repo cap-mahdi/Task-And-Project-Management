@@ -55,7 +55,7 @@ export const AddUserToProject: FC = () => {
 
   const [getAllProjectUsers, { data }] = useCustomLazyQuery(
     GET_ALL_WORKSPACE_MEMBERS_NOT_IN_PROJECT(projectId),
-    true
+    false
   );
   const [addUsersToProject, { data: dataAdd }] = useCustomMutation(
     ADD_USERS_TO_PROJECT,

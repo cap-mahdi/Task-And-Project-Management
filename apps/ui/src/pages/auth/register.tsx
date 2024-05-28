@@ -67,7 +67,7 @@ const RegisterCard = () => {
     });
   };
 
-  const [createLoginRequest] = useCustomMutation(SignupRequest, true);
+  const [createLoginRequest] = useCustomMutation(SignupRequest, false);
 
   return (
     <Card

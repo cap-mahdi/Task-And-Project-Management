@@ -14,10 +14,10 @@ import useProjectContext from '../../../context/useProjectContext';
 
 export const ContactList: FC = () => {
   const params = useParams();
-  const [loadChat, chatItems] = useCustomLazyQuery(GET_CHAT, true);
+  const [loadChat, chatItems] = useCustomLazyQuery(GET_CHAT, false);
   const socket = useContext(SocketContext);
   const [projectState, setProjectState] = useProjectContext();
-  const [getmessages, { data }] = useCustomLazyQuery(GET_MESSAGES, true);
+  const [getmessages, { data }] = useCustomLazyQuery(GET_MESSAGES, false);
 
   function ChangeCurrentChat(chat: any) {
     if (projectState?.currentChat?.id === chat.id) return;

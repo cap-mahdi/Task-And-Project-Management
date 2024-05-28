@@ -59,7 +59,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
   const [status, setStatus] = useState<Status>(firstStatus);
 
   const [loadProjects] = useCustomLazyQuery(GET_PROJECTS_WITH_WORKSPACE, false);
-  const [createTask, { data: addData }] = useCustomMutation(CREATE_TASK, true);
+  const [createTask, { data: addData }] = useCustomMutation(CREATE_TASK, false);
 
   useEffect(() => {
     loadProjects().then((res) => {

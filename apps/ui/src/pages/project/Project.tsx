@@ -9,7 +9,7 @@ import { GET_PROJECT_BY_ID } from '../../services/project/projectQueries';
 export function Project() {
   const { projectId } = useParams();
   const [projectState, setProjectState] = useProjectContext();
-  const [getProject, project] = useCustomLazyQuery(GET_PROJECT_BY_ID, true);
+  const [getProject, project] = useCustomLazyQuery(GET_PROJECT_BY_ID, false);
   console.log('Project ID STATETETETETETETET ', projectState);
   useEffect(() => {
     console.info('Project ID ', projectId);

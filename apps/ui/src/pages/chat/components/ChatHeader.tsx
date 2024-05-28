@@ -30,10 +30,10 @@ export const ChatHeader: FC = () => {
   const { projectId } = useParams();
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [createRoom, { loading }] = useCustomMutation(CREATE_CHAT, true);
+  const [createRoom, { loading }] = useCustomMutation(CREATE_CHAT, false);
   const [getUserPorjects, { data: userData }] = useCustomLazyQuery(
     GET_PROJECT_MEMBERS,
-    true
+    false
   );
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

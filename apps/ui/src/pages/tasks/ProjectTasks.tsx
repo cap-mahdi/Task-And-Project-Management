@@ -11,7 +11,7 @@ import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 export const ProjectTasks = () => {
   const [globalState, setGlobalState] = useAppContext();
 
-  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS);
+  const [getTasks, { loading }] = useCustomLazyQuery(GET_TASKS, false);
   const [tasks, setTasks] = useState([]);
   const { projectId } = useParams();
   useEffect(() => {
