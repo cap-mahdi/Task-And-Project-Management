@@ -60,7 +60,11 @@ export const MessageList: FC = () => {
       setProjectState((prevState) => {
         return {
           ...prevState,
-          messages: prevState.messages.filter((message) => message.id !== id),
+          messages: prevState.messages.map((message) => {
+            return message.id !== id
+              ? message
+              : { ...message, deletedAt: new Date() };
+          }),
         };
       });
     });
