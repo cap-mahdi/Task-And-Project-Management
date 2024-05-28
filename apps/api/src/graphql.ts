@@ -14,6 +14,11 @@ export enum Status {
     DONE = "DONE"
 }
 
+export enum Action {
+    ADD = "ADD",
+    REMOVE = "REMOVE"
+}
+
 export enum UserRole {
     ADMIN = "ADMIN",
     USER = "USER"
@@ -150,6 +155,26 @@ export interface UpdateWorkspaceInput {
     description?: Nullable<string>;
 }
 
+export interface ProjectNotification {
+    id: string;
+    actor: User;
+    recipient: User;
+    createdAt: Date;
+    project: Project;
+    action: Action;
+    read: boolean;
+}
+
+export interface WorkspaceNotification {
+    id: string;
+    actor: User;
+    recipient: User;
+    createdAt: Date;
+    Workspace: Workspace;
+    action: Action;
+    read: boolean;
+}
+
 export interface Comment {
     id: string;
     content: string;
@@ -215,6 +240,7 @@ export interface Message {
     createdAt: Date;
     sender: User;
     room: Room;
+    deletedAt?: Nullable<Date>;
 }
 
 export interface Milestone {

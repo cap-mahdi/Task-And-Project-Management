@@ -41,6 +41,8 @@ import { UserTaskModule } from '../user-task/user-task.module';
 import { CommentModule } from '../comment/comment.module';
 import { MessageModule } from '../message/message.module';
 import { sseModule } from '../sse/sse.module';
+import { ProjectNotifcationModule } from '../projectNotification/ProjectNotification.module';
+import { WorkspaceNotifcationModule } from '../workspaceNotification/workspaceNotification.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -101,7 +103,8 @@ import { sseModule } from '../sse/sse.module';
     sseModule,
 
     MessageModule,
-
+    ProjectNotifcationModule,
+    WorkspaceNotifcationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

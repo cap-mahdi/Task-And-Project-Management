@@ -23,6 +23,7 @@ import { CREATE_CHAT } from '../../../services/chat/chatMutation';
 import { GET_PROJECT_MEMBERS } from '../../../services/chat/chatQueries';
 import { useCustomLazyQuery } from '../../../hooks/useCustomLazyQuery';
 import { User } from '../../../__generated__/graphql';
+import useAppContext from '../../../context/useAppContext';
 
 export const ChatHeader: FC = () => {
   const [open, setOpen] = useState(false);
@@ -31,6 +32,7 @@ export const ChatHeader: FC = () => {
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [createRoom, { loading }] = useCustomMutation(CREATE_CHAT, false);
+  const [globalState] = useAppContext();
   const [getUserPorjects, { data: userData }] = useCustomLazyQuery(
     GET_PROJECT_MEMBERS,
     false
@@ -58,7 +60,17 @@ export const ChatHeader: FC = () => {
   }, []);
 
   useEffect(() => {
-    setUserList(userData?.project?.userProjects.map((user) => user.user));
+    // userData?.project?.userProjects.filter(
+    //   (user) => user.user.id !== globalState.user.id
+    // );
+    // console.log(userData?.project?.userProjects);
+    // console.log('enter here');
+
+    setUserList(
+      userData?.project?.userProjects
+        .filter((user) => user.user.id !== globalState.user.id)
+        .map((user) => user.user)
+    );
   }, [userData]);
 
   return (

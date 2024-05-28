@@ -40,7 +40,7 @@ export class UserService {
   async findOne(data: Partial<UserSchema>): Promise<UserSchema> {
     const user = await this.userRepository.findOne({
       where: { email: data.email },
-      select: { password: true, id: true, email: true, role: true },
+      select: { password: true, id: true, email: true, role: true, avatar: true },
     });
     if (!user) {
       throw new UnauthorizedException('Could not find user');

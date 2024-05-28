@@ -7,6 +7,7 @@ import { ProjectModule } from '../project/project.module';
 import { UserWorkspaceModule } from '../user-workspace/user-workspace.module';
 import { WorkspaceModule } from '../workspace/workspace.module';
 import { UserModule } from '../user/user.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from '../user/user.module';
     forwardRef(() => WorkspaceModule),
     forwardRef(() => ProjectModule),
     forwardRef(() => UserModule),
+    EventEmitterModule.forRoot(),
   ],
   providers: [UserProjectResolver, UserProjectService],
   exports: [UserProjectService],

@@ -11,6 +11,7 @@ import logo from '/public/logo.png';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import useAppContext from '../context/useAppContext';
 import PersonIcon from '@mui/icons-material/Person';
+import { NotificationSection } from './notifications';
 
 export function DashboardNavBar(props) {
   const [globalState] = useAppContext();
@@ -74,15 +75,7 @@ export function DashboardNavBar(props) {
             // backgroundColor: (theme) => theme.palette.blackPearl.main,
           }}
         >
-          <IoNotificationsOutline
-            style={{
-              color: '#000',
-
-              fontSize: '1.5rem',
-              marginRight: '0.8rem',
-            }}
-          />
-
+          <NotificationSection />
           <Avatar
             sx={{
               bgcolor: (theme) => theme.palette.acapulco.main,

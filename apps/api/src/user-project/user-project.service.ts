@@ -3,13 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectSchema, UserProjectSchema, UserSchema } from '../entities';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { ProjectRole } from '../graphql';
+import { use } from 'passport';
+import EventEmitter2 from 'eventemitter2';
 
 @Injectable()
 export class UserProjectService {
   constructor(
     @InjectRepository(UserProjectSchema)
-    private userProjectRepository: Repository<UserProjectSchema>
-  ) {}
+    private userProjectRepository: Repository<UserProjectSchema>,
+    private readonly eventEmitter: EventEmitter2
+  ) { }
 
   async find(options?: FindManyOptions<UserProjectSchema>) {
     return this.userProjectRepository.find(options);
@@ -76,15 +79,21 @@ export class UserProjectService {
   }
 
   async addUserToProject(
-    user: UserSchema,
+    userToAdd: UserSchema,
     project: ProjectSchema,
-    role: ProjectRole
+    role: ProjectRole,
+    user: UserSchema
   ): Promise<UserProjectSchema> {
-    return this.userProjectRepository.save({
-      user: user,
+    const userProject = await this.userProjectRepository.save({
+      user: userToAdd,
       project: project,
       role,
     });
+    console.log('userProject to be added', userProject);
+    if (userToAdd.id !== user.id) {
+      this.eventEmitter.emit('user.project.added', { userProject, user });
+    }
+    return userProject;
   }
 
   async softRemove(
