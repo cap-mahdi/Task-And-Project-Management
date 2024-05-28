@@ -42,10 +42,12 @@ export function SideBar({ toolbarSize }) {
   const workspaceRef = useRef(null);
 
   useEffect(() => {
-    console.log('workspace', workspaceItems);
-
     loadWorkspace();
-  }, [globalState.events['CREATE_WORKSPACE'], loadWorkspace]);
+  }, [
+    globalState.events['CREATE_WORKSPACE'],
+    globalState.events['CREATE_PROJECT'],
+    loadWorkspace,
+  ]);
 
   useEffect(() => {
     if (workspaceItems?.data) {
@@ -58,6 +60,9 @@ export function SideBar({ toolbarSize }) {
   const handleMenuClick = (e: MouseEvent, details: any) => {
     setSelectedMenu(details.text);
   };
+  let workspaces = workspaceItems?.data?.workspaces
+    ? [...workspaceItems?.data?.workspaces]
+    : [];
 
   return (
     <>
@@ -172,9 +177,11 @@ export function SideBar({ toolbarSize }) {
             </Box>
           </Box>
           {workspaceItems?.data
-            ? workspaceItems?.data?.workspaces?.map((workspace: any) => {
-                return <NestedList data={workspace} key={uuidv4()} />;
-              })
+            ? workspaces
+                .sort((a: any, b: any) => a.name.localeCompare(b.name))
+                ?.map((workspace: any) => {
+                  return <NestedList data={workspace} key={uuidv4()} />;
+                })
             : ''}
         </Box>
       </Drawer>

@@ -69,8 +69,7 @@ export const onDragEndHandler = (
     ...destinationCol,
     taskIds: endTaskIds,
   };
-  console.log('newEndCol', newEndCol);
-  console.log('removed', removed);
+
   updateTask({
     variables: {
       id: removed,

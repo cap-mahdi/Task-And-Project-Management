@@ -15,8 +15,6 @@ export function Sprint() {
   );
   useEffect(() => {
     if (sprintItem?.data) {
-      console.log('sprintItem', sprintItem?.data?.milestone);
-
       setSprintState({ data: sprintItem?.data?.milestone });
     }
   }, [sprintItem.data]);

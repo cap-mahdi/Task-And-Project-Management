@@ -3,7 +3,6 @@ import { Status, Task } from '../../__generated__/graphql';
 import { TaskType, TasksDataType } from './types';
 
 export const taksMapper = (intialTasks: Task[]): TasksDataType => {
-  console.log('intialTasks', intialTasks);
   const tasks = intialTasks.reduce((acc, task) => {
     acc[task.id] = {
       id: task.id,
@@ -39,12 +38,9 @@ export const taksMapper = (intialTasks: Task[]): TasksDataType => {
       id: 'column-3',
       title: 'Done',
       taskIds: intialTasks
-        .filter((task) => task.status === Status.
-      DONE)
+        .filter((task) => task.status === Status.DONE)
         .map((task) => task.id),
-      status: Status.
-      DONE,
-
+      status: Status.DONE,
     },
   };
 

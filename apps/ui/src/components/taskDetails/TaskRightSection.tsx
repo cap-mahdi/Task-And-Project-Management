@@ -20,14 +20,11 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   );
 
   useEffect(() => {
-    console.log('task id: ', taskId);
-
     // getComments({
     //   variables: {
     //     taskID: taskId,
     //   },
     // }).then((data) => {
-    //   console.log('resultt: ', data);
     //   const newData = { ...data.comments, name: data.user.name };
     //   setComments(newData);
     // });
@@ -37,11 +34,11 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         id: comment.id,
         content: comment.content,
         user: comment.user.name,
+        userAvatar: comment.user.avatar,
       }));
       setComments(fetchedComments);
     });
 
-    console.log('link', `http://localhost:3000/api/task/${taskId}/sse`);
     const eventSource = new EventSource(
       `http://localhost:3000/api/task/${taskId}/sse`
     );
@@ -59,7 +56,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
       };
       setComments((prev) => {
         const updatedComments = [...prev, newComment];
-        console.log('created comments', updatedComments);
         return updatedComments;
       });
     });
@@ -72,7 +68,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         const updatedComments = prev.filter(
           (comment) => comment.id !== data.id
         );
-        console.log('deleted comments', updatedComments);
         return updatedComments;
       });
     });
@@ -87,7 +82,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
             ? { ...comment, content: data.content }
             : comment
         );
-        console.log('edited comments', updatedComments);
         return updatedComments;
       });
     });

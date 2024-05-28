@@ -44,9 +44,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
   >(undefined);
   const [emitCreateTask] = useEvent(['CREATE_TASK']);
 
-  console.log('selectedProjectIndex', selectedProjectIndex);
-  console.log('projects', projects);
-
   const [selectedMilestoneIndex, setSelectedMilestoneIndex] = useState<
     number | undefined
   >(undefined);
@@ -69,7 +66,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
 
   useEffect(() => {
     if (addData) {
-      console.log('addData', addData);
       emitCreateTask();
     }
   }, [addData]);
@@ -125,10 +121,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
           ) {
             return;
           }
-          console.log(
-            'assignees to send',
-            assignees.map((a) => a.id)
-          );
+
           createTask({
             variables: {
               input: {
@@ -204,14 +197,12 @@ export const TaskDialog: FC<TaskDialogProps> = ({
               variant="standard"
               value={tag}
               onKeyDown={(event) => {
-                console.log('tag', tag);
                 if (event.key === 'Enter') {
                   const trimmedTag = tag.trim();
                   if (!trimmedTag || tags.includes(trimmedTag)) {
                     setTag('');
                     return;
                   }
-                  console.log('trimmedTag', trimmedTag);
                   setTags((prev) => [...prev, trimmedTag]);
                   setTag('');
                 } else {
@@ -290,12 +281,10 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                   }}
                   id="milestone"
                   renderValue={(value) => {
-                    console.log('value here', value);
                     return projects[selectedProjectIndex]?.milestones[value]
                       ?.name;
                   }}
                   onChange={(event) => {
-                    console.log('event.target.value', event.target.value);
                     setSelectedMilestoneIndex(Number(event.target.value));
                   }}
                 >
@@ -333,7 +322,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                     );
                   }}
                   renderOption={(params, options) => {
-                    console.log('options', options);
                     return (
                       <Box
                         {...params}

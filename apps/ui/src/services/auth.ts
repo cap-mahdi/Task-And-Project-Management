@@ -50,13 +50,10 @@ import { useCustomLazyQuery } from '../hooks/useCustomLazyQuery';
 // `;
 
 export const useUser = () => {
-  console.log('HEEEEREE');
   const { data, error, loading } = useCustomLazyQuery(
     getConnectedUserRequest,
     false
   );
-  console.log('data', data);
-  console.log('data', data?.getConnectedUser);
 
   //   return { user: data?.getConnectedUser, error, isLoading: loading };
   // };

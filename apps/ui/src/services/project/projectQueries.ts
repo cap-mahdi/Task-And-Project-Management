@@ -22,6 +22,7 @@ export const GET_PROJECT_USERS = gql`
         id
         name
         email
+        avatar
       }
 
       role

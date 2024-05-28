@@ -3,7 +3,6 @@ import React from 'react';
 import { theme } from '../theme';
 
 export function Comment({ name, content }) {
-  console.log('name', name, 'content', content);
   return (
     <Box
       sx={{
@@ -21,6 +20,9 @@ export function Comment({ name, content }) {
           height: '2.5rem',
           fontSize: '140%',
         }}
+        // src={
+        //   content.
+        // }
         // src={src}
       >
         N

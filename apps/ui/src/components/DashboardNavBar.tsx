@@ -85,7 +85,7 @@ export function DashboardNavBar(props) {
             }}
             src={globalState.user?.avatar || <PersonIcon />}
           >
-            DDDZJKDNJZ
+            {globalState.user?.name[0].toUpperCase()}
           </Avatar>
         </Toolbar>
       </AppBar>

@@ -41,10 +41,9 @@ export const InputChat: FC = () => {
       onSubmit={sendMessage}
     >
       <IconButton>
-        <Avatar
-          alt="Remy Sharp"
-          src="https://api.dicebear.com/8.x/micah/svg?backgroundColor=b6e3f4,c0aede,d1d4f9"
-        />
+        <Avatar alt="Remy Sharp" src={globalState.user.avatar}>
+          {globalState.user.name[0].toUpperCase()}{' '}
+        </Avatar>
       </IconButton>
       <InputBase
         sx={{

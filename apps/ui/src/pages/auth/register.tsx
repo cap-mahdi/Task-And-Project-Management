@@ -57,12 +57,10 @@ const RegisterCard = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const onSubmitForm = (data: RegisterType) => {
     // const { email, password, name, confirmPassword } = data;
-    console.log('register data ', data);
     Client.post({
       request: createLoginRequest,
       data: data,
     }).then((res) => {
-      console.log('from Signup', res);
       setToken(res.data.createPost.accessToken);
     });
   };

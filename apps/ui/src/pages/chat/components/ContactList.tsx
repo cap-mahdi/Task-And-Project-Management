@@ -14,9 +14,9 @@ import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../../context/useSocketContext';
 import useProjectContext from '../../../context/useProjectContext';
 import SearchIcon from '@mui/icons-material/Search';
+import useAppContext from '../../../context/useAppContext';
 
 export const ContactList: FC = () => {
-  console.log('ContactList');
   const params = useParams();
   const [loadChat, chatItems] = useCustomLazyQuery(GET_CHAT, false);
   const [users, setUsers] = useState([]);
@@ -24,6 +24,15 @@ export const ContactList: FC = () => {
   const [projectState, setProjectState] = useProjectContext();
   const [getmessages, { data }] = useCustomLazyQuery(GET_MESSAGES, false);
   const [search, setSearch] = useState('');
+  const [globalState] = useAppContext();
+
+  useEffect(() => {
+    loadChat({
+      variables: {
+        projectId: params?.projectId,
+      },
+    });
+  }, [globalState.events.CREATE_ROOM]);
 
   function handleSearch(event: any) {
     setSearch(event.target.value);
@@ -73,8 +82,6 @@ export const ContactList: FC = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('data messages', data.room.messages);
-
       const Message = data.room.messages.map((message: any) => {
         return {
           id: message.id,

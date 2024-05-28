@@ -8,7 +8,6 @@ import useAppContext from '../../context/useAppContext';
 
 export function Workspace(props: any) {
   const params = useParams();
-  console.log('params from workspace', params);
   const [workspaceState, setWorkspaceState] = useWorkspaceContext();
   const [globalState, setGlobalState] = useAppContext();
 
@@ -27,8 +26,6 @@ export function Workspace(props: any) {
   }, [workspaceItems.data]);
   useEffect(() => {
     if (params.workspaceId) {
-      console.log('refired');
-
       loadWorkspace();
     }
   }, [params, loadWorkspace, globalState.events['CREATE_PROJECT']]);
