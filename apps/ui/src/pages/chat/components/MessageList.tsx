@@ -113,6 +113,10 @@ export const MessageList: FC = () => {
         };
       });
     });
+
+    return () => {
+      socket.off('receivemessage');
+    };
   }, []);
 
   return (
