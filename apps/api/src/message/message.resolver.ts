@@ -12,6 +12,7 @@ export class MessageResolver {
       where: {
         id: message.id,
       },
+      withDeleted: true,
       relations: ['sender'],
     });
     return messageFound.sender;

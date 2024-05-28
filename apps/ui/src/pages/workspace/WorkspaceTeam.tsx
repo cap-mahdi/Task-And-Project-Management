@@ -11,7 +11,7 @@ import useAppContext from '../../context/useAppContext';
 export function WorkspaceTeam(props) {
   const { workspaceId } = useParams();
   const [globalState] = useAppContext();
-  const [loadTeam, { data }] = useCustomLazyQuery(GET_WORKSPACE_USERS, true);
+  const [loadTeam, { data }] = useCustomLazyQuery(GET_WORKSPACE_USERS, false);
   //   console.log('teamItems', teamItems);
 
   useEffect(() => {

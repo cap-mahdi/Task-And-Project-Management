@@ -30,6 +30,7 @@ export class RoomResolver {
 
   @Query('room')
   async room(@Args('id') id: string): Promise<RoomSchema> {
+    console.log('room ena lennnaAAAAAAAAAAAA');
     const room = await this.roomService.findOne({
       where: {
         id,
@@ -40,14 +41,7 @@ export class RoomResolver {
 
   @ResolveField('messages')
   async messages(@Parent() room: RoomSchema): Promise<MessageSchema[]> {
-    console.log(room);
-    const roomFound = await this.roomService.findOne({
-      where: {
-        id: room.id,
-      },
-      relations: ['messages'],
-    });
-
-    return roomFound.messages;
+    console.log('room ena lennnhhhhhhhhhhha', room);
+    return this.roomService.getMessages(room.id);
   }
 }

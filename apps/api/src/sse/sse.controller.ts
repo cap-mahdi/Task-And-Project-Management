@@ -8,7 +8,10 @@ import { AuthGuard } from "@nestjs/passport";
 
 @Controller()
 @UseGuards(AuthGuard('jwt'))
+<<<<<<< HEAD
 //every path shoud end with /sse
+=======
+>>>>>>> d46d823721bbda71b973678bbad36a6f4eaa8701
 export class sseController {
     constructor(private readonly sseService: sseService) { }
     @Sse('task/:taskId/sse')
