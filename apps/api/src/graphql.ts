@@ -165,26 +165,9 @@ export interface ProjectNotification {
     read: boolean;
 }
 
-export interface WorkspaceNotification {
-    id: string;
-    actor: User;
-    recipient: User;
-    createdAt: Date;
-    Workspace: Workspace;
-    action: Action;
-    read: boolean;
-}
-
-export interface Comment {
-    id: string;
-    content: string;
-    createdAt: Date;
-    updatedAt: Date;
-    user: User;
-    task: Task;
-}
-
 export interface IQuery {
+    projectNotifications(): ProjectNotification[] | Promise<ProjectNotification[]>;
+    workspaceNotifications(): WorkspaceNotification[] | Promise<WorkspaceNotification[]>;
     comments(taskId: string): Comment[] | Promise<Comment[]>;
     messages(roomId: string): Message[] | Promise<Message[]>;
     milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
@@ -209,6 +192,8 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    markProjectNotificationAsRead(id: string): ProjectNotification | Promise<ProjectNotification>;
+    markWorkspaceNotificationAsRead(id: string): WorkspaceNotification | Promise<WorkspaceNotification>;
     createComment(input: CreateCommentInput): Comment | Promise<Comment>;
     deleteComment(id: string): Comment | Promise<Comment>;
     editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
@@ -232,6 +217,25 @@ export interface IMutation {
     addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
     createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
     updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+}
+
+export interface WorkspaceNotification {
+    id: string;
+    actor: User;
+    recipient: User;
+    createdAt: Date;
+    workspace: Workspace;
+    action: Action;
+    read: boolean;
+}
+
+export interface Comment {
+    id: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: User;
+    task: Task;
 }
 
 export interface Message {

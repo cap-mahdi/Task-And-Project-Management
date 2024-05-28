@@ -48,6 +48,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
 
     eventSource.addEventListener('create-comment', (event) => {
       const data = JSON.parse(event.data);
+      console.log('create-comment', data);
       const newComment = {
         id: data.id,
         content: data.content,
@@ -61,6 +62,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
 
     eventSource.addEventListener('delete-comment', (event) => {
       const data = JSON.parse(event.data);
+      console.log('delete-comment', data);
 
       setComments((prev) => {
         const updatedComments = prev.filter(
@@ -72,6 +74,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
 
     eventSource.addEventListener('edit-comment', (event) => {
       const data = JSON.parse(event.data);
+      console.log('edit-comment', data);
 
       setComments((prev) => {
         const updatedComments = prev.map((comment) =>
@@ -127,13 +130,12 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         <Comment src="https://img.freepik.com/photos-premium/logo-avatar-jeu-dessin-anime-pour-marque-jeux_902820-467.jpg" />
         <Comment />
         <Comment /> */}
-        {comments.map((comment) => (
-          <Comment
-            content={comment?.content}
-            name={comment?.user}
-            avatar={comment?.userAvatar}
-          />
-        ))}
+        {comments.map(
+          (comment) => (
+            console.log('comment', comment),
+            (<Comment content={comment?.content} name={comment?.user} />)
+          )
+        )}
       </Box>
 
       <AddComment taskID={taskId} />

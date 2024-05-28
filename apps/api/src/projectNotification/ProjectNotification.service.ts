@@ -10,12 +10,19 @@ import { Action } from '../graphql';
 
 @Injectable()
 export class ProjectNotificationService {
+
     constructor(
         @InjectRepository(ProjectNotificationSchema)
         private readonly projectNotificationRepository: Repository<ProjectNotificationSchema>,
         private readonly eventEmitter: EventEmitter2
 
     ) { }
+
+    async markProjectNotificationAsRead(id: string) {
+        const projectNotification = await this.projectNotificationRepository.findOne({ where: { id } });
+        projectNotification.read = true;
+        return this.projectNotificationRepository.save(projectNotification);
+    }
 
     @OnEvent('user.project.added')
     async handleUserProjectAdd({ userProject, user }: { userProject: UserProjectSchema, user: UserSchema }) {
