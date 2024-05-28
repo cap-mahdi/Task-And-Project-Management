@@ -23,15 +23,15 @@ import { useParams } from 'react-router-dom';
 import useEvent from '../hooks/useEvent';
 
 const workspaceRoleMapper: Record<WorkspaceRole, string> = {
-  [WorkspaceRole.WORKSPACE_ADMIN]: 'Admin',
-  [WorkspaceRole.WORKSPACE_EDITOR]: 'Editor',
-  [WorkspaceRole.WORKSPACE_MEMBER]: 'Member',
+  [WorkspaceRole.WorkspaceAdmin]: 'Admin',
+  [WorkspaceRole.WorkspaceEditor]: 'Editor',
+  [WorkspaceRole.WorkspaceMember]: 'Member',
 };
 
 export const AddUserToWorkspace: FC = () => {
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<WorkspaceRole>(
-    WorkspaceRole.WORKSPACE_MEMBER
+    WorkspaceRole.WorkspaceMember
   );
   const { workspaceId } = useParams();
   const [selectedUser, setSelectedUser] = useState<string>('');

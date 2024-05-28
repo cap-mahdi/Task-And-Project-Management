@@ -9,7 +9,12 @@ import { UserSchema } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserInputDto } from './createUser.dto';
 import * as bcrypt from 'bcryptjs';
-import { ChangePasswordInput, GetUserInput, UpdateUserInput, UserRole } from '../graphql';
+import {
+  ChangePasswordInput,
+  GetUserInput,
+  UpdateUserInput,
+  UserRole,
+} from '../graphql';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Injectable()
@@ -18,7 +23,7 @@ export class UserService {
     @InjectRepository(UserSchema)
     private userRepository: Repository<UserSchema>,
     private readonly cloudinaryService: CloudinaryService
-  ) { }
+  ) {}
   async create(userDTO: CreateUserInputDto): Promise<UserSchema> {
     if (userDTO.password != userDTO.confirmPassword) {
       throw new BadRequestException('Not matched Passwords');
@@ -40,7 +45,7 @@ export class UserService {
   async findOne(data: Partial<UserSchema>): Promise<UserSchema> {
     const user = await this.userRepository.findOne({
       where: { email: data.email },
-      select: { password: true, id: true, email: true, role: true, avatar: true },
+      select: { password: true, id: true, email: true, role: true },
     });
     if (!user) {
       throw new UnauthorizedException('Could not find user');
@@ -91,7 +96,8 @@ export class UserService {
     const foundUser = await this.userRepository.findOne({
       where: {
         userWorkspaces: { id: userWorkspaceId },
-      }, relations: ['userWorkspaces'],
+      },
+      relations: ['userWorkspaces'],
     });
     if (!foundUser) {
       throw new NotFoundException('User not found');
@@ -100,48 +106,70 @@ export class UserService {
   }
 
   async updateUser(userId: string, user: UpdateUserInput): Promise<UserSchema> {
-    const userToUpdate = await this.userRepository.findOne({ where: { id: userId } })
+    const userToUpdate = await this.userRepository.findOne({
+      where: { id: userId },
+    });
     if (!userToUpdate) {
-      throw new BadRequestException('User not found')
+      throw new BadRequestException('User not found');
     }
-    const updatedUser = await this.userRepository.save({ ...userToUpdate, ...user })
-    return updatedUser
+    const updatedUser = await this.userRepository.save({
+      ...userToUpdate,
+      ...user,
+    });
+    return updatedUser;
   }
 
   async deleteUser(userId: string): Promise<UserSchema> {
     const deletedUser = await this.userRepository.softDelete(userId);
     if (!deletedUser.affected) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('User not found');
     }
-    return deletedUser.raw[0]
+    return deletedUser.raw[0];
   }
 
-  async changePassword(userId: string, changePasswordInput: ChangePasswordInput): Promise<UserSchema> {
-    const userToUpdate = await this.userRepository.findOne({ where: { id: userId } })
+  async changePassword(
+    userId: string,
+    changePasswordInput: ChangePasswordInput
+  ): Promise<UserSchema> {
+    const userToUpdate = await this.userRepository.findOne({
+      where: { id: userId },
+    });
     if (!userToUpdate) {
-      throw new BadRequestException('User not found')
+      throw new BadRequestException('User not found');
     }
-    if (changePasswordInput.newPassword !== changePasswordInput.confirmPassword) {
-      throw new BadRequestException('Passwords do not match')
+    if (
+      changePasswordInput.newPassword !== changePasswordInput.confirmPassword
+    ) {
+      throw new BadRequestException('Passwords do not match');
     }
-    const isMatch = await bcrypt.compare(changePasswordInput.oldPassword, userToUpdate.password)
+    const isMatch = await bcrypt.compare(
+      changePasswordInput.oldPassword,
+      userToUpdate.password
+    );
     if (!isMatch) {
-      throw new BadRequestException('Old password is incorrect')
+      throw new BadRequestException('Old password is incorrect');
     }
     const salt = await bcrypt.genSalt();
-    const updatedUser = await this.userRepository.save({ ...userToUpdate, password: await bcrypt.hash(changePasswordInput.newPassword, salt) })
-    return updatedUser
+    const updatedUser = await this.userRepository.save({
+      ...userToUpdate,
+      password: await bcrypt.hash(changePasswordInput.newPassword, salt),
+    });
+    return updatedUser;
   }
 
   async changeUserAvatar(userId: string, file): Promise<UserSchema> {
-    const userToUpdate = await this.userRepository.findOne({ where: { id: userId } })
+    const userToUpdate = await this.userRepository.findOne({
+      where: { id: userId },
+    });
     if (!userToUpdate) {
-      throw new BadRequestException('User not found')
+      throw new BadRequestException('User not found');
     }
-    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file)
-    const updatedUser = await this.userRepository.save({ ...userToUpdate, avatar: cloudinaryResponse.secure_url })
-    delete updatedUser.password
-    return updatedUser
+    const cloudinaryResponse = await this.cloudinaryService.uploadFile(file);
+    const updatedUser = await this.userRepository.save({
+      ...userToUpdate,
+      avatar: cloudinaryResponse.secure_url,
+    });
+    delete updatedUser.password;
+    return updatedUser;
   }
-
 }

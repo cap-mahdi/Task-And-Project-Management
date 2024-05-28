@@ -14,8 +14,7 @@ import { TaskRightSection } from './TaskRightSection';
 import { SxPropsObject } from '../../utils/SxPropsObject';
 import { Task } from '../../__generated__/graphql';
 import { TaskType } from '../../pages/tasks/types';
-import moment from 'moment';
-import { DateTime } from 'luxon';
+import { dateToAgo } from '../../utils/dateToAgoHelper';
 
 interface TaskDetailsProps {
   task: TaskType;
@@ -295,12 +294,7 @@ function TaskHeader({ task }: TaskHeaderProps) {
         <Box sx={styles.timeWrapper}>
           <BsClock />
           <Typography sx={{ fontSize: '80%' }}>
-            {moment(
-              DateTime.fromJSDate(new Date(task.createdAt)).toFormat(
-                'yyyyMMddhhmmss'
-              ),
-              'YYYYMMDDHHmmss'
-            ).fromNow()}
+            {dateToAgo(task.createdAt)}
           </Typography>
         </Box>
       </Box>

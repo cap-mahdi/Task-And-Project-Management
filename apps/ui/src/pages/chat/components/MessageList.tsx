@@ -13,6 +13,7 @@ import { SocketContext } from '../../../context/useSocketContext';
 import useProjectContext from '../../../context/useProjectContext';
 import useAppContext from '../../../context/useAppContext';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { dateToAgo } from '../../../utils/dateToAgoHelper';
 
 export const MessageList: FC = () => {
   const styles: SxPropsObject = {
@@ -54,7 +55,6 @@ export const MessageList: FC = () => {
         };
       });
     });
-
     const e2 = socket.on('deletemessage', (id) => {
       setProjectState((prevState) => {
         return {
@@ -98,7 +98,10 @@ export const MessageList: FC = () => {
                           src={message.sender.avatar}
                         />
                       </ListItemAvatar>
-                      <Tooltip title={message.createdAt} placement="right">
+                      <Tooltip
+                        title={dateToAgo(message.createdAt)}
+                        placement="right"
+                      >
                         <ListItemText
                           sx={{
                             ...styles.cnvBox,
@@ -129,7 +132,10 @@ export const MessageList: FC = () => {
                           </Button>
                         )}
                       </ListItemAvatar>
-                      <Tooltip title={message.createdAt} placement="left">
+                      <Tooltip
+                        title={dateToAgo(message.createdAt)}
+                        placement="left"
+                      >
                         <ListItemText
                           secondary={
                             message.deletedAt

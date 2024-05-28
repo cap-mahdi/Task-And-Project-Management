@@ -65,8 +65,6 @@ export const ChatHeader: FC = () => {
     // userData?.project?.userProjects.filter(
     //   (user) => user.user.id !== globalState.user.id
     // );
-    // console.log(userData?.project?.userProjects);
-    // console.log('enter here');
 
     setUserList(
       userData?.project?.userProjects

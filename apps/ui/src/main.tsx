@@ -9,6 +9,7 @@ import { theme } from './theme';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SocketProvider } from './context/useSocketContext';
+import { NotificationProvider } from './context/useNotificationsContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -19,10 +20,12 @@ root.render(
   <ApolloProvider client={Client}>
     <ThemeProvider theme={theme}>
       <AppProvider>
-        <ToastContainer />
-        <SocketProvider>
-          <App />
-        </SocketProvider>
+        <NotificationProvider>
+          <ToastContainer />
+          <SocketProvider>
+            <App />
+          </SocketProvider>
+        </NotificationProvider>
       </AppProvider>
     </ThemeProvider>
   </ApolloProvider>

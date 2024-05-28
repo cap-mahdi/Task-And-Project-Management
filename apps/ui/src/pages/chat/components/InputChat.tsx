@@ -41,8 +41,8 @@ export const InputChat: FC = () => {
       onSubmit={sendMessage}
     >
       <IconButton>
-        <Avatar alt="Remy Sharp" src={globalState.user.avatar}>
-          {globalState.user.name[0].toUpperCase()}{' '}
+        <Avatar alt="Remy Sharp" src={globalState.user?.avatar}>
+          {globalState.user?.name[0].toUpperCase()}{' '}
         </Avatar>
       </IconButton>
       <InputBase

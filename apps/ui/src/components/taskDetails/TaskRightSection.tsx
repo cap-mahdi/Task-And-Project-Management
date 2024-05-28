@@ -7,12 +7,15 @@ import { GET_COMMENTS } from '../../services/comment/commentQueries';
 import { set } from 'react-hook-form';
 import { useCustomMutation } from '../../hooks/useCustomMutation';
 import { CREATE_COMMENT } from '../../services/comment/commentMutation';
+import useAppContext from '../../context/useAppContext';
 
 interface TaskRightSectionProps {
   taskId: string;
 }
 
 export function TaskRightSection({ taskId }: TaskRightSectionProps) {
+  const [globalState] = useAppContext();
+
   const [comments, setComments] = React.useState([]);
   const [getComments, { data, loading, error }] = useCustomLazyQuery(
     GET_COMMENTS,
@@ -40,19 +43,17 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     });
 
     const eventSource = new EventSource(
-      `http://localhost:3000/api/task/${taskId}/sse`
+      `http://localhost:3000/api/task/${taskId}/sse?token=${globalState.token}`
     );
-    eventSource.onopen = () => {
-      console.log('EventSource connected');
-    };
+    eventSource.onopen = () => {};
 
     eventSource.addEventListener('create-comment', (event) => {
       const data = JSON.parse(event.data);
-      console.log('create-comment', data);
       const newComment = {
         id: data.id,
         content: data.content,
         user: data.user.name,
+        userAvatar: data.user.avatar,
       };
       setComments((prev) => {
         const updatedComments = [...prev, newComment];
@@ -62,7 +63,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
 
     eventSource.addEventListener('delete-comment', (event) => {
       const data = JSON.parse(event.data);
-      console.log('delete-comment', data);
+      'delete-comment', data;
 
       setComments((prev) => {
         const updatedComments = prev.filter(
@@ -74,7 +75,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
 
     eventSource.addEventListener('edit-comment', (event) => {
       const data = JSON.parse(event.data);
-      console.log('edit-comment', data);
 
       setComments((prev) => {
         const updatedComments = prev.map((comment) =>
@@ -97,7 +97,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   // useEffect(() => {
   //   if (data && data.user && data.comments) {
   //     // data.userId = data.user.id;
-  //     console.log('data now: ', data);
   //     const newData = { ...data.comments, name: data.user.name };
   //     setComments(data.comments);
   //   }
@@ -132,8 +131,14 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         <Comment /> */}
         {comments.map(
           (comment) => (
-            console.log('comment', comment),
-            (<Comment content={comment?.content} name={comment?.user} />)
+            ('comment', comment),
+            (
+              <Comment
+                content={comment?.content}
+                name={comment?.user}
+                userAvatar={comment?.userAvatar}
+              />
+            )
           )
         )}
       </Box>

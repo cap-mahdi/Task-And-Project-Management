@@ -46,7 +46,6 @@ export async function post({ request, data }: PostRequestProps) {
       },
     },
   });
-  // console.log(response);
   return response;
 }
 interface ClientInterface extends ApolloClient<any> {

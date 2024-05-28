@@ -26,6 +26,7 @@ import { CREATE_TASK } from '../../../services/task/taskMutations';
 import { useCustomMutation } from '../../../hooks/useCustomMutation';
 import useEvent from '../../../hooks/useEvent';
 import { log } from 'console';
+import { set } from 'react-hook-form';
 
 interface TaskDialogProps {
   open: boolean;
@@ -137,6 +138,10 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                 ]?.id,
             },
           });
+          setTitle('');
+          setDescription('');
+          setTags([]);
+          setTag('');
           onClose();
         },
       }}
@@ -196,6 +201,10 @@ export const TaskDialog: FC<TaskDialogProps> = ({
               fullWidth
               variant="standard"
               value={tag}
+              onChange={(event) => {
+                event.preventDefault();
+                setTag(event.currentTarget.value);
+              }}
               onKeyDown={(event) => {
                 if (event.key === 'Enter') {
                   const trimmedTag = tag.trim();
@@ -205,8 +214,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                   }
                   setTags((prev) => [...prev, trimmedTag]);
                   setTag('');
-                } else {
-                  setTag((prev) => prev + event.key);
                 }
               }}
             />

@@ -18,7 +18,6 @@ export const SprintTasks = () => {
     getTasks({
       variables: { milestoneId: sprintId },
     }).then((res) => {
-      console.log('res sprints', res);
       setTasks(res.data.tasks);
     });
   }, [globalState.events.CREATE_TASK]);

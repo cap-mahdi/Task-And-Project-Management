@@ -85,7 +85,6 @@ export function BasicDetails() {
         },
       }));
     } catch (error) {
-      console.log(error);
     } finally {
       setIsLoading(false);
       setImage({ preview: '', data: '' });

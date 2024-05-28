@@ -51,7 +51,6 @@ export const useCustomApolloClient = () => {
         });
       }
     } catch (error) {
-      console.log('Error sending request: ', error);
       toast.error('An error occured when sending the request', {
         position: 'top-right',
       });

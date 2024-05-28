@@ -30,9 +30,9 @@ import { ADD_USERS_TO_PROJECT } from '../services/project/projectMutations';
 import useEvent from '../hooks/useEvent';
 
 const ProjectRoleMapper: Record<ProjectRole, string> = {
-  [ProjectRole.Project_ADMIN]: 'Admin',
-  [ProjectRole.Project_EDITOR]: 'Editor',
-  [ProjectRole.Project_MEMBER]: 'Member',
+  [ProjectRole.ProjectAdmin]: 'Admin',
+  [ProjectRole.ProjectEditor]: 'Editor',
+  [ProjectRole.ProjectMember]: 'Member',
 };
 
 type IUser = Partial<User>;
@@ -40,7 +40,7 @@ type IUser = Partial<User>;
 export const AddUserToProject: FC = () => {
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<ProjectRole>(
-    ProjectRole.Project_MEMBER
+    ProjectRole.ProjectMember
   );
 
   const [emitAddUserToProjectEvent] = useEvent(['ADD_USER_TO_PROJECT']);
