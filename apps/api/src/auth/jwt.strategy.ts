@@ -10,10 +10,17 @@ import { EnvVariables } from '../config';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private userService: UserService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (req) => {
+        const lastWord = req?.originalUrl?.split('/').pop().substring(0, 3);
+        if (lastWord === 'sse') {
+          const token = req.query?.token;
+          return token;
+        }
+        return ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+      },
       ignoreExpiration: false,
       secretOrKey: configService.get<string>(EnvVariables.ACCESS_TOKEN_SECRET),
     });

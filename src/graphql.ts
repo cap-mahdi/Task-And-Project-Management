@@ -18,6 +18,7 @@ export enum Action {
   REMOVE = 'REMOVE',
 }
 
+
 export enum UserRole {
   ADMIN = 'ADMIN',
   USER = 'USER',
@@ -154,33 +155,34 @@ export class UpdateWorkspaceInput {
   description?: Nullable<string>;
 }
 
-export interface Comment {
+export class ProjectNotification {
   id: string;
-  content: string;
+  actor: User;
+  recipient: User;
   createdAt: Date;
-  updatedAt: Date;
-  user: User;
-  task: Task;
+  project: Project;
+  action: Action;
+  read: boolean;
 }
 
 export abstract class IQuery {
+  abstract projectNotifications(): ProjectNotification[] | Promise<ProjectNotification[]>;
+
+  abstract workspaceNotifications(): WorkspaceNotification[] | Promise<WorkspaceNotification[]>;
+
   abstract comments(taskId: string): Comment[] | Promise<Comment[]>;
 
   abstract messages(roomId: string): Message[] | Promise<Message[]>;
 
   abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
 
-  abstract milestone(
-    id: string
-  ): Nullable<Milestone> | Promise<Nullable<Milestone>>;
+  abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
 
   abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
 
   abstract project(id: string): Project | Promise<Project>;
 
-  abstract getWorkspaceMembersNotInProject(
-    projectId: string
-  ): User[] | Promise<User[]>;
+  abstract getWorkspaceMembersNotInProject(projectId: string): User[] | Promise<User[]>;
 
   abstract room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
 
@@ -194,71 +196,45 @@ export abstract class IQuery {
 
   abstract getConnectedUser(): User | Promise<User>;
 
-  abstract getProjectUsers(
-    projectId: string
-  ): UserProject[] | Promise<UserProject[]>;
+  abstract getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
 
-  abstract userProject(
-    userId: string,
-    projectId: string
-  ): UserProject | Promise<UserProject>;
+  abstract userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
 
-  abstract getUserRoomsByUserIdAndProjectId(
-    projectId: string
-  ): Nullable<Room[]> | Promise<Nullable<Room[]>>;
+  abstract getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
 
-  abstract getWorkspaceUsers(
-    workspaceId: string
-  ): UserWorkspace[] | Promise<UserWorkspace[]>;
+  abstract getWorkspaceUsers(workspaceId: string): UserWorkspace[] | Promise<UserWorkspace[]>;
 
   abstract userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
 
-  abstract userWorkspace(
-    userId: string,
-    workspaceId: string
-  ): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
+  abstract userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
 
   abstract workspaces(): Workspace[] | Promise<Workspace[]>;
 
-  abstract workspace(
-    id: string
-  ): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+  abstract workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
 }
 
 export abstract class IMutation {
+  abstract markProjectNotificationAsRead(id: string): ProjectNotification | Promise<ProjectNotification>;
+
+  abstract markWorkspaceNotificationAsRead(id: string): WorkspaceNotification | Promise<WorkspaceNotification>;
+
   abstract createComment(input: CreateCommentInput): Comment | Promise<Comment>;
 
   abstract deleteComment(id: string): Comment | Promise<Comment>;
 
-  abstract editComment(
-    id: string,
-    input: EditCommentInput
-  ): Comment | Promise<Comment>;
+  abstract editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
 
-  abstract createMilestone(
-    input: CreateMilestone,
-    projectId: string
-  ): Milestone | Promise<Milestone>;
+  abstract createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
 
-  abstract updateMilestone(
-    id: string,
-    input: UpdateMilestone
-  ): Milestone | Promise<Milestone>;
+  abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
 
   abstract deleteMilestone(id: string): Milestone | Promise<Milestone>;
 
   abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
 
-  abstract createRoom(
-    projectId: string,
-    name: string,
-    members: string[]
-  ): Room | Promise<Room>;
+  abstract createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
 
-  abstract createTask(
-    input: CreateTask,
-    milestoneId: string
-  ): Task | Promise<Task>;
+  abstract createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
 
   abstract updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
 
@@ -274,38 +250,38 @@ export abstract class IMutation {
 
   abstract changeUserAvatar(file: Upload): User | Promise<User>;
 
-  abstract addUsersToProject(
-    input: AddUserProjectInput
-  ): UserProject[] | Promise<UserProject[]>;
+  abstract addUsersToProject(input: AddUserProjectInput): UserProject[] | Promise<UserProject[]>;
 
-  abstract deleteUsersFromProject(
-    projectId: string,
-    userIds: string[]
-  ): UserProject[] | Promise<UserProject[]>;
+  abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
 
-  abstract addUserToRoom(
-    userId: string[],
-    roomId: string
-  ): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
+  abstract addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
 
-  abstract updateUserWorkspace(
-    userId: string,
-    workspaceId: string,
-    input: UpdateUserWorkspace
-  ): UserWorkspace | Promise<UserWorkspace>;
+  abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
 
-  abstract addUsersToWorkspace(
-    input: AddUserWorkspaceInput
-  ): UserWorkspace[] | Promise<UserWorkspace[]>;
+  abstract addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
 
-  abstract createWorkspace(
-    input: CreateWorkspaceInput
-  ): Workspace | Promise<Workspace>;
+  abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 
-  abstract updateWorkspace(
-    id: string,
-    input: UpdateWorkspaceInput
-  ): Workspace | Promise<Workspace>;
+  abstract updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+}
+
+export class WorkspaceNotification {
+  id: string;
+  actor: User;
+  recipient: User;
+  createdAt: Date;
+  workspace: Workspace;
+  action: Action;
+  read: boolean;
+}
+
+export class Comment {
+  id: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user: User;
+  task: Task;
 }
 
 export class Message {
@@ -314,7 +290,6 @@ export class Message {
   createdAt: Date;
   sender: User;
   room: Room;
-  deletedAt?: Nullable<Date>;
 }
 
 export class Milestone {
