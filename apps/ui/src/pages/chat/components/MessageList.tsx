@@ -55,6 +55,22 @@ export const MessageList: FC = () => {
         };
       });
     });
+    const e2 = socket.on('deletemessage', (id) => {
+      setProjectState((prevState) => {
+        return {
+          ...prevState,
+          messages: prevState.messages.map((message) => {
+            return message.id !== id
+              ? message
+              : { ...message, deletedAt: new Date() };
+          }),
+        };
+      });
+    });
+    return () => {
+      socket.off('receivemessage');
+      socket.off('deletemessage');
+    };
   }, []);
 
   return (
