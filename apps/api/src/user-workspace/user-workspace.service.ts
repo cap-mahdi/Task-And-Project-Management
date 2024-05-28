@@ -5,6 +5,7 @@ import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { WorkspaceRole } from '../graphql';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { UserService } from '../user/user.service';
+import EventEmitter2 from 'eventemitter2';
 
 @Injectable()
 export class UserWorkspaceService {
@@ -13,8 +14,9 @@ export class UserWorkspaceService {
     private userWorkspaceRepository: Repository<UserWorkspaceSchema>,
 
     private readonly userService: UserService,
-    private readonly workspaceService: WorkspaceService
-  ) {}
+    private readonly workspaceService: WorkspaceService,
+    private readonly eventEmitter: EventEmitter2
+  ) { }
 
   async find(options?: FindManyOptions<UserWorkspaceSchema>) {
     return this.userWorkspaceRepository.find(options);
@@ -100,7 +102,8 @@ export class UserWorkspaceService {
   async addUserToWorkspace(
     userToAdd: UserSchema,
     workspace: WorkspaceSchema,
-    role: WorkspaceRole
+    role: WorkspaceRole,
+    user: UserSchema
   ): Promise<UserWorkspaceSchema> {
     const userWorkspace = await this.findUserWorkspace(
       userToAdd.id,
@@ -111,10 +114,20 @@ export class UserWorkspaceService {
       throw new Error('User already in workspace');
     }
 
-    return this.userWorkspaceRepository.save({
+    const createdUserWorkspace = await this.userWorkspaceRepository.save({
       role: role,
       user: userToAdd,
       workspace: workspace,
     });
+
+    console.log('User to add:', userToAdd);
+    console.log('Current user:', user);
+
+    if (userToAdd.id !== user.id) {
+      console.log('Emitting event with new payload: ', createdUserWorkspace, user);
+      this.eventEmitter.emit('user.workspace.added', { userWorkspace: createdUserWorkspace, user });
+    }
+
+    return createdUserWorkspace;
   }
 }

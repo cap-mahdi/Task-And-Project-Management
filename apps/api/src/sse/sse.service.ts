@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { CommentSchema, UserSchema } from '../entities';
+import { ProjectNotificationSchema } from '../entities/ProjectNotification.entity';
 
 @Injectable()
 export class sseService {
-  constructor(private readonly eventEmitter: EventEmitter2) {}
+  constructor(private readonly eventEmitter: EventEmitter2) { }
 
   sse(user: UserSchema, taskId: string): Observable<MessageEvent> {
     const createCommentEvent = fromEvent(
@@ -42,6 +43,44 @@ export class sseService {
       )
     );
 
+
     return merge(createCommentEvent, deleteCommentEvent, editCommentEvent);
+  }
+
+
+  sseNotif(user: UserSchema): Observable<MessageEvent> {
+    const createProjectNotifEvent = fromEvent(
+      this.eventEmitter,
+      'project.notification'
+    ).pipe(
+      tap((notif: ProjectNotificationSchema) => console.log('Received notification:', notif)),
+      filter((notif: ProjectNotificationSchema) => {
+        console.log('Filtering notif', notif);
+        console.log('Filtering User:', user);
+        return notif.recipient.id === user.id;
+      }),
+      map(
+        (notif: ProjectNotificationSchema) =>
+          new MessageEvent('project-notification', { data: JSON.stringify(notif) })
+      )
+    );
+
+    const createWorkspaceNotifEvent = fromEvent(
+      this.eventEmitter,
+      'workspace.notification'
+    ).pipe(
+      tap((notif: ProjectNotificationSchema) => console.log('Received notification:', notif)),
+      filter((notif: ProjectNotificationSchema) => {
+        console.log('Filtering notif', notif);
+        console.log('Filtering User:', user);
+        return notif.recipient.id === user.id;
+      }),
+      map(
+        (notif: ProjectNotificationSchema) =>
+          new MessageEvent('workspace-notification', { data: JSON.stringify(notif) })
+      )
+    );
+
+    return merge(createProjectNotifEvent, createWorkspaceNotifEvent);
   }
 }

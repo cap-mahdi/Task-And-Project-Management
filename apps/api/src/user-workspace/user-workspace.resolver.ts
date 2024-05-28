@@ -113,7 +113,8 @@ export class UserWorkspaceResolver {
         return this.userWorkspaceService.addUserToWorkspace(
           userToAdd,
           workspace,
-          role
+          role,
+          user
         );
       })
     );

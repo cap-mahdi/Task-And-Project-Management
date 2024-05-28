@@ -1,0 +1,9 @@
+type ProjectNotification {
+  id: ID!
+  actor: User!
+  recipient: User!
+  createdAt: Date!
+  project: Project!
+  action: Action!
+  read: Boolean!
+}
