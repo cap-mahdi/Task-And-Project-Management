@@ -175,6 +175,7 @@ export class WorkspaceNotification {
     read: boolean;
 }
 
+
 export class Comment {
     id: string;
     content: string;
