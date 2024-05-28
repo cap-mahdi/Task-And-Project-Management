@@ -17,13 +17,20 @@ export class WorkspaceNotificationService {
 
     ) { }
 
+    async markWorkspaceNotificationAsRead(id: string) {
+        const workspaceNotification = await this.workspaceNotificationRepository.findOne({ where: { id } });
+        workspaceNotification.read = true;
+        return this.workspaceNotificationRepository.save(workspaceNotification);
+    }
+
+
     @OnEvent('user.workspace.added')
     async handleUserWorkspaceAdd({ userWorkspace, user }: { userWorkspace: UserWorkspaceSchema, user: UserSchema }) {
         console.log('got aaaaaaaaa: ', userWorkspace, user);
         const workspaceNotification = await this.workspaceNotificationRepository.save({
             actor: user,
             recipient: userWorkspace.user,
-            project: userWorkspace.workspace,
+            workspace: userWorkspace.workspace,
             action: Action.ADD,
             read: false
         });

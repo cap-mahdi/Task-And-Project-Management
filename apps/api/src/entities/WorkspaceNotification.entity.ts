@@ -22,7 +22,7 @@ export class WorkspaceNotificationSchema implements WorkspaceNotification {
     createdAt: Date;
 
     @ManyToOne(() => WorkspaceSchema)
-    Workspace: WorkspaceSchema;
+    workspace: WorkspaceSchema;
 
     @Column({ type: 'enum', enum: Action })
     action: Action;

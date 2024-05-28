@@ -165,26 +165,11 @@ export class ProjectNotification {
     read: boolean;
 }
 
-export class WorkspaceNotification {
-    id: string;
-    actor: User;
-    recipient: User;
-    createdAt: Date;
-    Workspace: Workspace;
-    action: Action;
-    read: boolean;
-}
-
-export class Comment {
-    id: string;
-    content: string;
-    createdAt: Date;
-    updatedAt: Date;
-    user: User;
-    task: Task;
-}
-
 export abstract class IQuery {
+    abstract projectNotifications(): ProjectNotification[] | Promise<ProjectNotification[]>;
+
+    abstract workspaceNotifications(): WorkspaceNotification[] | Promise<WorkspaceNotification[]>;
+
     abstract comments(taskId: string): Comment[] | Promise<Comment[]>;
 
     abstract messages(roomId: string): Message[] | Promise<Message[]>;
@@ -229,6 +214,10 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
+    abstract markProjectNotificationAsRead(id: string): ProjectNotification | Promise<ProjectNotification>;
+
+    abstract markWorkspaceNotificationAsRead(id: string): WorkspaceNotification | Promise<WorkspaceNotification>;
+
     abstract createComment(input: CreateCommentInput): Comment | Promise<Comment>;
 
     abstract deleteComment(id: string): Comment | Promise<Comment>;
@@ -274,6 +263,25 @@ export abstract class IMutation {
     abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
 
     abstract updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+}
+
+export class WorkspaceNotification {
+    id: string;
+    actor: User;
+    recipient: User;
+    createdAt: Date;
+    workspace: Workspace;
+    action: Action;
+    read: boolean;
+}
+
+export class Comment {
+    id: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+    user: User;
+    task: Task;
 }
 
 export class Message {
