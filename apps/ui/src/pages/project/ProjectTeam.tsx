@@ -5,12 +5,17 @@ import { GET_PROJECT_USERS } from '../../services/project/projectQueries';
 import { useParams } from 'react-router-dom';
 import { Avatar, Box, Card, Typography } from '@mui/material';
 import useAppContext from '../../context/useAppContext';
+import { ProjectRole } from '../../__generated__/graphql';
 
 export function ProjectTeam(props) {
   const { projectId } = useParams();
   const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_PROJECT_USERS, false);
-
+  const ProjectRoleMapper: Record<ProjectRole, string> = {
+    [ProjectRole.ProjectAdmin]: 'Admin',
+    [ProjectRole.ProjectEditor]: 'Editor',
+    [ProjectRole.ProjectMember]: 'Member',
+  };
   useEffect(() => {
     loadTeam({
       variables: {
@@ -57,6 +62,13 @@ export function ProjectTeam(props) {
                   <Typography>{projectUser.user.name}</Typography>
                 </Box>
                 <Typography sx={{}}>{projectUser.user.email}</Typography>
+                <Typography
+                  sx={{
+                    pl: '0.5rem',
+                  }}
+                >
+                  {ProjectRoleMapper[projectUser.role]}
+                </Typography>
               </Card>
             );
           })
