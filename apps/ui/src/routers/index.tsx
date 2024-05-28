@@ -11,6 +11,7 @@ import { Chat } from '../pages/chat/chat';
 import { AddUserToWorkspace } from '../components/AddUserToWorkspace';
 import { Overview } from '../pages/overview';
 import { UserTasks } from '../pages/tasks/UserTasks';
+import { Notification } from '../pages/notification/Notification';
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ export const router = createBrowserRouter([
       {
         path: 'notification',
         // element: <div>Notifs Goes Here</div>,
-        element: <Chat />,
+        element: <Notification />,
       },
       {
         path: 'task',

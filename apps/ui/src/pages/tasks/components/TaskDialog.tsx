@@ -26,6 +26,7 @@ import { CREATE_TASK } from '../../../services/task/taskMutations';
 import { useCustomMutation } from '../../../hooks/useCustomMutation';
 import useEvent from '../../../hooks/useEvent';
 import { log } from 'console';
+import { set } from 'react-hook-form';
 
 interface TaskDialogProps {
   open: boolean;
@@ -43,9 +44,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
     number | undefined
   >(undefined);
   const [emitCreateTask] = useEvent(['CREATE_TASK']);
-
-  console.log('selectedProjectIndex', selectedProjectIndex);
-  console.log('projects', projects);
 
   const [selectedMilestoneIndex, setSelectedMilestoneIndex] = useState<
     number | undefined
@@ -69,7 +67,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
 
   useEffect(() => {
     if (addData) {
-      console.log('addData', addData);
       emitCreateTask();
     }
   }, [addData]);
@@ -125,10 +122,7 @@ export const TaskDialog: FC<TaskDialogProps> = ({
           ) {
             return;
           }
-          console.log(
-            'assignees to send',
-            assignees.map((a) => a.id)
-          );
+
           createTask({
             variables: {
               input: {
@@ -144,6 +138,10 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                 ]?.id,
             },
           });
+          setTitle('');
+          setDescription('');
+          setTags([]);
+          setTag('');
           onClose();
         },
       }}
@@ -203,19 +201,19 @@ export const TaskDialog: FC<TaskDialogProps> = ({
               fullWidth
               variant="standard"
               value={tag}
+              onChange={(event) => {
+                event.preventDefault();
+                setTag(event.currentTarget.value);
+              }}
               onKeyDown={(event) => {
-                console.log('tag', tag);
                 if (event.key === 'Enter') {
                   const trimmedTag = tag.trim();
                   if (!trimmedTag || tags.includes(trimmedTag)) {
                     setTag('');
                     return;
                   }
-                  console.log('trimmedTag', trimmedTag);
                   setTags((prev) => [...prev, trimmedTag]);
                   setTag('');
-                } else {
-                  setTag((prev) => prev + event.key);
                 }
               }}
             />
@@ -290,12 +288,10 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                   }}
                   id="milestone"
                   renderValue={(value) => {
-                    console.log('value here', value);
                     return projects[selectedProjectIndex]?.milestones[value]
                       ?.name;
                   }}
                   onChange={(event) => {
-                    console.log('event.target.value', event.target.value);
                     setSelectedMilestoneIndex(Number(event.target.value));
                   }}
                 >
@@ -333,7 +329,6 @@ export const TaskDialog: FC<TaskDialogProps> = ({
                     );
                   }}
                   renderOption={(params, options) => {
-                    console.log('options', options);
                     return (
                       <Box
                         {...params}

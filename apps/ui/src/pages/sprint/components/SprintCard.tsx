@@ -13,7 +13,6 @@ export default function SprintCard({ sprint }) {
       (new Date(sprint.endDate).getTime() -
         new Date(sprint.startDate).getTime())) *
     100;
-  console.log('progress', progress);
 
   const styles: SxPropsObject = {
     title: {

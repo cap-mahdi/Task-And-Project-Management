@@ -73,7 +73,6 @@ const NotificationItem = ({
     } else if (notification.type === EntityType.WORKSPACE) {
       readWorkspaceNotif({ variables: { id: notification.id } });
     }
-    console.log('clicked');
     navigate(`/app${notification.url}`);
     markAsRead(notification.id);
     onClose();

@@ -2,8 +2,7 @@ import { Avatar, Box, Card, Typography } from '@mui/material';
 import React from 'react';
 import { theme } from '../theme';
 
-export function Comment({ name, content }) {
-  console.log('name', name, 'content', content);
+export function Comment({ name, content, userAvatar }) {
   return (
     <Box
       sx={{
@@ -21,9 +20,13 @@ export function Comment({ name, content }) {
           height: '2.5rem',
           fontSize: '140%',
         }}
+        src={userAvatar}
+        // src={
+        //   content.
+        // }
         // src={src}
       >
-        N
+        {name[0].toUpperCase()}
       </Avatar>
       <Box
         sx={{

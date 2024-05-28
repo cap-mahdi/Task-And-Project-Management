@@ -34,6 +34,7 @@ import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
 import { GET_NOTIFICATIONS } from '../../services/notifications/notificationsQueries';
 import useAppContext from '../../context/useAppContext';
 import { set } from 'react-hook-form';
+import useNotificationContext from '../../context/useNotificationsContext';
 
 const status = [
   {
@@ -57,13 +58,11 @@ const status = [
 const NotificationSection = () => {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-  const [getNotifications] = useCustomLazyQuery(GET_NOTIFICATIONS, false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [notifications, setNotifications] = useState<INotification[]>([]);
   const [globalState] = useAppContext();
-
+  const [{ unreadCount, notifications }, setNotificationState] =
+    useNotificationContext();
   const anchorRef = useRef(null);
 
   const handleToggle = () => {
@@ -88,88 +87,6 @@ const NotificationSection = () => {
   const handleChange = (event) => {
     if (event?.target.value) setValue(event?.target.value);
   };
-
-  useEffect(() => {
-    getNotifications().then((res) => {
-      console.log('notifications ', res);
-      const notifsNotifications = res?.data?.workspaceNotifications;
-      const projectNotifications = res?.data?.projectNotifications;
-      const notifs: INotification[] = [
-        ...projectNotifications.map((notif: ProjectNotification) => ({
-          ...notif,
-          type: 'project',
-          url: `/workspace/${notif.project.workspace.id}/project/${notif.project.id}`,
-          entity: notif.project,
-        })),
-        ...notifsNotifications.map((notif: WorkspaceNotification) => ({
-          ...notif,
-          type: 'workspace',
-          url: `/workspace/${notif.workspace.id}`,
-          entity: notif.workspace,
-        })),
-      ];
-
-      //sort based on createdAt
-      notifs.sort((a, b) => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      });
-      const unreadCount = notifs.reduce(
-        (acc, curr) => (curr.read ? acc : acc + 1),
-        0
-      );
-      setUnreadCount(unreadCount);
-
-      setNotifications(notifs);
-      console.log('notifications after sort  ', notifs);
-    });
-  }, []);
-
-  useEffect(() => {
-    const eventSource = new EventSource(
-      `http://localhost:3000/api/notif/sse?token=${globalState.token}`
-    );
-    eventSource.onopen = () => {
-      console.log('EventSource connected');
-    };
-
-    eventSource.addEventListener('project-notification', (event) => {
-      setUnreadCount((prev) => prev + 1);
-      const data: ProjectNotification = JSON.parse(event.data);
-      console.log('project notification', data);
-      setNotifications((prev) => [
-        {
-          ...data,
-          type: EntityType.PROJECT,
-          url: `/workspace/${data.project.workspace.id}/project/${data.project.id}`,
-          entity: data.project,
-        },
-        ...prev,
-      ]);
-    });
-
-    eventSource.addEventListener('workspace-notification', (event) => {
-      setUnreadCount((prev) => prev + 1);
-      const data: WorkspaceNotification = JSON.parse(event.data);
-      setNotifications((prev) => [
-        {
-          ...data,
-          type: EntityType.WORKSPACE,
-          url: `/workspace/${data.workspace.id}`,
-          entity: data.workspace,
-        },
-        ...prev,
-      ]);
-    });
-
-    eventSource.onerror = (error) => {
-      console.error('EventSource failed:', error);
-    };
-    return () => {
-      eventSource.close();
-    };
-  }, []);
 
   return (
     <>
@@ -318,12 +235,13 @@ const NotificationSection = () => {
                               (n) => n.id === id
                             );
                             if (clickedNotif?.read) return;
-                            setUnreadCount((prev) => prev - 1);
-                            setNotifications((prev) =>
-                              prev.map((n) =>
+                            setNotificationState((prev) => ({
+                              ...prev,
+                              unreadCount: prev.unreadCount - 1,
+                              notifications: prev.notifications.map((n) =>
                                 n.id === id ? { ...n, read: true } : n
-                              )
-                            );
+                              ),
+                            }));
                           }}
                           notifications={notifications}
                           onClose={() => setOpen(false)}

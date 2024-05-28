@@ -24,6 +24,7 @@ import { GET_PROJECT_MEMBERS } from '../../../services/chat/chatQueries';
 import { useCustomLazyQuery } from '../../../hooks/useCustomLazyQuery';
 import { User } from '../../../__generated__/graphql';
 import useAppContext from '../../../context/useAppContext';
+import useEvent from '../../../hooks/useEvent';
 
 export const ChatHeader: FC = () => {
   const [open, setOpen] = useState(false);
@@ -31,8 +32,9 @@ export const ChatHeader: FC = () => {
   const { projectId } = useParams();
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [createRoom, { loading }] = useCustomMutation(CREATE_CHAT, false);
+  const [createRoom, { loading, data }] = useCustomMutation(CREATE_CHAT, false);
   const [globalState] = useAppContext();
+  const [emitCreatedRoomEvent] = useEvent(['CREATE_ROOM']);
   const [getUserPorjects, { data: userData }] = useCustomLazyQuery(
     GET_PROJECT_MEMBERS,
     false
@@ -63,8 +65,6 @@ export const ChatHeader: FC = () => {
     // userData?.project?.userProjects.filter(
     //   (user) => user.user.id !== globalState.user.id
     // );
-    // console.log(userData?.project?.userProjects);
-    // console.log('enter here');
 
     setUserList(
       userData?.project?.userProjects
@@ -72,6 +72,12 @@ export const ChatHeader: FC = () => {
         .map((user) => user.user)
     );
   }, [userData]);
+
+  useEffect(() => {
+    if (data) {
+      emitCreatedRoomEvent();
+    }
+  }, [data]);
 
   return (
     <Box

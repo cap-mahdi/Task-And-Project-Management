@@ -3,7 +3,6 @@ import { Status, Task } from '../../__generated__/graphql';
 import { TaskType, TasksDataType } from './types';
 
 export const taksMapper = (intialTasks: Task[]): TasksDataType => {
-  console.log('intialTasks', intialTasks);
   const tasks = intialTasks.reduce((acc, task) => {
     acc[task.id] = {
       id: task.id,

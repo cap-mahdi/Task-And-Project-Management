@@ -76,21 +76,15 @@ export const AddUserToProject: FC = () => {
   function handleAddUser() {
     const newdata = { user: selectedUser, role: selectedRole };
 
-    console.log(userRef);
-
-    console.log('newdata', newdata);
-
     setUsersToAddToProject((usersToAddToProject) => {
       return [...usersToAddToProject, newdata];
     });
-    console.log('usersToAddToProject', usersToAddToProject);
 
     setSelectedUser({});
   }
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log('usersToAddToProject', usersToAddToProject);
     addUsersToProject({
       variables: {
         input: {
@@ -163,7 +157,6 @@ export const AddUserToProject: FC = () => {
                 value={selectedUser}
                 label="Member"
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setSelectedUser(e.target.value);
                 }}
               >

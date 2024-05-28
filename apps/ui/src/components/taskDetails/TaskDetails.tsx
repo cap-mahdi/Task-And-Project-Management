@@ -20,8 +20,6 @@ interface TaskDetailsProps {
   task: TaskType;
 }
 export function TaskDetails({ task }: TaskDetailsProps) {
-  console.log('AAZAZAZAZEZaze', task);
-
   return (
     <Card
       sx={{
@@ -173,6 +171,7 @@ function AssignedTo({ task }: { task: TaskType }) {
               sx={{
                 backgroundColor: `orange`,
               }}
+              src={assignee.avatar}
             >
               {assignee.name[0].toUpperCase()}
             </Avatar>
@@ -277,6 +276,7 @@ function TaskHeader({ task }: TaskHeaderProps) {
           backgroundColor: `orange`,
           ...styles.avatar,
         }}
+        src={task.creator.avatar || ''}
       >
         {task.creator.name[0].toUpperCase()}
       </Avatar>

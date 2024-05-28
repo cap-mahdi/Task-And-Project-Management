@@ -10,7 +10,6 @@ export function ProjectTeam(props) {
   const { projectId } = useParams();
   const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_PROJECT_USERS, false);
-  //   console.log('teamItems', teamItems);
 
   useEffect(() => {
     loadTeam({
@@ -29,8 +28,6 @@ export function ProjectTeam(props) {
 
       {data?.getProjectUsers
         ? data?.getProjectUsers.map((projectUser) => {
-            console.log('projectUser', projectUser);
-
             return (
               <Card
                 sx={{
@@ -54,7 +51,9 @@ export function ProjectTeam(props) {
                     flexGrow: 1,
                   }}
                 >
-                  <Avatar />
+                  <Avatar src={projectUser.user.avatar}>
+                    {projectUser.user.name[0].toUpperCase()}
+                  </Avatar>
                   <Typography>{projectUser.user.name}</Typography>
                 </Box>
                 <Typography sx={{}}>{projectUser.user.email}</Typography>

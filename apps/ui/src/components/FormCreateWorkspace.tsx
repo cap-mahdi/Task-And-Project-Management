@@ -26,7 +26,6 @@ export const FormCreateWorkspace: FC = () => {
   });
 
   const onSubmitForm = (data: CreateWorkspaceType) => {
-    console.log('data workspace ', data);
     return;
   };
 

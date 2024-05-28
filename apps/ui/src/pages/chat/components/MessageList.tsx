@@ -40,7 +40,6 @@ export const MessageList: FC = () => {
 
   useEffect(() => {
     const e = socket.on('receivemessage', (data: any) => {
-      console.log('data from server ', data);
       setProjectState((prevState) => {
         return {
           ...prevState,
@@ -62,7 +61,6 @@ export const MessageList: FC = () => {
     <List sx={{ overflowY: 'auto' }}>
       {globalState.user && projectState?.messages
         ? projectState?.messages.map((message, index) => {
-            console.log('message', message);
             return (
               <React.Fragment key={message.id}>
                 {/* <Typography>{globalState.user.id}</Typography> */}

@@ -11,10 +11,8 @@ export interface TasksProps {
   intialData: TasksDataType;
 }
 export const Tasks = ({ intialData }: TasksProps) => {
-  console.log('intialData', intialData);
   const [updateTask] = useCustomMutation(UPDATE_TASK_STATUS, false);
   const [state, setState] = useState<TasksDataType>(intialData);
-  console.log('data', state);
   const onDragEnd = useCallback(
     (result: DropResult) => {
       onDragEndHandler(result, state, setState, updateTask);
@@ -39,8 +37,6 @@ export const Tasks = ({ intialData }: TasksProps) => {
           const tasks = column.taskIds.map(
             (taskId: string) => state.tasks[taskId]
           );
-          console.log('column', column);
-          console.log('tasks', tasks);
 
           return <Column key={column.id} column={column} tasks={tasks} />;
         })}

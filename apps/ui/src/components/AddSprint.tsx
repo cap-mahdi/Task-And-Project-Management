@@ -44,7 +44,6 @@ const AddSprint = React.forwardRef((props, ref) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries((formData as any).entries());
-          console.log(formJson);
           createMilestone({
             variables: {
               input: formJson,

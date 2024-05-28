@@ -15,7 +15,7 @@ interface TaskRightSectionProps {
 
 export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   const [globalState] = useAppContext();
-  console.log('globalState', globalState);
+
   const [comments, setComments] = React.useState([]);
   const [getComments, { data, loading, error }] = useCustomLazyQuery(
     GET_COMMENTS,
@@ -23,15 +23,11 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   );
 
   useEffect(() => {
-    console.log('task id: ', taskId);
-    console.log('globalState TOKEN', globalState.token);
-
     // getComments({
     //   variables: {
     //     taskID: taskId,
     //   },
     // }).then((data) => {
-    //   console.log('resultt: ', data);
     //   const newData = { ...data.comments, name: data.user.name };
     //   setComments(newData);
     // });
@@ -41,52 +37,44 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         id: comment.id,
         content: comment.content,
         user: comment.user.name,
+        userAvatar: comment.user.avatar,
       }));
       setComments(fetchedComments);
     });
 
-    console.log(
-      'link sse',
-      `http://localhost:3000/api/task/${taskId}/sse?token=${globalState.token}`
-    );
     const eventSource = new EventSource(
       `http://localhost:3000/api/task/${taskId}/sse?token=${globalState.token}`
     );
-    eventSource.onopen = () => {
-      console.log('EventSource connected');
-    };
+    eventSource.onopen = () => {};
 
     eventSource.addEventListener('create-comment', (event) => {
       const data = JSON.parse(event.data);
-      console.log('create-comment', data);
       const newComment = {
         id: data.id,
         content: data.content,
         user: data.user.name,
+        userAvatar: data.user.avatar,
       };
       setComments((prev) => {
         const updatedComments = [...prev, newComment];
-        console.log('created comments', updatedComments);
         return updatedComments;
       });
     });
 
     eventSource.addEventListener('delete-comment', (event) => {
       const data = JSON.parse(event.data);
-      console.log('delete-comment', data);
+      'delete-comment', data;
 
       setComments((prev) => {
         const updatedComments = prev.filter(
           (comment) => comment.id !== data.id
         );
-        console.log('deleted comments', updatedComments);
         return updatedComments;
       });
     });
 
     eventSource.addEventListener('edit-comment', (event) => {
       const data = JSON.parse(event.data);
-      console.log('edit-comment', data);
 
       setComments((prev) => {
         const updatedComments = prev.map((comment) =>
@@ -94,7 +82,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
             ? { ...comment, content: data.content }
             : comment
         );
-        console.log('edited comments', updatedComments);
         return updatedComments;
       });
     });
@@ -110,7 +97,6 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   // useEffect(() => {
   //   if (data && data.user && data.comments) {
   //     // data.userId = data.user.id;
-  //     console.log('data now: ', data);
   //     const newData = { ...data.comments, name: data.user.name };
   //     setComments(data.comments);
   //   }
@@ -145,8 +131,14 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         <Comment /> */}
         {comments.map(
           (comment) => (
-            console.log('comment', comment),
-            (<Comment content={comment?.content} name={comment?.user} />)
+            ('comment', comment),
+            (
+              <Comment
+                content={comment?.content}
+                name={comment?.user}
+                userAvatar={comment?.userAvatar}
+              />
+            )
           )
         )}
       </Box>

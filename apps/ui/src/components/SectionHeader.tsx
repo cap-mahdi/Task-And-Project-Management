@@ -12,9 +12,17 @@ interface SectionHeaderProps {
       onSelected: () => void;
     }[];
   };
+  currentSection: string;
 }
 
-export function SectionHeader({ data }: SectionHeaderProps) {
+export function SectionHeader({ data, currentSection }: SectionHeaderProps) {
+  let currentSectionIndex = data.sections.findIndex(
+    (section) => section.link === currentSection
+  );
+  if (currentSectionIndex === -1) {
+    currentSectionIndex = 0;
+  }
+
   return (
     <Box
       sx={{
@@ -39,7 +47,10 @@ export function SectionHeader({ data }: SectionHeaderProps) {
       >
         {data.sectionTitle}
       </Typography>
-      <Sections sections={data.sections} />
+      <Sections
+        sections={data.sections}
+        currentSectionIndex={currentSectionIndex || 0}
+      />
       <Divider />
     </Box>
   );

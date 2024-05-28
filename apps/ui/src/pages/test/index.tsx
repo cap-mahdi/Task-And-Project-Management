@@ -15,8 +15,6 @@ import { gql, useQuery } from '@apollo/client';
 // `;
 // export const Test = () => {
 //   const { loading, data } = useQuery(GET_USERS);
-//   console.log(data);
-//   console.log(loading);
 
 //   return <div>test</div>;
 // };

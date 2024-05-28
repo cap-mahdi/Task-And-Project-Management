@@ -16,6 +16,7 @@ const initialState: AppState = {
     ADD_USER_TO_PROJECT: 0,
     ADD_USER_TO_WORKSPACE: 0,
     CREATE_TASK: 0,
+    CREATE_ROOM: 0,
   },
 };
 

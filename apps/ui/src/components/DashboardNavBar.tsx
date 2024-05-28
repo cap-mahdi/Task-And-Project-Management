@@ -78,13 +78,19 @@ export function DashboardNavBar(props) {
           <NotificationSection />
           <Avatar
             sx={{
-              bgcolor: (theme) => theme.palette.acapulco.main,
+              bgcolor: (theme) => {
+                !globalState.user?.avatar
+                  ? theme.palette.acapulco.main
+                  : 'transparent';
+              },
               width: '2.5rem',
               height: '2.5rem',
               fontSize: '140%',
             }}
             src={globalState.user?.avatar || <PersonIcon />}
-          ></Avatar>
+          >
+            {globalState.user?.name[0].toUpperCase()}
+          </Avatar>
         </Toolbar>
       </AppBar>
       <Divider

@@ -5,9 +5,7 @@ export function useCustomMutation(request: DocumentNode, renderToast: boolean) {
   const [postRequest, obj] = useMutation(request);
   const { data, error, loading } = obj;
   useEffect(() => {
-    console.log('data', data);
     if (renderToast) {
-      console.log(obj);
       if (!loading && (data || error)) {
         if (!error) {
           toast.success('Operation completed successfully', {
