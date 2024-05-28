@@ -11,11 +11,13 @@ export function ProjectTeam(props) {
   const { projectId } = useParams();
   const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_PROJECT_USERS, false);
+
   const ProjectRoleMapper: Record<ProjectRole, string> = {
     [ProjectRole.ProjectAdmin]: 'Admin',
     [ProjectRole.ProjectEditor]: 'Editor',
     [ProjectRole.ProjectMember]: 'Member',
   };
+
   useEffect(() => {
     loadTeam({
       variables: {

@@ -13,11 +13,13 @@ export function WorkspaceTeam(props) {
   const { workspaceId } = useParams();
   const [globalState] = useAppContext();
   const [loadTeam, { data }] = useCustomLazyQuery(GET_WORKSPACE_USERS, false);
+
   const workspaceRoleMapper: Record<WorkspaceRole, string> = {
     [WorkspaceRole.WorkspaceAdmin]: 'Admin',
     [WorkspaceRole.WorkspaceEditor]: 'Editor',
     [WorkspaceRole.WorkspaceMember]: 'Member',
   };
+
 
   useEffect(() => {
     loadTeam({
