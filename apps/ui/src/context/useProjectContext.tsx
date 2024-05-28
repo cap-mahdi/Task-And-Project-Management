@@ -16,7 +16,6 @@ interface ProjectProviderProps {
 
 const ProjectProvider = ({ children }: ProjectProviderProps) => {
   const [state, setState] = useState(initialState);
-  console.log('state changedddd ', state);
   return (
     <ProjectContext.Provider value={{ state, setState }}>
       {children}

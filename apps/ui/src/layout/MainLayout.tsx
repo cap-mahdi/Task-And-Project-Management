@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import { SectionHeader } from '../components/SectionHeader';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 const data = {
   sectionTitle: 'Workspace',
   sections: [
@@ -27,9 +27,7 @@ const data = {
       title: 'Sprint',
       link: '/app/sprint',
       enableLink: false,
-      onSelected: () => {
-        console.log('Sprint');
-      },
+      onSelected: () => {},
     },
     {
       title: 'Account',
@@ -41,6 +39,11 @@ const data = {
 };
 
 export function MainLayout({ children, sectionsData = data }) {
+  const location = useLocation();
+  const pathParts = location.pathname.split('/');
+
+  const currentSection = pathParts[pathParts.length - 1];
+
   return (
     <Box
       sx={{
@@ -50,7 +53,7 @@ export function MainLayout({ children, sectionsData = data }) {
         justifyContent: 'space-between',
       }}
     >
-      <SectionHeader data={sectionsData} />
+      <SectionHeader data={sectionsData} currentSection={currentSection} />
 
       <div
         style={{

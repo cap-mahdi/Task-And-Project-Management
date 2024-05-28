@@ -45,7 +45,6 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
   };
 
   const handleNotificationClick = () => {
-    console.log('clicked');
     navigate(notification.url);
     onClose();
   };

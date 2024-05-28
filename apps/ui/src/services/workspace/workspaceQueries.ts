@@ -33,6 +33,7 @@ export const GET_WORKSPACE_USERS = gql`
         id
         name
         email
+        avatar
       }
 
       role

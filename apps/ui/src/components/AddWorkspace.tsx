@@ -43,7 +43,6 @@ const AddWorkspace = React.forwardRef((props, ref) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries((formData as any).entries());
-          console.log(formJson);
           createWorkspace({
             variables: {
               input: formJson,

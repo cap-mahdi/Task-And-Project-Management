@@ -41,15 +41,17 @@ interface PropsType {
   sections: SectionType[];
   uppercase: boolean;
   sx: object;
+  currentSectionIndex: number;
 }
 
 export function Sections({
   sections = [],
   uppercase = true,
   sx = {},
+  currentSectionIndex,
 }: PropsType) {
-  const [selected, setSelected] = useState(0);
-  const [hover, setHover] = useState(0);
+  const [selected, setSelected] = useState(currentSectionIndex);
+  const [hover, setHover] = useState(currentSectionIndex);
 
   return (
     <Box

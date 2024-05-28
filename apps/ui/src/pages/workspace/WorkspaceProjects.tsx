@@ -6,7 +6,6 @@ import ProjectCard from './ProjectCard';
 
 export function WorkspaceProjects({}) {
   const [workspaceState] = useWorkspaceContext();
-  console.log('from project', workspaceState);
 
   return (
     <Box

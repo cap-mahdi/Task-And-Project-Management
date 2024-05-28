@@ -24,8 +24,6 @@ export const useUser = () => {
   const [globalState, setGlobalState] = useAppContext();
 
   if (globalState.token && !globalState.user && !loading && !data) {
-    console.log('fetching user');
-
     getUser();
   }
   return { user: data, error, isLoading: loading, getUser };

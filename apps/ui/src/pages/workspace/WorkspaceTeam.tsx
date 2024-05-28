@@ -31,8 +31,6 @@ export function WorkspaceTeam(props) {
 
       {data?.getWorkspaceUsers
         ? data?.getWorkspaceUsers.map((workspaceUser) => {
-            console.log('workspaceUser', workspaceUser);
-
             return (
               <Card
                 sx={{
@@ -56,7 +54,9 @@ export function WorkspaceTeam(props) {
                     flexGrow: 1,
                   }}
                 >
-                  <Avatar />
+                  <Avatar src={workspaceUser.user.avatar}>
+                    {workspaceUser.user.name[0].toUpperCase()}
+                  </Avatar>
                   <Typography>{workspaceUser.user.name}</Typography>
                 </Box>
                 <Typography sx={{}}>{workspaceUser.user.email}</Typography>

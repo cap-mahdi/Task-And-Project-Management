@@ -12,11 +12,8 @@ export const UserTasks = () => {
   const [globalState, setGlobalState] = useAppContext();
 
   const [tasks, setTasks] = useState([]);
-  console.log(' HERERERERER', taksMapper(tasks));
   useEffect(() => {
-    console.log('i got the event');
     getTasks().then((res) => {
-      console.log('waaaaaaaay jdida AAAAAAAAAAAAAA', res);
       setTasks(res.data.tasks);
     });
   }, [globalState.events.CREATE_TASK]);

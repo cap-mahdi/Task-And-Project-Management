@@ -51,12 +51,10 @@ const LoginCard = () => {
 
   const [createLoginRequest] = useCustomMutation(LoginRequest, true);
   const onSubmitForm = (data: LoginType) => {
-    console.log('data login ', data);
     Client.post({
       request: createLoginRequest,
       data,
     }).then((res) => {
-      console.log('from login', res);
       setToken(res.data.createPost.accessToken);
       setGlobalState((prevState) => ({
         ...prevState,

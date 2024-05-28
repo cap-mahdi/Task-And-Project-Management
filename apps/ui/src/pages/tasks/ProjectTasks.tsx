@@ -18,7 +18,6 @@ export const ProjectTasks = () => {
     getTasks({
       variables: { projectId },
     }).then((res) => {
-      console.log('res', res);
       setTasks(res.data.tasks);
     });
   }, [globalState.events.CREATE_TASK]);

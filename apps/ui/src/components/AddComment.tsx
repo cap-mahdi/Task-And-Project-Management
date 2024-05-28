@@ -12,25 +12,21 @@ import { theme } from '../theme';
 import { StyledButton } from './StyledButton';
 import { useCustomMutation } from '../hooks/useCustomMutation';
 import { CREATE_COMMENT } from '../services/comment/commentMutation';
+import useAppContext from '../context/useAppContext';
 
 export function AddComment({ taskID }) {
   const [createComment] = useCustomMutation(CREATE_COMMENT, false);
   const [comment, setComment] = React.useState('');
-
+  const [globalState] = useAppContext();
   const handleAddComment = async () => {
-    console.log('HOSSSSS ', comment);
     createComment({
       variables: {
         content: comment,
         taskID: taskID,
       },
     })
-      .then((res) => {
-        console.log('created comment', res);
-      })
-      .catch((err) => {
-        console.error('error creating comment', err);
-      });
+      .then((res) => {})
+      .catch((err) => {});
 
     setComment('');
   };
@@ -59,8 +55,9 @@ export function AddComment({ taskID }) {
             height: '2.5rem',
             fontSize: '140%',
           }}
+          src={globalState.user?.avatar}
         >
-          N
+          {globalState.user?.name[0].toUpperCase()}
         </Avatar>
         <TextField
           value={comment}

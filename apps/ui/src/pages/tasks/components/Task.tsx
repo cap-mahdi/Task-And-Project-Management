@@ -86,6 +86,7 @@ export const Task: FC<TaskProps> = ({ task, draggableSnapshot }) => {
                 sx={{
                   backgroundColor: `orange`,
                 }}
+                src={assignee.avatar}
               >
                 {assignee.name.charAt(0).toUpperCase()}
               </Avatar>
