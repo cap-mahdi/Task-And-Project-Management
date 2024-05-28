@@ -31,23 +31,23 @@ export enum WorkspaceRole {
     WORKSPACE_MEMBER = "WORKSPACE_MEMBER"
 }
 
-export interface CreateCommentInput {
+export class CreateCommentInput {
     content: string;
     taskId: string;
 }
 
-export interface EditCommentInput {
+export class EditCommentInput {
     content?: Nullable<string>;
 }
 
-export interface CreateMilestone {
+export class CreateMilestone {
     name: string;
     description: string;
     startDate: Date;
     endDate: Date;
 }
 
-export interface UpdateMilestone {
+export class UpdateMilestone {
     name?: Nullable<string>;
     description?: Nullable<string>;
     startDate?: Nullable<Date>;
@@ -55,13 +55,13 @@ export interface UpdateMilestone {
     status?: Nullable<Status>;
 }
 
-export interface CreateProjectInput {
+export class CreateProjectInput {
     name: string;
     description: string;
     workspaceId: string;
 }
 
-export interface CreateTask {
+export class CreateTask {
     name: string;
     description: string;
     status: Status;
@@ -69,7 +69,7 @@ export interface CreateTask {
     assignees: string[];
 }
 
-export interface UpdateTask {
+export class UpdateTask {
     name?: Nullable<string>;
     description?: Nullable<string>;
     status?: Nullable<Status>;
@@ -77,80 +77,80 @@ export interface UpdateTask {
     assignees?: Nullable<string[]>;
 }
 
-export interface TaskFilter {
+export class TaskFilter {
     projectId?: Nullable<string>;
     milestoneId?: Nullable<string>;
 }
 
-export interface CreateUserInput {
+export class CreateUserInput {
     name: string;
     email: string;
     password: string;
 }
 
-export interface GetUserInput {
+export class GetUserInput {
     id?: Nullable<string>;
     email?: Nullable<string>;
     name?: Nullable<string>;
 }
 
-export interface UpdateUserInput {
+export class UpdateUserInput {
     name?: Nullable<string>;
     email?: Nullable<string>;
     phone?: Nullable<string>;
 }
 
-export interface ChangePasswordInput {
+export class ChangePasswordInput {
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
 }
 
-export interface CreateUserProject {
+export class CreateUserProject {
     userId: string;
     projectId: string;
     role: ProjectRole;
 }
 
-export interface UpdateUserProject {
+export class UpdateUserProject {
     role?: Nullable<ProjectRole>;
 }
 
-export interface EmailRoleProjectInput {
+export class EmailRoleProjectInput {
     email: string;
     role: string;
 }
 
-export interface AddUserProjectInput {
+export class AddUserProjectInput {
     projectId: string;
     emailRoles: EmailRoleProjectInput[];
 }
 
-export interface EmailRoleInput {
+export class EmailRoleInput {
     email: string;
     role: string;
 }
 
-export interface UpdateUserWorkspace {
+export class UpdateUserWorkspace {
     role?: Nullable<WorkspaceRole>;
 }
 
-export interface AddUserWorkspaceInput {
+export class AddUserWorkspaceInput {
     workspaceId: string;
     emailRoles: EmailRoleInput[];
 }
 
-export interface CreateWorkspaceInput {
+export class CreateWorkspaceInput {
     name: string;
     description?: Nullable<string>;
 }
 
-export interface UpdateWorkspaceInput {
+export class UpdateWorkspaceInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
 }
 
-export interface Comment {
+export class Comment {
     id: string;
     content: string;
     createdAt: Date;
@@ -159,57 +159,99 @@ export interface Comment {
     task: Task;
 }
 
-export interface IQuery {
-    comments(taskId: string): Comment[] | Promise<Comment[]>;
-    messages(roomId: string): Message[] | Promise<Message[]>;
-    milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
-    milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
-    projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
-    project(id: string): Project | Promise<Project>;
-    getWorkspaceMembersNotInProject(projectId: string): User[] | Promise<User[]>;
-    room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
-    tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
-    task(id: string): Task | Promise<Task>;
-    users(): User[] | Promise<User[]>;
-    getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
-    getConnectedUser(): User | Promise<User>;
-    getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
-    userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
-    getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
-    getWorkspaceUsers(workspaceId: string): UserWorkspace[] | Promise<UserWorkspace[]>;
-    userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
-    userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
-    workspaces(): Workspace[] | Promise<Workspace[]>;
-    workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+export abstract class IQuery {
+    abstract comments(taskId: string): Comment[] | Promise<Comment[]>;
+
+    abstract messages(roomId: string): Message[] | Promise<Message[]>;
+
+    abstract milestones(projectId: string): Milestone[] | Promise<Milestone[]>;
+
+    abstract milestone(id: string): Nullable<Milestone> | Promise<Nullable<Milestone>>;
+
+    abstract projects(): Nullable<Project[]> | Promise<Nullable<Project[]>>;
+
+    abstract project(id: string): Project | Promise<Project>;
+
+    abstract getWorkspaceMembersNotInProject(projectId: string): User[] | Promise<User[]>;
+
+    abstract room(id: string): Nullable<Room> | Promise<Nullable<Room>>;
+
+    abstract tasks(filter?: Nullable<TaskFilter>): Task[] | Promise<Task[]>;
+
+    abstract task(id: string): Task | Promise<Task>;
+
+    abstract users(): User[] | Promise<User[]>;
+
+    abstract getUsersByParams(input: GetUserInput): User[] | Promise<User[]>;
+
+    abstract getConnectedUser(): User | Promise<User>;
+
+    abstract getProjectUsers(projectId: string): UserProject[] | Promise<UserProject[]>;
+
+    abstract userProject(userId: string, projectId: string): UserProject | Promise<UserProject>;
+
+    abstract getUserRoomsByUserIdAndProjectId(projectId: string): Nullable<Room[]> | Promise<Nullable<Room[]>>;
+
+    abstract getWorkspaceUsers(workspaceId: string): UserWorkspace[] | Promise<UserWorkspace[]>;
+
+    abstract userWorkspaces(): UserWorkspace[] | Promise<UserWorkspace[]>;
+
+    abstract userWorkspace(userId: string, workspaceId: string): Nullable<UserWorkspace> | Promise<Nullable<UserWorkspace>>;
+
+    abstract workspaces(): Workspace[] | Promise<Workspace[]>;
+
+    abstract workspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
 }
 
-export interface IMutation {
-    createComment(input: CreateCommentInput): Comment | Promise<Comment>;
-    deleteComment(id: string): Comment | Promise<Comment>;
-    editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
-    createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
-    updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
-    deleteMilestone(id: string): Milestone | Promise<Milestone>;
-    createProject(input: CreateProjectInput): Project | Promise<Project>;
-    createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
-    createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
-    updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
-    deleteTask(id: string): boolean | Promise<boolean>;
-    createUser(createUserInput: CreateUserInput): User | Promise<User>;
-    updateUser(input: UpdateUserInput): User | Promise<User>;
-    deleteUser(): User | Promise<User>;
-    changePassword(input: ChangePasswordInput): User | Promise<User>;
-    changeUserAvatar(file: Upload): User | Promise<User>;
-    addUsersToProject(input: AddUserProjectInput): UserProject[] | Promise<UserProject[]>;
-    deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
-    addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
-    updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
-    addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
-    createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
-    updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
+export abstract class IMutation {
+    abstract createComment(input: CreateCommentInput): Comment | Promise<Comment>;
+
+    abstract deleteComment(id: string): Comment | Promise<Comment>;
+
+    abstract editComment(id: string, input: EditCommentInput): Comment | Promise<Comment>;
+
+    abstract createMilestone(input: CreateMilestone, projectId: string): Milestone | Promise<Milestone>;
+
+    abstract updateMilestone(id: string, input: UpdateMilestone): Milestone | Promise<Milestone>;
+
+    abstract deleteMilestone(id: string): Milestone | Promise<Milestone>;
+
+    abstract createProject(input: CreateProjectInput): Project | Promise<Project>;
+
+    abstract createRoom(projectId: string, name: string, members: string[]): Room | Promise<Room>;
+
+    abstract createTask(input: CreateTask, milestoneId: string): Task | Promise<Task>;
+
+    abstract updateTask(id: string, input: UpdateTask): Task | Promise<Task>;
+
+    abstract deleteTask(id: string): boolean | Promise<boolean>;
+
+    abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
+
+    abstract updateUser(input: UpdateUserInput): User | Promise<User>;
+
+    abstract deleteUser(): User | Promise<User>;
+
+    abstract changePassword(input: ChangePasswordInput): User | Promise<User>;
+
+    abstract changeUserAvatar(file: Upload): User | Promise<User>;
+
+    abstract addUsersToProject(input: AddUserProjectInput): UserProject[] | Promise<UserProject[]>;
+
+    abstract deleteUsersFromProject(projectId: string, userIds: string[]): UserProject[] | Promise<UserProject[]>;
+
+    abstract addUserToRoom(userId: string[], roomId: string): Nullable<UserRoom[]> | Promise<Nullable<UserRoom[]>>;
+
+    abstract updateUserWorkspace(userId: string, workspaceId: string, input: UpdateUserWorkspace): UserWorkspace | Promise<UserWorkspace>;
+
+    abstract addUsersToWorkspace(input: AddUserWorkspaceInput): UserWorkspace[] | Promise<UserWorkspace[]>;
+
+    abstract createWorkspace(input: CreateWorkspaceInput): Workspace | Promise<Workspace>;
+
+    abstract updateWorkspace(id: string, input: UpdateWorkspaceInput): Workspace | Promise<Workspace>;
 }
 
-export interface Message {
+export class Message {
     id: string;
     content: string;
     createdAt: Date;
@@ -217,7 +259,7 @@ export interface Message {
     room: Room;
 }
 
-export interface Milestone {
+export class Milestone {
     id: string;
     name: string;
     description: string;
@@ -228,7 +270,7 @@ export interface Milestone {
     tasks: Task[];
 }
 
-export interface Project {
+export class Project {
     id: string;
     name: string;
     description: string;
@@ -240,7 +282,7 @@ export interface Project {
     creator: User;
 }
 
-export interface Room {
+export class Room {
     id: string;
     createdAt: Date;
     name: string;
@@ -249,7 +291,7 @@ export interface Room {
     messages: Message[];
 }
 
-export interface Task {
+export class Task {
     id: string;
     name: string;
     description: string;
@@ -262,7 +304,7 @@ export interface Task {
     createdAt: Date;
 }
 
-export interface User {
+export class User {
     id: string;
     name: string;
     email: string;
@@ -279,13 +321,13 @@ export interface User {
     createdProjects: Project[];
 }
 
-export interface File {
+export class File {
     filename: string;
     mimetype: string;
     encoding: string;
 }
 
-export interface UserProject {
+export class UserProject {
     id: string;
     user: User;
     project: Project;
@@ -293,19 +335,19 @@ export interface UserProject {
     addedAt: Date;
 }
 
-export interface UserRoom {
+export class UserRoom {
     id: string;
     user: User;
     room: Room;
 }
 
-export interface UserTask {
+export class UserTask {
     id: string;
     user: User;
     task: Task;
 }
 
-export interface UserWorkspace {
+export class UserWorkspace {
     id: string;
     user: User;
     addedAt: Date;
@@ -313,7 +355,7 @@ export interface UserWorkspace {
     role: WorkspaceRole;
 }
 
-export interface Workspace {
+export class Workspace {
     id: string;
     name: string;
     description: string;
