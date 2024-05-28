@@ -18,7 +18,7 @@ export class UserProjectResolver {
     private readonly userProjectService: UserProjectService,
     private readonly projectService: ProjectService,
     private readonly userService: UserService
-  ) {}
+  ) { }
 
   @Query('getProjectUsers')
   async getProjectUsers(
@@ -92,12 +92,13 @@ export class UserProjectResolver {
       emailRoles.map(async ({ email, role: roleString }) => {
         const role = mapStringToEnum(roleString, ProjectRole);
 
-        const user = await this.userService.getUserByEmail(email);
+        const userToAdd = await this.userService.getUserByEmail(email);
 
         const userProject = await this.userProjectService.addUserToProject(
-          user,
+          userToAdd,
           project,
-          role
+          role,
+          user
         );
         return userProject;
       })

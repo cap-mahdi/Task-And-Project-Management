@@ -72,7 +72,8 @@ export class ProjectResolver {
     await this.userProjectService.addUserToProject(
       user,
       project,
-      ProjectRole.Project_ADMIN
+      ProjectRole.Project_ADMIN,
+      user
     );
 
     return project;
