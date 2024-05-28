@@ -17,7 +17,6 @@ export class WorkspaceNotificationService {
 
     ) { }
 
-<<<<<<< HEAD
     async markWorkspaceNotificationAsRead(id: string) {
         const workspaceNotification = await this.workspaceNotificationRepository.findOne({ where: { id } });
         workspaceNotification.read = true;
@@ -25,19 +24,13 @@ export class WorkspaceNotificationService {
     }
 
 
-=======
->>>>>>> d46d823721bbda71b973678bbad36a6f4eaa8701
     @OnEvent('user.workspace.added')
     async handleUserWorkspaceAdd({ userWorkspace, user }: { userWorkspace: UserWorkspaceSchema, user: UserSchema }) {
         console.log('got aaaaaaaaa: ', userWorkspace, user);
         const workspaceNotification = await this.workspaceNotificationRepository.save({
             actor: user,
             recipient: userWorkspace.user,
-<<<<<<< HEAD
             workspace: userWorkspace.workspace,
-=======
-            project: userWorkspace.workspace,
->>>>>>> d46d823721bbda71b973678bbad36a6f4eaa8701
             action: Action.ADD,
             read: false
         });
