@@ -175,7 +175,6 @@ export class WorkspaceNotification {
     read: boolean;
 }
 
-
 export class Comment {
     id: string;
     content: string;
@@ -283,6 +282,7 @@ export class Message {
     createdAt: Date;
     sender: User;
     room: Room;
+    deletedAt?: Nullable<Date>;
 }
 
 export class Milestone {

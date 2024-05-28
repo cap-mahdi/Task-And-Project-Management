@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { MessageSchema } from '../entities';
@@ -38,5 +38,24 @@ export class MessageService {
     options?: FindManyOptions<MessageSchema>
   ): Promise<MessageSchema[]> {
     return this.messageRepository.find(options);
+  }
+
+  async SoftDeleteMessage(id: string): Promise<MessageSchema> {
+    const message = await this.findOne({ where: { id } });
+    if (!message) {
+      throw new NotFoundException('Message not found');
+    }
+    return this.messageRepository.softRemove(message);
+  }
+
+  async getMessageRoom(messageId: string): Promise<string> {
+    const message = await this.findOne({
+      where: { id: messageId },
+      relations: ['room'],
+    });
+    if (!message) {
+      throw new NotFoundException('Message not found');
+    }
+    return message.room.id;
   }
 }

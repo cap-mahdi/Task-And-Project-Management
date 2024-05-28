@@ -7,12 +7,15 @@ import { GET_COMMENTS } from '../../services/comment/commentQueries';
 import { set } from 'react-hook-form';
 import { useCustomMutation } from '../../hooks/useCustomMutation';
 import { CREATE_COMMENT } from '../../services/comment/commentMutation';
+import useAppContext from '../../context/useAppContext';
 
 interface TaskRightSectionProps {
   taskId: string;
 }
 
 export function TaskRightSection({ taskId }: TaskRightSectionProps) {
+  const [globalState] = useAppContext();
+  console.log('globalState', globalState);
   const [comments, setComments] = React.useState([]);
   const [getComments, { data, loading, error }] = useCustomLazyQuery(
     GET_COMMENTS,
@@ -21,6 +24,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
 
   useEffect(() => {
     console.log('task id: ', taskId);
+    console.log('globalState TOKEN', globalState.token);
 
     // getComments({
     //   variables: {
@@ -41,9 +45,12 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
       setComments(fetchedComments);
     });
 
-    console.log('link', `http://localhost:3000/api/task/${taskId}/sse`);
+    console.log(
+      'link sse',
+      `http://localhost:3000/api/task/${taskId}/sse?token=${globalState.token}`
+    );
     const eventSource = new EventSource(
-      `http://localhost:3000/api/task/${taskId}/sse`
+      `http://localhost:3000/api/task/${taskId}/sse?token=${globalState.token}`
     );
     eventSource.onopen = () => {
       console.log('EventSource connected');
@@ -52,11 +59,11 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     eventSource.addEventListener('create-comment', (event) => {
       const data = JSON.parse(event.data);
       console.log('create-comment', data);
-      const newComment  = {
-        id : data.id ,
-        content : data.content , 
-        user : data.user.name
-      }
+      const newComment = {
+        id: data.id,
+        content: data.content,
+        user: data.user.name,
+      };
       setComments((prev) => {
         const updatedComments = [...prev, newComment];
         console.log('created comments', updatedComments);
@@ -67,7 +74,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     eventSource.addEventListener('delete-comment', (event) => {
       const data = JSON.parse(event.data);
       console.log('delete-comment', data);
-      
+
       setComments((prev) => {
         const updatedComments = prev.filter(
           (comment) => comment.id !== data.id
@@ -80,7 +87,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     eventSource.addEventListener('edit-comment', (event) => {
       const data = JSON.parse(event.data);
       console.log('edit-comment', data);
-      
+
       setComments((prev) => {
         const updatedComments = prev.map((comment) =>
           comment.id === data.id
@@ -139,12 +146,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         {comments.map(
           (comment) => (
             console.log('comment', comment),
-            (
-              <Comment
-                content={comment?.content}
-                name={comment?.user}
-              />
-            )
+            (<Comment content={comment?.content} name={comment?.user} />)
           )
         )}
       </Box>
