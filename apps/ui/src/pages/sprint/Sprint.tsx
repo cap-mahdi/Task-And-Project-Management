@@ -11,7 +11,7 @@ export function Sprint() {
 
   const [loadSprint, sprintItem] = useCustomLazyQuery(
     GET_MILESTONE_BY_ID,
-    true
+    false
   );
   useEffect(() => {
     if (sprintItem?.data) {

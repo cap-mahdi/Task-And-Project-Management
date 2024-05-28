@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useWorkspaceContext from '../../context/useWorkspaceContext';
-import { useCustomLazyQuery } from '../../hooks/useCustomLazyQuery';
-import { FetchWorkspaceByIdRequest } from '../../services/workspace/workspaceQueries';
-import { useParams } from 'react-router-dom';
 import { AddProject } from '../../components/AddProject';
-import { Box, Card } from '@mui/material';
+import { Box } from '@mui/material';
 import ProjectCard from './ProjectCard';
 
 export function WorkspaceProjects({}) {

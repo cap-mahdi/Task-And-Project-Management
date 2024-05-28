@@ -4,22 +4,29 @@ import { toast } from 'react-toastify';
 export function useCustomMutation(request: DocumentNode, renderToast: boolean) {
   const [postRequest, obj] = useMutation(request);
   const { data, error, loading } = obj;
-  console.log('data', data);
-  // useEffect(() => {
-  //   if (!loading && (data || error)) {
-  //     if (!error) {
-  //       toast.success('Mutation Success', {
-  //         position: 'bottom-right',
-  //         icon: () => null,
-  //       });
-  //     } else {
-  //       toast.error('An error occurred', {
-  //         position: 'bottom-right',
-  //         icon: () => null,
-  //       });
-  //     }
-  //   }
-  // }, [loading, data, error]);
+  useEffect(() => {
+    console.log('data', data);
+    if (renderToast) {
+      console.log(obj);
+      if (!loading && (data || error)) {
+        if (!error) {
+          toast.success('Operation completed successfully', {
+            position: 'bottom-right',
+            icon: () => null,
+          });
+        } else {
+          toast.error(
+            error?.graphQLErrors[0].message ||
+              error?.networkError.result.message,
+            {
+              position: 'bottom-right',
+              icon: () => null,
+            }
+          );
+        }
+      }
+    }
+  }, [loading, data, error]);
 
   return [postRequest, obj];
 }

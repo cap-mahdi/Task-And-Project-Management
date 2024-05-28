@@ -19,7 +19,7 @@ export function Workspace(props: any) {
       'description',
       'projects{ id, name ,description , createdAt }',
     ]),
-    true
+    false
   );
 
   useEffect(() => {

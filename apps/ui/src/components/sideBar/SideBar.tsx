@@ -37,7 +37,7 @@ export function SideBar({ toolbarSize }) {
       'description',
       'projects{ id, name }',
     ]),
-    true
+    false
   );
   const workspaceRef = useRef(null);
 

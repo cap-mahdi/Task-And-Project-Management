@@ -9,7 +9,7 @@ export function SecuritySettings() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [changePassword, { data, error, loading }] = useCustomMutation(
     CHANGE_PASSWORD,
-    true
+    false
   );
 
   const onChange = (password: string) => setPassword(password);

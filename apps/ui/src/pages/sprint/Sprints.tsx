@@ -43,7 +43,7 @@ const Sprints = () => {
   };
   const sprintRef = useRef(null);
 
-  const [loadSprints, sprintItems] = useCustomLazyQuery(GET_MILESTONES, true);
+  const [loadSprints, sprintItems] = useCustomLazyQuery(GET_MILESTONES, false);
   useEffect(() => {
     if (projectId)
       loadSprints({

@@ -16,7 +16,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
   const [comments, setComments] = React.useState([]);
   const [getComments, { data, loading, error }] = useCustomLazyQuery(
     GET_COMMENTS,
-    true
+    false
   );
 
   useEffect(() => {
@@ -52,11 +52,11 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     eventSource.addEventListener('create-comment', (event) => {
       const data = JSON.parse(event.data);
       console.log('create-comment', data);
-      const newComment  = {
-        id : data.id ,
-        content : data.content , 
-        user : data.user.name
-      }
+      const newComment = {
+        id: data.id,
+        content: data.content,
+        user: data.user.name,
+      };
       setComments((prev) => {
         const updatedComments = [...prev, newComment];
         console.log('created comments', updatedComments);
@@ -67,7 +67,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     eventSource.addEventListener('delete-comment', (event) => {
       const data = JSON.parse(event.data);
       console.log('delete-comment', data);
-      
+
       setComments((prev) => {
         const updatedComments = prev.filter(
           (comment) => comment.id !== data.id
@@ -80,7 +80,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
     eventSource.addEventListener('edit-comment', (event) => {
       const data = JSON.parse(event.data);
       console.log('edit-comment', data);
-      
+
       setComments((prev) => {
         const updatedComments = prev.map((comment) =>
           comment.id === data.id
@@ -139,12 +139,7 @@ export function TaskRightSection({ taskId }: TaskRightSectionProps) {
         {comments.map(
           (comment) => (
             console.log('comment', comment),
-            (
-              <Comment
-                content={comment?.content}
-                name={comment?.user}
-              />
-            )
+            (<Comment content={comment?.content} name={comment?.user} />)
           )
         )}
       </Box>
