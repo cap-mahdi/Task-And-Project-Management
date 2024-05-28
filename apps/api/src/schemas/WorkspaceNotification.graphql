@@ -1,0 +1,9 @@
+type WorkspaceNotification {
+  id: ID!
+  actor: User!
+  recipient: User!
+  createdAt: Date!
+  Workspace: Workspace!
+  action: Action!
+  read: Boolean!
+}

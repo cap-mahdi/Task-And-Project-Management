@@ -14,6 +14,11 @@ export enum Status {
     DONE = "DONE"
 }
 
+export enum Action {
+    ADD = "ADD",
+    REMOVE = "REMOVE"
+}
+
 export enum UserRole {
     ADMIN = "ADMIN",
     USER = "USER"
@@ -149,6 +154,27 @@ export class UpdateWorkspaceInput {
     name?: Nullable<string>;
     description?: Nullable<string>;
 }
+
+export class ProjectNotification {
+    id: string;
+    actor: User;
+    recipient: User;
+    createdAt: Date;
+    project: Project;
+    action: Action;
+    read: boolean;
+}
+
+export class WorkspaceNotification {
+    id: string;
+    actor: User;
+    recipient: User;
+    createdAt: Date;
+    Workspace: Workspace;
+    action: Action;
+    read: boolean;
+}
+
 
 export class Comment {
     id: string;
