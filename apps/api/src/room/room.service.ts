@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  MessageSchema,
   ProjectSchema,
   RoomSchema,
   UserRoomSchema,
@@ -18,9 +19,20 @@ export class RoomService {
     private readonly projectRepository: Repository<ProjectSchema>,
     @InjectRepository(UserRoomSchema)
     private readonly userRoomRepository: Repository<UserRoomSchema>,
+    @InjectRepository(MessageSchema)
+    private readonly messageRepository: Repository<MessageSchema>,
     private readonly userRoomService: UserRoomService
   ) {}
 
+  async getMessages(roomId: string) {
+    const messages = await this.messageRepository.find({
+      where: { room: { id: roomId } },
+      withDeleted: true,
+      order: { createdAt: 'ASC' },
+    });
+    console.log('messages', messages);
+    return messages;
+  }
   async createRoom(
     projectId: string,
     name: string,

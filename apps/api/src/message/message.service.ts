@@ -46,7 +46,6 @@ export class MessageService {
       throw new NotFoundException('Message not found');
     }
     return this.messageRepository.softRemove(message);
-    // return message;
   }
 
   async getMessageRoom(messageId: string): Promise<string> {

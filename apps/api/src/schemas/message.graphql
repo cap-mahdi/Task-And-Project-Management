@@ -4,7 +4,7 @@ type Message {
   createdAt: Date!
   sender: User!
   room: Room!
-  deleteAt: Date
+  deletedAt: Date
 }
 
 type Query {

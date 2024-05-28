@@ -16,6 +16,7 @@ import useProjectContext from '../../../context/useProjectContext';
 import SearchIcon from '@mui/icons-material/Search';
 
 export const ContactList: FC = () => {
+  console.log('ContactList');
   const params = useParams();
   const [loadChat, chatItems] = useCustomLazyQuery(GET_CHAT, true);
   const [users, setUsers] = useState([]);
@@ -26,9 +27,7 @@ export const ContactList: FC = () => {
 
   function handleSearch(event: any) {
     setSearch(event.target.value);
-  }
-
-  useEffect(() => {
+    const search = event.target.value;
     if (search) {
       const filteredUsers = users.filter((user: any) =>
         user.name.toLowerCase().includes(search.toLowerCase())
@@ -37,7 +36,7 @@ export const ContactList: FC = () => {
     } else if (chatItems?.data?.getUserRoomsByUserIdAndProjectId) {
       setUsers(chatItems.data.getUserRoomsByUserIdAndProjectId);
     }
-  }, [search]);
+  }
 
   function ChangeCurrentChat(chat: any) {
     if (projectState?.currentChat?.id === chat.id) return;
@@ -74,13 +73,14 @@ export const ContactList: FC = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('data', data.room.messages);
+      console.log('data messages', data.room.messages);
 
       const Message = data.room.messages.map((message: any) => {
         return {
           id: message.id,
           content: message.content,
           createdAt: message.createdAt,
+          deletedAt: message.deletedAt,
           sender: message.sender,
         };
       });

@@ -38,7 +38,7 @@ export const MessageList: FC = () => {
   }
 
   useEffect(() => {
-    socket.on('receivemessage', (data: any) => {
+    const e = socket.on('receivemessage', (data: any) => {
       console.log('data from server ', data);
       setProjectState((prevState) => {
         return {
@@ -56,7 +56,7 @@ export const MessageList: FC = () => {
       });
     });
 
-    socket.on('deletemessage', (id) => {
+    const e2 = socket.on('deletemessage', (id) => {
       setProjectState((prevState) => {
         return {
           ...prevState,
@@ -68,16 +68,16 @@ export const MessageList: FC = () => {
         };
       });
     });
+    return () => {
+      socket.off('receivemessage');
+      socket.off('deletemessage');
+    };
   }, []);
 
   return (
-    <List
-      sx={{
-        overflow: 'auto',
-      }}
-    >
+    <List sx={{ overflowY: 'auto' }}>
       {globalState.user && projectState?.messages
-        ? projectState?.messages.map((message) => {
+        ? projectState?.messages.map((message, index) => {
             console.log('message', message);
             return (
               <React.Fragment key={message.id}>
@@ -102,9 +102,19 @@ export const MessageList: FC = () => {
                       </ListItemAvatar>
                       <Tooltip title={message.createdAt} placement="right">
                         <ListItemText
-                          sx={styles.cnvBox}
+                          sx={{
+                            ...styles.cnvBox,
+
+                            backgroundColor: message.deletedAt
+                              ? 'red'
+                              : 'white',
+                          }}
                           primary={message.sender.name}
-                          secondary={message.content}
+                          secondary={
+                            message.deletedAt
+                              ? 'Message Deleted'
+                              : message.content
+                          }
                         ></ListItemText>
                       </Tooltip>
                     </>
@@ -113,13 +123,21 @@ export const MessageList: FC = () => {
                   {message.sender.id === globalState.user.id && (
                     <>
                       <ListItemAvatar>
-                        <Button onClick={() => handleDelete(message.id)}>
-                          <DeleteIcon />
-                        </Button>
+                        {message.deletedAt ? (
+                          ''
+                        ) : (
+                          <Button onClick={() => handleDelete(message.id)}>
+                            <DeleteIcon />
+                          </Button>
+                        )}
                       </ListItemAvatar>
                       <Tooltip title={message.createdAt} placement="left">
                         <ListItemText
-                          secondary={message.content}
+                          secondary={
+                            message.deletedAt
+                              ? 'Message Deleted'
+                              : message.content
+                          }
                           sx={{
                             ...styles.cnvBox,
                             color: 'white',
@@ -130,7 +148,9 @@ export const MessageList: FC = () => {
                             marginRight: 2,
                             marginLeft: 'auto',
                             backgroundColor: (theme) =>
-                              theme.palette.primary.main,
+                              message.deletedAt
+                                ? theme.palette.error.main
+                                : theme.palette.primary.main,
                             boxShadow: '14px 18px 21px -10px rgba(0,0,0,0.25)',
                           }}
                         ></ListItemText>

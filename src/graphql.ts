@@ -257,7 +257,7 @@ export class Message {
     createdAt: Date;
     sender: User;
     room: Room;
-    deleteAt?: Nullable<Date>;
+    deletedAt?: Nullable<Date>;
 }
 
 export class Milestone {
